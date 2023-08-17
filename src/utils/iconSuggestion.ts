@@ -159,7 +159,7 @@ export enum IconSuggestion {
   tasks = 'ScheduleOutlined',
   unlock = 'UnlockOutlined',
   upload = 'UploadOutlined',
-  users = 'UsergroupAddOutlined',
+  users = 'UserOutlined',
   video = 'VideoCameraOutlined',
   others = 'EllipsisOutlined',
   options = 'CheckSquareOutlined',
@@ -171,7 +171,8 @@ export enum IconSuggestion {
   website = 'GlobalOutlined',
   repository = 'GithubOutlined',
   server = 'CloudServerOutlined',
-  application = 'AppstoreOutlined'
+  application = 'AppstoreOutlined',
+  author = 'StarOutlined'
 }
 
 function getDirectSuggestion(
@@ -691,6 +692,21 @@ function getIconSuggestionInner(lowercaseResourceName: string): string {
     ].includes(lowercaseResourceName)
   ) {
     return 'application';
+  }
+
+  if (
+    [
+      'author',
+      'authors',
+      'writer',
+      'writers',
+      'creator',
+      'creators',
+      'developer',
+      'developers'
+    ].includes(lowercaseResourceName)
+  ) {
+    return 'author';
   }
 
   return 'others';

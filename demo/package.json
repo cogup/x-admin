@@ -1,0 +1,19 @@
+{
+  "name": "x-admin-blog-demo",
+  "version": "1.0.0",
+  "description":  "X-Admin blog demo",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "ts-node src/main.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@cogup/fastapi": "github:cogup/fastapi#0.2.2",
+    "@faker-js/faker": "^8.0.2",
+    "ts-node": "^10.9.1"
+  },
+  "devDependencies": {
+    "sqlite3": "^5.1.6"
+  }
+}

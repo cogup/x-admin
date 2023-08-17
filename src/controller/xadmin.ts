@@ -141,10 +141,6 @@ export interface AdminResourceData {
     'create' | 'read' | 'update' | 'delete' | 'list' | 'search',
     AdminResourceReferences
   >;
-  search?: string[];
-  maxLength?: number;
-  primaryKey?: string;
-  label?: string;
 }
 
 export interface AdminResourceReferences {

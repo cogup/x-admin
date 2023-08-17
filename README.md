@@ -1,46 +1,130 @@
-# Getting Started with Create React App
+# X-Admin: Documentation and Usage Guide
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Welcome to the documentation for X-Admin, a React-based interface that simplifies the process of creating admin panels for APIs that have OpenAPI 3 documentation available. With X-Admin, you can effortlessly generate admin interfaces for your APIs by including a simple configuration parameter in your OpenAPI documentation.
 
-## Available Scripts
+## Getting Started
 
-In the project directory, you can run:
+### Prerequisites
 
-### `npm start`
+To use X-Admin, you'll need the following:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- A React application where you want to integrate the admin interface.
+- An API with OpenAPI 3 documentation available.
+- Basic knowledge of React and OpenAPI.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Configuration
 
-### `npm test`
+### 1. Add the `x-admin` Parameter to OpenAPI Documentation
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+To enable X-Admin for your API, simply add the `x-admin` parameter to your OpenAPI 3 documentation. This parameter will hold the configuration for your admin interface. Here's an example of how to use it:
 
-### `npm run build`
+```json
+{
+  "openapi": "3",
+  "info": {
+    "title": "My API"
+  },
+  "x-admin": {
+    "resources": {
+      "/api/comments": {
+        "get": {
+          "types": ["list", "search"],
+          "resourceName": "Comments"
+        },
+        "post": {
+          "types": ["create"],
+          "resourceName": "Comment"
+        }
+      },
+      // ... (other resource paths and their configurations)
+    }
+  },
+  // ... (other API details)
+} 
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 2. Admin Configuration Parameters
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+The `x-admin` parameter accepts the following configuration parameters:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Resource Paths and Methods: Within the `resources` object, you define each resource path and its associated HTTP methods. For each method, you define the `types`, `resourceName`, and other relevant information.
 
-### `npm run eject`
+- `types`: An array of strings representing CRUD operations ("create", "read", "update", "delete", "list", "search").
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- `resourceName`: A string representing the name of the resource.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Here's an example of how you might use the `x-admin` parameter with correct formatting:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```json
+{
+  "openapi": "3",
+  "info": {
+    "title": "My API"
+  },
+  "x-admin": {
+    "resources": {
+      "/api/comments": {
+        "get": {
+          "types": ["list", "search"],
+          "resourceName": "Comments"
+        },
+        "post": {
+          "types": ["create"],
+          "resourceName": "Comment"
+        }
+      },
+      // ... (other resource paths and their configurations)
+    }
+  },
+  // ... (other API details)
+}
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Usage
 
-## Learn More
+After configuring your API's OpenAPI documentation, you can integrate X-Admin into your React application using the provided package.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### 1. Install Dependencies
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Make sure you have the necessary dependencies installed in your project by running the following command:
+
+```bash
+npm install
+```
+
+### 2. Import and Use X-Admin Components
+
+1. Import the necessary components from `x-admin`.
+
+2. Use the imported components to generate the admin interfaces based on the provided configuration.
+
+```jsx
+import React from 'react';
+import { AdminPanel, AdminResourceList, AdminResourceEdit } from 'x-admin';
+
+function App() {
+  return (
+    <div>
+      <h1>X-Admin Example</h1>
+      <AdminPanel>
+        <AdminResourceList resource="/api/comments" />
+        <AdminResourceEdit resource="/api/comments" />
+      </AdminPanel>
+    </div>
+  );
+}
+
+export default App;
+```
+
+## License
+
+X-Admin is available under either the Apache License 2.0, as stated in the [LICENSE](https://raw.githubusercontent.com/cogup/x-admin/main/LICENSE) file.
+
+## Conclusion
+
+Congratulations! You now have a powerful tool at your disposal to quickly create admin interfaces for APIs with OpenAPI 3 documentation. With X-Admin, you can focus on building your application's functionality while letting the admin panel practically build itself. If you encounter any issues or need further assistance, feel free to consult the official documentation or seek help from the community.
+
+For more information and advanced usage, please refer to the [X-Admin documentation](https://github.com/cogup/x-admin).
+
+Happy coding!

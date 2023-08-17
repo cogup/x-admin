@@ -1,0 +1,22 @@
+{
+    "folders": [
+      {
+        "name": "x-admin",
+        "path": ".."
+      },
+      {
+        "name": "demo",
+        "path": "../demo"
+      },
+    ],
+    "extensions": {
+        "recommendations": [
+            "dbaeumer.vscode-eslint",
+        ]
+    },
+    "settings": {
+      "jest.disabledWorkspaceFolders": [
+        "demo"
+      ]
+    }
+}
