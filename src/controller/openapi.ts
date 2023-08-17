@@ -8,6 +8,18 @@ export interface Info {
   license?: License;
 }
 
+export interface AdminData {
+  resources: AdminResources;
+}
+
+export interface AdminResources {
+  [resourcePath: string]: AdminResource;
+}
+
+export interface AdminResource {
+  [resourceMethod: string]: AdminInfo;
+}
+
 export interface Contact {
   name?: string;
   url?: string;
@@ -62,11 +74,11 @@ export interface Operation {
   deprecated?: boolean;
   security?: SecurityRequirement[];
   servers?: Server[];
-  'x-admin': XAdmin | undefined;
+  'x-admin': AdminInfo | undefined;
 }
 
-// XAdmin Interface
-export interface XAdmin {
+// Admin Interface
+export interface AdminInfo {
   types: Array<'create' | 'read' | 'update' | 'delete' | 'list' | 'search'>;
   resourceName: string;
   groupName: string;
@@ -297,6 +309,7 @@ export interface OpenAPI {
   security?: SecurityRequirement[];
   tags?: Tag[];
   externalDocs?: ExternalDocumentation;
+  'x-admin'?: AdminData;
 }
 
 export function isReference(

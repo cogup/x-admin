@@ -9,6 +9,29 @@ import {
   type ResourceData,
   Resource
 } from '../resources';
+import { AdminData, AdminInfo, Operation } from '../openapi';
+
+function getAdminInfo(
+  path: string,
+  method: Methods,
+  adminData: AdminData | undefined,
+  operation: Operation | undefined
+): AdminInfo | undefined {
+  if (operation && operation['x-admin'] !== undefined) {
+    return operation['x-admin'] as AdminInfo;
+  } else if (
+    adminData !== undefined &&
+    adminData.resources !== undefined &&
+    adminData.resources[path] !== undefined &&
+    adminData.resources[path][method] !== undefined
+  ) {
+    {
+      return adminData.resources[path][method] as AdminInfo;
+    }
+  } else {
+    return undefined;
+  }
+}
 
 export function openapi(
   spec: OpenApiSpec.OpenAPI,
@@ -53,7 +76,13 @@ export function openapi(
           ? [pathItem.patch, Methods.PATCH]
           : [null, null];
 
-      if (method === null || operation?.['x-admin'] === undefined) {
+      if (method === null || operation === undefined) {
+        continue;
+      }
+
+      const adminInfo = getAdminInfo(path, method, spec['x-admin'], operation);
+
+      if (adminInfo === undefined) {
         continue;
       }
 
@@ -61,12 +90,12 @@ export function openapi(
       resourceData.summary = operation.summary;
       resourceData.description = operation.description;
       resourceData.tags = operation.tags ?? [];
-      resourceData.types = operation['x-admin'].types as ResourceTypes[];
-      resourceData.resource = operation['x-admin'].resourceName;
-      resourceData.resource = operation['x-admin'].resourceName;
-      resourceData.group = operation['x-admin'].groupName;
+      resourceData.types = adminInfo.types as ResourceTypes[];
+      resourceData.resource = adminInfo.resourceName;
+      resourceData.resource = adminInfo.resourceName;
+      resourceData.group = adminInfo.groupName;
 
-      resourceData.metadata = Object.entries(operation['x-admin'])
+      resourceData.metadata = Object.entries(adminInfo)
         .map(([key, value]) => {
           if (
             key === 'types' ||
@@ -210,9 +239,9 @@ export function openapi(
             );
           }
 
-          references = operation['x-admin']?.references?.list;
+          references = adminInfo?.references?.list;
         } else if (type === ResourceTypes.SEARCH) {
-          references = operation['x-admin']?.references?.search;
+          references = adminInfo?.references?.search;
         }
 
         const localPath = resourceData.localPaths?.[type] ?? '';
