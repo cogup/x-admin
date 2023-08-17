@@ -1,12 +1,12 @@
 import { type AxiosInstance } from 'axios';
-import { type OpenApiSpec } from '.';
 import {
   type ApiParams,
   Methods,
-  PropieryReferencesType,
+  AdminResourceReferencesType,
   type Params,
-  type Schema
-} from './apiadmin';
+  type Schema,
+  AdminResourceReferences
+} from './xadmin';
 
 export class Resource implements ResourceData {
   key: string;
@@ -29,7 +29,7 @@ export class Resource implements ResourceData {
   axios: AxiosInstance;
   queryparamsList: string[];
   label: string;
-  references?: OpenApiSpec.PropieriesReferences;
+  references?: AdminResourceReferences;
   defaultValue?: any;
   metadata?: Record<string, any>;
 
@@ -88,7 +88,7 @@ export class Resource implements ResourceData {
 
     for (const key in body) {
       const item = this.getPropieriesReferencesType(
-        PropieryReferencesType.BODY,
+        AdminResourceReferencesType.BODY,
         key
       );
 
@@ -128,29 +128,21 @@ export class Resource implements ResourceData {
   }
 
   getPropieriesReferencesType(
-    type: PropieryReferencesType,
+    type: AdminResourceReferencesType,
     propiery: string
   ): string {
     if (this.references == null) {
       return propiery;
     }
 
-    if (type === PropieryReferencesType.QUERY) {
-      return this.references?.query !== undefined
-        ? this.references?.query[propiery]
-        : propiery;
-    } else if (type === PropieryReferencesType.PARAMS) {
-      return this.references?.params !== undefined
-        ? this.references?.params[propiery]
-        : propiery;
-    } else if (type === PropieryReferencesType.BODY) {
-      return this.references?.body !== undefined
-        ? this.references?.body[propiery]
-        : propiery;
-    } else if (type === PropieryReferencesType.HEADERS) {
-      return this.references?.headers !== undefined
-        ? this.references?.headers[propiery]
-        : propiery;
+    if (
+      type === AdminResourceReferencesType.QUERY &&
+      this.references?.query !== undefined &&
+      this.references.query[propiery] !== undefined
+    ) {
+      return this.references.query[propiery] as string;
+    } else {
+      return propiery;
     }
 
     return propiery;
@@ -162,7 +154,7 @@ export class Resource implements ResourceData {
     if (data?.params !== undefined) {
       for (const key in data?.params) {
         const item = this.getPropieriesReferencesType(
-          PropieryReferencesType.PARAMS,
+          AdminResourceReferencesType.PARAMS,
           key
         );
         const regex = new RegExp(`{${item}}`, 'g');
@@ -211,7 +203,7 @@ export class Resource implements ResourceData {
     if (data?.params !== undefined) {
       for (const key in data?.params) {
         const item = this.getPropieriesReferencesType(
-          PropieryReferencesType.PARAMS,
+          AdminResourceReferencesType.PARAMS,
           key
         );
         const regex = new RegExp(`:${key}`, 'g');
@@ -253,7 +245,7 @@ export class Resource implements ResourceData {
 
     for (const key in data) {
       const item = this.getPropieriesReferencesType(
-        PropieryReferencesType.QUERY,
+        AdminResourceReferencesType.QUERY,
         key
       );
       const value = data[key];
@@ -324,7 +316,7 @@ export interface ResourceData {
   method: Methods;
   queryparamsList: string[];
   label: string;
-  references?: OpenApiSpec.PropieriesReferences;
+  references?: AdminResourceReferences;
   defaultValue?: any;
   metadata?: Record<string, any>;
 }

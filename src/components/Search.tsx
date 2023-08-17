@@ -9,7 +9,7 @@ import {
 } from '../controller';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useQuerystring } from '../use';
-import { PropieryReferencesType } from '../controller/apiadmin';
+import { AdminResourceReferencesType } from '../controller/xadmin';
 
 interface StyleProps {
   theme?: Record<string, string>;
@@ -82,7 +82,7 @@ const Search: React.FC<SearchProps> = ({ controller }): React.ReactElement => {
     setSuggestionButton(false);
     const searchParam =
       resource?.getPropieriesReferencesType(
-        PropieryReferencesType.QUERY,
+        AdminResourceReferencesType.QUERY,
         'searchTerm'
       ) ?? 'q';
     setInputValue(params[searchParam] ?? '');

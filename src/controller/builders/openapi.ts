@@ -1,6 +1,13 @@
 import { type AxiosInstance } from 'axios';
 import { OpenApiSpec } from '..';
-import { ApiAdmin, Methods, type Schema, type Tag } from '../apiadmin';
+import {
+  AdminData,
+  AdminResourceData,
+  ApiAdmin,
+  Methods,
+  type Schema,
+  type Tag
+} from '../xadmin';
 import { capitalizeFirstLetter } from '../../utils';
 import {
   ResourceTypes,
@@ -9,24 +16,20 @@ import {
   type ResourceData,
   Resource
 } from '../resources';
-import { AdminData, AdminInfo, Operation } from '../openapi';
 
 function getAdminInfo(
   path: string,
   method: Methods,
-  adminData: AdminData | undefined,
-  operation: Operation | undefined
-): AdminInfo | undefined {
-  if (operation && operation['x-admin'] !== undefined) {
-    return operation['x-admin'] as AdminInfo;
-  } else if (
+  adminData: AdminData | undefined
+): AdminResourceData | undefined {
+  if (
     adminData !== undefined &&
     adminData.resources !== undefined &&
     adminData.resources[path] !== undefined &&
     adminData.resources[path][method] !== undefined
   ) {
     {
-      return adminData.resources[path][method] as AdminInfo;
+      return adminData.resources[path][method] as AdminResourceData;
     }
   } else {
     return undefined;
@@ -80,9 +83,9 @@ export function openapi(
         continue;
       }
 
-      const adminInfo = getAdminInfo(path, method, spec['x-admin'], operation);
+      const adminResourceData = getAdminInfo(path, method, spec['x-admin']);
 
-      if (adminInfo === undefined) {
+      if (adminResourceData === undefined) {
         continue;
       }
 
@@ -90,12 +93,12 @@ export function openapi(
       resourceData.summary = operation.summary;
       resourceData.description = operation.description;
       resourceData.tags = operation.tags ?? [];
-      resourceData.types = adminInfo.types as ResourceTypes[];
-      resourceData.resource = adminInfo.resourceName;
-      resourceData.resource = adminInfo.resourceName;
-      resourceData.group = adminInfo.groupName;
+      resourceData.types = adminResourceData.types as ResourceTypes[];
+      resourceData.resource = adminResourceData.resourceName;
+      resourceData.resource = adminResourceData.resourceName;
+      resourceData.group = adminResourceData.groupName;
 
-      resourceData.metadata = Object.entries(adminInfo)
+      resourceData.metadata = Object.entries(adminResourceData)
         .map(([key, value]) => {
           if (
             key === 'types' ||
@@ -239,9 +242,9 @@ export function openapi(
             );
           }
 
-          references = adminInfo?.references?.list;
+          references = adminResourceData?.references?.list;
         } else if (type === ResourceTypes.SEARCH) {
-          references = adminInfo?.references?.search;
+          references = adminResourceData?.references?.search;
         }
 
         const localPath = resourceData.localPaths?.[type] ?? '';

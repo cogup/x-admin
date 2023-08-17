@@ -1,6 +1,7 @@
 import { type AxiosInstance } from 'axios';
 import { type OpenApiSpec } from './index';
 import { type Resource } from './resources';
+import { PropieriesReferences } from './openapi';
 export { openapi } from './builders/openapi';
 export { swagger } from './builders/swagger';
 
@@ -96,7 +97,7 @@ export interface ApiParams {
   query?: Record<string, any>;
 }
 
-export enum PropieryReferencesType {
+export enum AdminResourceReferencesType {
   QUERY = 'query',
   PARAMS = 'params',
   BODY = 'body',
@@ -118,4 +119,43 @@ export enum AdminTagNames {
 export interface AdminTag {
   name: AdminTagNames;
   value?: string;
+}
+
+export interface AdminData {
+  resources: AdminResources;
+}
+
+export interface AdminResources {
+  [resourcePath: string]: AdminResource;
+}
+
+export interface AdminResource {
+  [resourceMethod: string]: AdminResourceData;
+}
+
+export interface AdminResourceData {
+  types: Array<'create' | 'read' | 'update' | 'delete' | 'list' | 'search'>;
+  resourceName: string;
+  groupName: string;
+  references?: Record<
+    'create' | 'read' | 'update' | 'delete' | 'list' | 'search',
+    AdminResourceReferences
+  >;
+  search?: string[];
+  maxLength?: number;
+  primaryKey?: string;
+  label?: string;
+}
+
+export interface AdminResourceReferences {
+  query?: AdminResourceReferencesQueryParams;
+}
+
+export interface AdminResourceReferencesQueryParams {
+  pageSize?: string;
+  page?: string;
+  orderBy?: string;
+  order?: string;
+  searchTerm?: string;
+  [key: string]: string | undefined;
 }

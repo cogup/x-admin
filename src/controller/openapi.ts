@@ -1,3 +1,5 @@
+import { AdminData } from './xadmin';
+
 // Info Object
 export interface Info {
   title: string;
@@ -8,16 +10,11 @@ export interface Info {
   license?: License;
 }
 
-export interface AdminData {
-  resources: AdminResources;
-}
-
-export interface AdminResources {
-  [resourcePath: string]: AdminResource;
-}
-
-export interface AdminResource {
-  [resourceMethod: string]: AdminInfo;
+export interface PropieriesReferences {
+  query?: Record<string, string>;
+  params?: Record<string, string>;
+  body?: Record<string, string>;
+  headers?: Record<string, string>;
 }
 
 export interface Contact {
@@ -74,29 +71,6 @@ export interface Operation {
   deprecated?: boolean;
   security?: SecurityRequirement[];
   servers?: Server[];
-  'x-admin': AdminInfo | undefined;
-}
-
-// Admin Interface
-export interface AdminInfo {
-  types: Array<'create' | 'read' | 'update' | 'delete' | 'list' | 'search'>;
-  resourceName: string;
-  groupName: string;
-  references?: Record<
-    'create' | 'read' | 'update' | 'delete' | 'list' | 'search',
-    PropieriesReferences
-  >;
-  search?: string[];
-  maxLength?: number;
-  primaryKey?: string;
-  label?: string;
-}
-
-export interface PropieriesReferences {
-  query?: Record<string, string>;
-  params?: Record<string, string>;
-  body?: Record<string, string>;
-  headers?: Record<string, string>;
 }
 
 export interface ExternalDocumentation {

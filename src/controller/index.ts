@@ -1,11 +1,11 @@
-import { openapi, swagger, type ApiAdmin } from './apiadmin';
+import { openapi, swagger, type ApiAdmin } from './xadmin';
 import axios, { type AxiosInstance } from 'axios';
 import { type Resource, type ResourceTypes } from './resources';
 import { notification } from 'antd';
 export { ResourceTypes } from './resources';
 export type { Resource } from './resources';
-export { ApiAdmin, Methods } from './apiadmin';
-export type { Schema, ApiParams, Params } from './apiadmin';
+export { ApiAdmin, Methods } from './xadmin';
+export type { Schema, ApiParams, Params } from './xadmin';
 export * as OpenApiSpec from './openapi';
 
 enum OriginalSchemaTypes {
