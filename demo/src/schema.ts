@@ -30,7 +30,8 @@ const users = new TableBuilder({
   .column({
     name: 'password',
     type: ColumnType.STRING,
-    maxLength: 100
+    maxLength: 100,
+    protected: true
   })
   .build();
 

@@ -29,8 +29,6 @@ async function main() {
     }
   });
 
-  fastapi.load();
-
   await fastapi.start();
 
   seeds(fastapi);
