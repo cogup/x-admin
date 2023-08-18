@@ -48,7 +48,7 @@ const authors = new TableBuilder({
     unique: true
   })
   .column({
-    name: 'user_id',
+    name: 'userId',
     type: ColumnType.INTEGER,
     reference: users
   })
@@ -71,9 +71,14 @@ const posts = new TableBuilder({
     type: ColumnType.TEXT
   })
   .column({
-    name: 'author_id',
+    name: 'authorId',
     type: ColumnType.INTEGER,
     reference: authors
+  })
+  .column({
+    name: 'metadata',
+    type: ColumnType.CODE,
+    allowNull: true
   })
   .build();
 
@@ -88,12 +93,12 @@ new TableBuilder({
     type: ColumnType.TEXT
   })
   .column({
-    name: 'post_id',
+    name: 'postId',
     type: ColumnType.INTEGER,
     reference: posts
   })
   .column({
-    name: 'user_id',
+    name: 'userId',
     type: ColumnType.INTEGER,
     reference: users
   })

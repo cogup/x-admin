@@ -5,6 +5,20 @@ function randomNumber(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+// json by metada blog post faker
+function metadata(): string {
+  const data = {
+    state: faker.location.state(),
+    colors: [
+      faker.internet.color(),
+      faker.internet.color(),
+      faker.internet.color()
+    ]
+  };
+
+  return JSON.stringify(data, null, 2);
+}
+
 export function seeds(fastapi: FastAPI) {
   const { models } = fastapi;
 
@@ -19,7 +33,7 @@ export function seeds(fastapi: FastAPI) {
   for (let i = 0; i < 2; i++) {
     models.Author.create({
       name: faker.internet.userName(),
-      user_id: i + 1
+      userId: i + 1
     });
   }
 
@@ -27,15 +41,16 @@ export function seeds(fastapi: FastAPI) {
     models.Post.create({
       title: faker.lorem.sentence(),
       content: faker.lorem.paragraph(),
-      author_id: randomNumber(1, 2)
+      authorId: randomNumber(1, 2),
+      metadata: metadata()
     });
   }
 
   for (let i = 0; i < 25; i++) {
     models.Comment.create({
       content: faker.lorem.paragraph(),
-      post_id: randomNumber(1, 25),
-      user_id: randomNumber(3, 10)
+      postId: randomNumber(1, 25),
+      userId: randomNumber(3, 10)
     });
   }
 }
