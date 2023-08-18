@@ -11,11 +11,9 @@ const builder = new SchemaBuilder({
 
 const users = new TableBuilder({
   name: 'users',
-  parent: builder,
+  schema: builder,
   auto: [AutoColumn.ID, AutoColumn.CREATED_AT, AutoColumn.UPDATED_AT]
-});
-
-users
+})
   .searchColumn('name')
   .column({
     name: 'name',
@@ -34,15 +32,13 @@ users
     type: ColumnType.STRING,
     maxLength: 100
   })
-  .buildTable();
+  .build();
 
 const authors = new TableBuilder({
   name: 'authors',
-  parent: builder,
+  schema: builder,
   auto: [AutoColumn.ID, AutoColumn.CREATED_AT, AutoColumn.UPDATED_AT]
-});
-
-authors
+})
   .searchColumn('name')
   .column({
     name: 'name',
@@ -53,17 +49,15 @@ authors
   .column({
     name: 'user_id',
     type: ColumnType.INTEGER,
-    reference: users.name
+    reference: users
   })
-  .buildTable();
+  .build();
 
 const posts = new TableBuilder({
   name: 'posts',
-  parent: builder,
+  schema: builder,
   auto: [AutoColumn.ID, AutoColumn.CREATED_AT, AutoColumn.UPDATED_AT]
-});
-
-posts
+})
   .searchColumn('title')
   .column({
     name: 'title',
@@ -78,17 +72,15 @@ posts
   .column({
     name: 'author_id',
     type: ColumnType.INTEGER,
-    reference: authors.name
+    reference: authors
   })
-  .buildTable();
+  .build();
 
-const comments = new TableBuilder({
+new TableBuilder({
   name: 'comments',
-  parent: builder,
+  schema: builder,
   auto: [AutoColumn.ID, AutoColumn.CREATED_AT, AutoColumn.UPDATED_AT]
-});
-
-comments
+})
   .searchColumn('content')
   .column({
     name: 'content',
@@ -97,13 +89,13 @@ comments
   .column({
     name: 'post_id',
     type: ColumnType.INTEGER,
-    reference: posts.name
+    reference: posts
   })
   .column({
     name: 'user_id',
     type: ColumnType.INTEGER,
-    reference: users.name
+    reference: users
   })
-  .buildTable();
+  .build();
 
 export const schema = builder.build();
