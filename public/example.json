@@ -1684,7 +1684,13 @@
             "/api/users": {
                 "get": {
                     "types": [
-                        "list"
+                        "list",
+                        "search"
+                    ]
+                },
+                "post": {
+                    "types": [
+                        "create"
                     ]
                 }
             },
@@ -1694,6 +1700,11 @@
                         "read"
                     ]
                 },
+                "put": {
+                    "types": [
+                        "update"
+                    ]
+                },
                 "delete": {
                     "types": [
                         "delete"
@@ -1701,6 +1712,12 @@
                 }
             },
             "/api/posts": {
+                "get": {
+                    "types": [
+                        "list",
+                        "search"
+                    ]
+                },
                 "post": {
                     "types": [
                         "create"
@@ -1708,9 +1725,19 @@
                 }
             },
             "/api/posts/{id}": {
+                "get": {
+                    "types": [
+                        "read"
+                    ]
+                },
                 "put": {
                     "types": [
                         "update"
+                    ]
+                },
+                "delete": {
+                    "types": [
+                        "delete"
                     ]
                 }
             },
@@ -1720,12 +1747,27 @@
                         "list",
                         "search"
                     ]
+                },
+                "post": {
+                    "types": [
+                        "create"
+                    ]
                 }
             },
             "/api/comments/{id}": {
                 "get": {
                     "types": [
                         "read"
+                    ]
+                },
+                "put": {
+                    "types": [
+                        "update"
+                    ]
+                },
+                "delete": {
+                    "types": [
+                        "delete"
                     ]
                 }
             }

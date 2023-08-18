@@ -17,7 +17,6 @@ export function toSingluar(str: string): string {
 }
 
 export function toPlural(str: string): string {
-  //is plural?
   if (str.endsWith('s')) {
     return str;
   }

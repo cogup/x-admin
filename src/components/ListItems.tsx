@@ -382,11 +382,14 @@ const ListItems: React.FC<ListItemsProps> = ({
       title: 'Action',
       key: 'action',
       fixed: 'right',
-      width: 160,
       render: (_: string, record: ListItem): React.ReactElement => (
-        <Row justify={'space-between'}>
+        <Row justify={'start'}>
           {resourceRead != null && (
-            <Col>
+            <Col
+              style={{
+                marginRight: '0.4rem'
+              }}
+            >
               <Button
                 type="default"
                 icon={<ReadOutlined style={{ fontSize: '1.0rem' }} />}
@@ -397,7 +400,12 @@ const ListItems: React.FC<ListItemsProps> = ({
             </Col>
           )}
           {resourceUpdate != null && (
-            <Col>
+            <Col
+              style={{
+                marginLeft: '0.4rem',
+                marginRight: '0.4rem'
+              }}
+            >
               <Button
                 type="dashed"
                 icon={<EditOutlined style={{ fontSize: '1.0rem' }} />}
@@ -408,7 +416,11 @@ const ListItems: React.FC<ListItemsProps> = ({
             </Col>
           )}
           {resourceDelete != null && (
-            <Col>
+            <Col
+              style={{
+                marginLeft: '0.4rem'
+              }}
+            >
               <Popconfirm
                 title="Delete the task"
                 description="Are you sure to delete this task?"

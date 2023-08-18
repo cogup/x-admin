@@ -1,6 +1,6 @@
 import { openapi, type ApiAdmin } from './xadmin';
 import axios, { type AxiosInstance } from 'axios';
-import { type Resource, type ResourceTypes } from './resources';
+import { ResourceTypes, type Resource } from './resources';
 import { notification } from 'antd';
 export { ResourceTypes } from './resources';
 export type { Resource } from './resources';
@@ -50,6 +50,14 @@ export class ControllerBuilder {
       throw new Error("Can't fetch API data");
     }
   }
+}
+
+export interface Steps {
+  [path: string]: Step[];
+}
+
+export interface Step {
+  resource: Resource;
 }
 
 export class Controller {
@@ -244,5 +252,21 @@ export class Controller {
     } catch {
       return null;
     }
+  }
+
+  getSteps(): Steps {
+    return {
+      '/wizard/first-post': [
+        {
+          resource: this.getResource('users', ResourceTypes.CREATE)
+        },
+        {
+          resource: this.getResource('posts', ResourceTypes.CREATE)
+        },
+        {
+          resource: this.getResource('comments', ResourceTypes.CREATE)
+        }
+      ]
+    };
   }
 }

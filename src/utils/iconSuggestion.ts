@@ -172,7 +172,8 @@ export enum IconSuggestion {
   repository = 'GithubOutlined',
   server = 'CloudServerOutlined',
   application = 'AppstoreOutlined',
-  author = 'StarOutlined'
+  author = 'StarOutlined',
+  email = 'MailOutlined'
 }
 
 function getDirectSuggestion(
@@ -707,6 +708,14 @@ function getIconSuggestionInner(lowercaseResourceName: string): string {
     ].includes(lowercaseResourceName)
   ) {
     return 'author';
+  }
+
+  if (
+    ['email', 'e-mail', 'mail', 'mailbox', 'mailboxes'].includes(
+      lowercaseResourceName
+    )
+  ) {
+    return 'email';
   }
 
   return 'others';

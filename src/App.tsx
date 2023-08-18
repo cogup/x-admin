@@ -29,6 +29,7 @@ import { type Resource, ResourceTypes } from './controller/resources';
 import locale from 'antd/locale/pt_BR';
 import Swagger from './components/Swagger';
 import { useIsMobile } from './use';
+import StepsMaker from './components/Steps';
 
 const { Content: ContentLayout, Header } = Layout;
 
@@ -253,6 +254,18 @@ const App = (): React.ReactElement => {
               {getTemplate(resource, controller)}
             </Content>
           }
+        />
+      );
+    });
+
+    const steps = controller.getSteps();
+
+    Object.keys(steps).forEach((path) => {
+      routes.push(
+        <Route
+          key={path}
+          path={path}
+          element={<StepsMaker steps={steps[path]} controller={controller} />}
         />
       );
     });
