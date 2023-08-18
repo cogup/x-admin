@@ -37,15 +37,15 @@ const ItemView: React.FC<ItemViewProps> = ({
   const { [resource.metadata?.id || 'id']: itemId } = useParams();
   const [loading, setLoading] = useState<boolean>(true);
   const navigate = useNavigate();
-  const resourceUpdate = controller.getResource(
+  const resourceUpdate = controller.getResourceUnSafe(
     resource.resourceName,
     ResourceTypes.UPDATE
   );
-  const resourceDelete = controller.getResource(
+  const resourceDelete = controller.getResourceUnSafe(
     resource.resourceName,
     ResourceTypes.DELETE
   );
-  const resourceList = controller.getResource(
+  const resourceList = controller.getResourceUnSafe(
     resource.resourceName,
     ResourceTypes.LIST
   );
@@ -110,7 +110,7 @@ const ItemView: React.FC<ItemViewProps> = ({
       if (value.startsWith('http://') || value.startsWith('https://')) {
         return <Link to={value}>{value}</Link>;
       } else if (value.startsWith('api://')) {
-        const href = `${controller.host}/${value.replace('api://', '')}`;
+        const href = `${controller.server}/${value.replace('api://', '')}`;
         return <Link to={href}>{value}</Link>;
       }
     }
@@ -119,51 +119,62 @@ const ItemView: React.FC<ItemViewProps> = ({
   };
 
   const deleteResource = async (): Promise<void> => {
+    if (!resourceDelete) {
+      return;
+    }
+
     await resourceDelete.call({
       params: { [resource.metadata?.id || 'id']: itemId }
     });
     notification.success({
       message: `Item deleted successfully`
     });
-    navigate(resourceList.getLocalPath());
+
+    if (resourceList) {
+      navigate(resourceList.getLocalPath());
+    }
   };
 
   const actionButton = (): React.ReactElement | null => {
     return (
       <>
-        <Button
-          type="primary"
-          onClick={() =>
-            navigate(
-              resourceUpdate.getLocalPath({
-                params: { id: itemId }
-              })
-            )
-          }
-          style={{ marginRight: '0.5rem' }}
-        >
-          Edit {resourceUpdate.resourceName}
-        </Button>
-        <Popconfirm
-          title="Delete the task"
-          description="Are you sure you want to delete the selected items?"
-          icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-          onConfirm={() => {
-            deleteResource().catch((error) => {
-              notification.error({
-                message: `Error deleting items: ${error}`
-              });
-            });
-          }}
-        >
+        {resourceUpdate && (
           <Button
             type="primary"
-            danger={true}
-            icon={<DeleteOutlined style={{ fontSize: '1.0rem' }} />}
+            onClick={() =>
+              navigate(
+                resourceUpdate.getLocalPath({
+                  params: { id: itemId }
+                })
+              )
+            }
+            style={{ marginRight: '0.5rem' }}
           >
-            Delete selected
+            Edit {resourceUpdate.resourceName}
           </Button>
-        </Popconfirm>
+        )}
+        {resourceDelete && (
+          <Popconfirm
+            title="Delete the task"
+            description="Are you sure you want to delete the selected items?"
+            icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+            onConfirm={() => {
+              deleteResource().catch((error) => {
+                notification.error({
+                  message: `Error deleting items: ${error}`
+                });
+              });
+            }}
+          >
+            <Button
+              type="primary"
+              danger={true}
+              icon={<DeleteOutlined style={{ fontSize: '1.0rem' }} />}
+            >
+              Delete selected
+            </Button>
+          </Popconfirm>
+        )}
       </>
     );
   };

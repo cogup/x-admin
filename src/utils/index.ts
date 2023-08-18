@@ -17,6 +17,11 @@ export function toSingluar(str: string): string {
 }
 
 export function toPlural(str: string): string {
+  //is plural?
+  if (str.endsWith('s')) {
+    return str;
+  }
+
   if (str.endsWith('y')) {
     return str.replace(/y$/, 'ies');
   }

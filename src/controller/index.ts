@@ -6,7 +6,7 @@ export { ResourceTypes } from './resources';
 export type { Resource } from './resources';
 export { ApiAdmin, Methods } from './xadmin';
 export type { Schema, ApiParams, Params } from './xadmin';
-export * as OpenApiSpec from './openapi';
+import * as OpenApiSpec from './openapi';
 
 enum OriginalSchemaTypes {
   OPENAPI = 'openapi',
@@ -15,34 +15,29 @@ enum OriginalSchemaTypes {
 }
 
 export interface ControllerData {
-  host: string;
-  docsPath: string;
+  docUrl: string;
 }
 
 export class ControllerBuilder {
-  host: string;
+  docUrl: string;
   axios: AxiosInstance;
   originalSchema: OriginalSchemaTypes | null;
-  apiAdmin: ApiAdmin | null;
-  docsPath: string = '/documentation/json';
+  apiAdminData: OpenApiSpec.OpenAPI | null;
 
   constructor(data: ControllerData) {
-    this.host = data.host;
-    this.axios = axios.create({
-      baseURL: this.host
-    });
+    this.docUrl = data.docUrl;
+    this.axios = axios.create();
     this.originalSchema = OriginalSchemaTypes.UNKNOWN;
-    this.apiAdmin = null;
-    this.docsPath = data.docsPath;
+    this.apiAdminData = null;
   }
 
   async builder(): Promise<Controller> {
     try {
-      const response = await this.axios.get(this.docsPath);
+      const response = await this.axios.get(this.docUrl);
 
       if ('openapi' in response.data) {
         this.originalSchema = OriginalSchemaTypes.OPENAPI;
-        this.apiAdmin = openapi(response.data, this.axios);
+        this.apiAdminData = response.data as OpenApiSpec.OpenAPI;
       } else {
         throw new Error('Swagger not supported yet, use OpenAPI 3 schema.');
       }
@@ -58,17 +53,15 @@ export class ControllerBuilder {
 }
 
 export class Controller {
-  host: string;
-  axios: AxiosInstance;
+  docUrl: string;
+  server: string;
   originalSchema: OriginalSchemaTypes;
   apiAdmin: ApiAdmin;
   groups: string[];
   resources: Resource[];
-  docsPath: string = '/documentation/json';
 
   constructor(data: ControllerBuilder) {
-    this.host = data.host;
-    this.axios = data.axios;
+    this.docUrl = data.docUrl;
 
     if (data.originalSchema) {
       this.originalSchema = data.originalSchema;
@@ -76,19 +69,19 @@ export class Controller {
       throw new Error('Original schema is not defined');
     }
 
-    if (data.apiAdmin != null) {
-      this.apiAdmin = data.apiAdmin;
+    if (data.apiAdminData !== null) {
+      this.apiAdmin = openapi(data.apiAdminData);
+      this.server = this.apiAdmin.server ?? '';
     } else {
       throw new Error('Schema is not defined');
     }
 
     this.groups = this.getAllGroupsName();
     this.resources = this.getAllResources();
-    this.docsPath = data.docsPath;
   }
 
   getDocFullUrl(): string {
-    return `${this.host}${this.docsPath}`;
+    return this.docUrl;
   }
 
   getResource(groupName: string, resourceType: ResourceTypes): Resource {
@@ -103,6 +96,18 @@ export class Controller {
     }
 
     return resource;
+  }
+
+  getResourceUnSafe(
+    groupName: string,
+    resourceType: ResourceTypes
+  ): Resource | null {
+    try {
+      return this.getResource(groupName, resourceType);
+    } catch (error) {
+      console.warn(error);
+      return null;
+    }
   }
 
   findResourceByLocalPath(

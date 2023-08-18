@@ -1,25 +1,21 @@
 import { type AxiosInstance } from 'axios';
-import { type OpenApiSpec } from './index';
+import * as OpenApiSpec from './openapi';
 import { type Resource } from './resources';
-import { PropieriesReferences } from './openapi';
 export { openapi } from './builders/openapi';
-export { swagger } from './builders/swagger';
 
 export class ApiAdmin {
   info: {
     title: string;
     description?: string;
   };
-
+  server?: string;
   tags: Tag[] | undefined;
   resources: Record<string, Resources>;
-  axios: AxiosInstance;
 
-  constructor(data: SchemaData, axios: AxiosInstance) {
+  constructor(data: SchemaData) {
     this.info = data.info;
     this.tags = data.tags;
     this.resources = data.resources;
-    this.axios = axios;
   }
 }
 
@@ -30,6 +26,7 @@ export interface SchemaData {
   };
   tags: Tag[] | undefined;
   resources: Record<string, Resources>;
+  server?: string;
 }
 
 export interface Resources {

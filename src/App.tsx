@@ -168,8 +168,7 @@ const App = (): React.ReactElement => {
 
   const fetchApiData = async (): Promise<void> => {
     const control = new ControllerBuilder({
-      host: 'http://localhost:3000',
-      docsPath: '/openapi.json'
+      docUrl: '/example.json'
     });
     const controller = await control.builder();
 

@@ -10,6 +10,7 @@ import {
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useQuerystring } from '../use';
 import { AdminResourceReferencesType } from '../controller/xadmin';
+import { toPlural } from '../utils';
 
 interface StyleProps {
   theme?: Record<string, string>;
@@ -69,8 +70,8 @@ const Search: React.FC<SearchProps> = ({ controller }): React.ReactElement => {
     const resource = controller.getCurrentResource(location.pathname);
 
     if (
-      resource !== null &&
-      resource !== undefined &&
+      resource === null ||
+      resource === undefined ||
       resource === lastResource
     ) {
       return;
@@ -87,12 +88,15 @@ const Search: React.FC<SearchProps> = ({ controller }): React.ReactElement => {
       ) ?? 'q';
     setInputValue(params[searchParam] ?? '');
 
-    const isList =
-      resource !== null &&
-      (resource.type === ResourceTypes.LIST ||
-        resource.type === ResourceTypes.SEARCH);
+    const existSearch =
+      resource.type !== ResourceTypes.SEARCH
+        ? controller.getResourceUnSafe(
+            resource?.resourceName,
+            ResourceTypes.SEARCH
+          ) !== null
+        : false;
 
-    if (isList) {
+    if (existSearch) {
       setAutoSuggestionActive(false);
       setSuggestionButton(true);
       setDropdownOpen(false);
@@ -266,7 +270,8 @@ const Search: React.FC<SearchProps> = ({ controller }): React.ReactElement => {
 
   const textButton = (): string | undefined => {
     if (suggestionButton) {
-      return `Search ${currentResource?.label}s`;
+      const plural = toPlural(currentResource?.label ?? '');
+      return `Search ${plural}`;
     }
 
     return undefined;

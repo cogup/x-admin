@@ -1,5 +1,5 @@
-import { type AxiosInstance } from 'axios';
-import { OpenApiSpec } from '..';
+import axios from 'axios';
+import * as OpenApiSpec from '../openapi';
 import {
   AdminData,
   AdminResourceData,
@@ -70,24 +70,21 @@ function listAllGroupsByPath(
   return groups;
 }
 
-export function openapi(
-  spec: OpenApiSpec.OpenAPI,
-  axios: AxiosInstance
-): ApiAdmin {
-  const schema = new ApiAdmin(
-    {
-      info: spec.info,
-      tags:
-        spec.tags !== undefined
-          ? spec.tags.map((tag): Tag => {
-              return { name: tag.name, description: tag.description };
-            })
-          : [],
-      resources: {}
-    },
-    axios
-  );
-
+export function openapi(spec: OpenApiSpec.OpenAPI): ApiAdmin {
+  const server = spec.servers?.[0].url ?? '';
+  const schema = new ApiAdmin({
+    info: spec.info,
+    tags:
+      spec.tags !== undefined
+        ? spec.tags.map((tag): Tag => {
+            return { name: tag.name, description: tag.description };
+          })
+        : [],
+    resources: {}
+  });
+  const api = axios.create({
+    baseURL: server
+  });
   const paths = Object.keys(spec.paths);
   const groupsPath = listAllGroupsByPath(spec['x-admin']);
 
@@ -301,7 +298,7 @@ export function openapi(
           defaultValue: resourceData.defaultValue
         };
 
-        const resource = new Resource(localResourceData, axios);
+        const resource = new Resource(localResourceData, api);
 
         if (schema.resources[resource.resourceName] === undefined) {
           schema.resources[resource.resourceName] = {

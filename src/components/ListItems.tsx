@@ -96,16 +96,16 @@ const ListItems: React.FC<ListItemsProps> = ({
     };
 
     setResourceCreate(
-      controller.getResource(resource.resourceName, ResourceTypes.CREATE)
+      controller.getResourceUnSafe(resource.resourceName, ResourceTypes.CREATE)
     );
     setResourceDelete(
-      controller.getResource(resource.resourceName, ResourceTypes.DELETE)
+      controller.getResourceUnSafe(resource.resourceName, ResourceTypes.DELETE)
     );
     setResourceUpdate(
-      controller.getResource(resource.resourceName, ResourceTypes.UPDATE)
+      controller.getResourceUnSafe(resource.resourceName, ResourceTypes.UPDATE)
     );
     setResourceRead(
-      controller.getResource(resource.resourceName, ResourceTypes.READ)
+      controller.getResourceUnSafe(resource.resourceName, ResourceTypes.READ)
     );
 
     generateColumns();
@@ -457,11 +457,15 @@ const ListItems: React.FC<ListItemsProps> = ({
               showSizeChanger: true
             }}
             loading={loading}
-            rowSelection={{
-              selections: true,
-              onSelect: onSelectRow,
-              onSelectAll: onSelectAllRows
-            }}
+            rowSelection={
+              resourceDelete
+                ? {
+                    selections: true,
+                    onSelect: onSelectRow,
+                    onSelectAll: onSelectAllRows
+                  }
+                : undefined
+            }
           />
         </WrapperTable>
         {isMobile && actionButtonMobile()}

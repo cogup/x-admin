@@ -103,7 +103,7 @@ const Mosaicos: React.FC<MosaicosProps> = ({
       <Row>
         <Header
           title={controller.apiAdmin.info.title}
-          subtitle={controller.host}
+          subtitle={controller.server}
           description={controller.apiAdmin.info.description}
         />
       </Row>
