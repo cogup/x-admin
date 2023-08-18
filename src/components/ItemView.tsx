@@ -37,15 +37,15 @@ const ItemView: React.FC<ItemViewProps> = ({
   const { [resource.metadata?.id || 'id']: itemId } = useParams();
   const [loading, setLoading] = useState<boolean>(true);
   const navigate = useNavigate();
-  const resourceUpdate = controller.getResourceUnSafe(
+  const resourceUpdate = controller.getResourceSafe(
     resource.resourceName,
     ResourceTypes.UPDATE
   );
-  const resourceDelete = controller.getResourceUnSafe(
+  const resourceDelete = controller.getResourceSafe(
     resource.resourceName,
     ResourceTypes.DELETE
   );
-  const resourceList = controller.getResourceUnSafe(
+  const resourceList = controller.getResourceSafe(
     resource.resourceName,
     ResourceTypes.LIST
   );

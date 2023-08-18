@@ -1701,12 +1701,6 @@
                 }
             },
             "/api/posts": {
-                "get": {
-                    "types": [
-                        "list",
-                        "search"
-                    ]
-                },
                 "post": {
                     "types": [
                         "create"
@@ -1714,11 +1708,6 @@
                 }
             },
             "/api/posts/{id}": {
-                "get": {
-                    "types": [
-                        "read"
-                    ]
-                },
                 "put": {
                     "types": [
                         "update"

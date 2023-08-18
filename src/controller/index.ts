@@ -98,7 +98,7 @@ export class Controller {
     return resource;
   }
 
-  getResourceUnSafe(
+  getResourceSafe(
     groupName: string,
     resourceType: ResourceTypes
   ): Resource | null {

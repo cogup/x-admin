@@ -90,7 +90,7 @@ const Search: React.FC<SearchProps> = ({ controller }): React.ReactElement => {
 
     const existSearch =
       resource.type !== ResourceTypes.SEARCH
-        ? controller.getResourceUnSafe(
+        ? controller.getResourceSafe(
             resource?.resourceName,
             ResourceTypes.SEARCH
           ) !== null

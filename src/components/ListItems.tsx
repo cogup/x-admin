@@ -96,16 +96,16 @@ const ListItems: React.FC<ListItemsProps> = ({
     };
 
     setResourceCreate(
-      controller.getResourceUnSafe(resource.resourceName, ResourceTypes.CREATE)
+      controller.getResourceSafe(resource.resourceName, ResourceTypes.CREATE)
     );
     setResourceDelete(
-      controller.getResourceUnSafe(resource.resourceName, ResourceTypes.DELETE)
+      controller.getResourceSafe(resource.resourceName, ResourceTypes.DELETE)
     );
     setResourceUpdate(
-      controller.getResourceUnSafe(resource.resourceName, ResourceTypes.UPDATE)
+      controller.getResourceSafe(resource.resourceName, ResourceTypes.UPDATE)
     );
     setResourceRead(
-      controller.getResourceUnSafe(resource.resourceName, ResourceTypes.READ)
+      controller.getResourceSafe(resource.resourceName, ResourceTypes.READ)
     );
 
     generateColumns();

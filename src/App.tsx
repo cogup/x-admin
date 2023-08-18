@@ -272,10 +272,14 @@ const App = (): React.ReactElement => {
       return null;
     }
 
-    const resourceList = controller.getResource(
+    const resourceList = controller.getResourceSafe(
       breadcrumb[0].toLowerCase(),
       ResourceTypes.LIST
     );
+
+    if (resourceList === null) {
+      return null;
+    }
 
     const others = breadcrumb.slice(1);
 

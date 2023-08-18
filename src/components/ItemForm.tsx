@@ -107,8 +107,8 @@ const ItemForm: React.FC<ItemFormProps> = (
   const { id: currentId } = useParams<{ id: string | undefined }>();
   const [result, setResult] = useState<Record<string, any>>({});
   const [relationships, setRelationships] = useState<Record<string, any>>({});
-  const [resourceView, setResourceView] = useState<Resource>();
-  const [resourceList, setResourceList] = useState<Resource>();
+  const [resourceView, setResourceView] = useState<Resource | null>();
+  const [resourceList, setResourceList] = useState<Resource | null>();
   const [loading, setLoading] = useState<boolean>(false);
   const [schemaKeys, setSchemaKeys] = useState<string[]>([]);
   const formRef = useRef<FormInstance | null>(null);
@@ -140,18 +140,18 @@ const ItemForm: React.FC<ItemFormProps> = (
   }, [currentId, formType, resourceView]);
 
   useEffect((): void => {
-    try {
-      setResourceView(
-        controller.getResource(resourceAction.resourceName, ResourceTypes.READ)
-      );
-    } catch (_) {
-      setResourceView(undefined);
-    }
-    try {
-      setResourceList(
-        controller.getResource(resourceAction.resourceName, ResourceTypes.LIST)
-      );
-    } catch (_) {}
+    setResourceView(
+      controller.getResourceSafe(
+        resourceAction.resourceName,
+        ResourceTypes.READ
+      )
+    );
+    setResourceList(
+      controller.getResourceSafe(
+        resourceAction.resourceName,
+        ResourceTypes.LIST
+      )
+    );
   }, [controller, resourceAction]);
 
   useEffect(() => {
@@ -163,7 +163,14 @@ const ItemForm: React.FC<ItemFormProps> = (
 
         for (const alt of alts) {
           try {
-            const resource = controller.getResource(alt, ResourceTypes.LIST);
+            const resource = controller.getResourceSafe(
+              alt,
+              ResourceTypes.LIST
+            );
+
+            if (resource === null) {
+              continue;
+            }
 
             setRelationships((prevState) => ({
               ...prevState,
