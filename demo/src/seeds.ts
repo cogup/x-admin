@@ -30,18 +30,11 @@ export function seeds(fastapi: FastAPI) {
     });
   }
 
-  for (let i = 0; i < 2; i++) {
-    models.Author.create({
-      name: faker.internet.userName(),
-      userId: i + 1
-    });
-  }
-
   for (let i = 0; i < 25; i++) {
     models.Post.create({
       title: faker.lorem.sentence(),
       content: faker.lorem.paragraph(),
-      authorId: randomNumber(1, 2),
+      authorId: randomNumber(1, 5),
       metadata: metadata()
     });
   }

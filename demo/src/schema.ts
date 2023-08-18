@@ -35,25 +35,6 @@ const users = new TableBuilder({
   })
   .build();
 
-const authors = new TableBuilder({
-  name: 'authors',
-  schema: builder,
-  auto: [AutoColumn.ID, AutoColumn.CREATED_AT, AutoColumn.UPDATED_AT]
-})
-  .searchColumn('name')
-  .column({
-    name: 'name',
-    type: ColumnType.STRING,
-    maxLength: 100,
-    unique: true
-  })
-  .column({
-    name: 'userId',
-    type: ColumnType.INTEGER,
-    reference: users
-  })
-  .build();
-
 const posts = new TableBuilder({
   name: 'posts',
   schema: builder,
@@ -73,7 +54,7 @@ const posts = new TableBuilder({
   .column({
     name: 'authorId',
     type: ColumnType.INTEGER,
-    reference: authors
+    reference: users
   })
   .column({
     name: 'metadata',
