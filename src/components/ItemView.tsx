@@ -38,15 +38,15 @@ const ItemView: React.FC<ItemViewProps> = ({
   const [loading, setLoading] = useState<boolean>(true);
   const navigate = useNavigate();
   const resourceUpdate = controller.getResource(
-    resource.resource,
+    resource.resourceName,
     ResourceTypes.UPDATE
   );
   const resourceDelete = controller.getResource(
-    resource.resource,
+    resource.resourceName,
     ResourceTypes.DELETE
   );
   const resourceList = controller.getResource(
-    resource.resource,
+    resource.resourceName,
     ResourceTypes.LIST
   );
   const isMobile = useIsMobile();
@@ -142,7 +142,7 @@ const ItemView: React.FC<ItemViewProps> = ({
           }
           style={{ marginRight: '0.5rem' }}
         >
-          Edit {resourceUpdate.resource}
+          Edit {resourceUpdate.resourceName}
         </Button>
         <Popconfirm
           title="Delete the task"
@@ -171,11 +171,11 @@ const ItemView: React.FC<ItemViewProps> = ({
   return (
     <>
       <Header
-        title={resource.summary ?? resource.resource}
+        title={resource.summary ?? resource.resourceName}
         subtitle={resource.apiPath}
         button={isMobile ? null : actionButton()}
         description={resource.description}
-        resourceName={resource.resource}
+        resourceName={resource.resourceName}
         typeName={resource.type}
       />
 

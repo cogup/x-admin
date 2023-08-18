@@ -38,8 +38,7 @@ const users = new TableBuilder({
 const posts = new TableBuilder({
   name: 'posts',
   schema: builder,
-  auto: [AutoColumn.ID, AutoColumn.CREATED_AT, AutoColumn.UPDATED_AT],
-  group: 'news'
+  auto: [AutoColumn.ID, AutoColumn.CREATED_AT, AutoColumn.UPDATED_AT]
 })
   .searchColumn('title')
   .column({

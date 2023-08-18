@@ -90,13 +90,13 @@ const Sidebar: React.FC<SidebarProps> = ({
 
             return getItem(
               capitalizeFirstLetter(
-                resource.summary ?? `${resource.resource} ${resource.type}`
+                resource.summary ?? `${resource.resourceName} ${resource.type}`
               ),
               localPath,
               <DynamicIcon
                 iconName={
                   getIconSuggestion(
-                    resource.resource,
+                    resource.resourceName,
                     resource.type
                   ) as IconType
                 }
@@ -118,7 +118,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   const renderMenu = (style: any) => (
     <Menu
       selectedKeys={[location.pathname]}
-      defaultOpenKeys={[currentResource?.group ?? '']}
+      defaultOpenKeys={[currentResource?.resourceName ?? '']}
       mode="inline"
       theme="dark"
       style={style}

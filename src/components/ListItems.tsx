@@ -64,7 +64,7 @@ const ListItems: React.FC<ListItemsProps> = ({
   const { page = 1, pageSize = 10 } = useQuerystring();
   const [loading, setLoading] = useState<boolean>(true);
   const navigate = useNavigate();
-  const { search: searchTerm = '' } = useQuerystring();
+  const { search = '' } = useQuerystring();
   const [selectedRowData, setSelectedRowData] = useState<ListItem[]>([]);
   const [resourceCreate, setResourceCreate] = useState<Resource | null>(null);
   const [resourceDelete, setResourceDelete] = useState<Resource | null>(null);
@@ -96,15 +96,17 @@ const ListItems: React.FC<ListItemsProps> = ({
     };
 
     setResourceCreate(
-      controller.getResource(resource.group, ResourceTypes.CREATE)
+      controller.getResource(resource.resourceName, ResourceTypes.CREATE)
     );
     setResourceDelete(
-      controller.getResource(resource.group, ResourceTypes.DELETE)
+      controller.getResource(resource.resourceName, ResourceTypes.DELETE)
     );
     setResourceUpdate(
-      controller.getResource(resource.group, ResourceTypes.UPDATE)
+      controller.getResource(resource.resourceName, ResourceTypes.UPDATE)
     );
-    setResourceRead(controller.getResource(resource.group, ResourceTypes.READ));
+    setResourceRead(
+      controller.getResource(resource.resourceName, ResourceTypes.READ)
+    );
 
     generateColumns();
   }, [resource.response]);
@@ -115,7 +117,7 @@ const ListItems: React.FC<ListItemsProps> = ({
         message: `Error fetching data: ${error}`
       });
     });
-  }, [resource, page, pageSize, searchTerm]);
+  }, [resource, page, pageSize, search]);
 
   const fetchData = async (): Promise<void> => {
     try {
@@ -125,7 +127,7 @@ const ListItems: React.FC<ListItemsProps> = ({
         query: {
           page,
           pageSize,
-          searchTerm
+          search
         }
       });
 
@@ -260,7 +262,7 @@ const ListItems: React.FC<ListItemsProps> = ({
     if (resourceCreate != null) {
       return (
         <Button type="primary" onClick={onClickCreate}>
-          Create new {resourceCreate.resource}
+          Create new {resourceCreate.resourceName}
         </Button>
       );
     }
@@ -438,11 +440,11 @@ const ListItems: React.FC<ListItemsProps> = ({
     <Row justify="end">
       <Col>
         <Header
-          title={resource.summary ?? resource.resource}
+          title={resource.summary ?? resource.resourceName}
           subtitle={resource.apiPath}
           button={isMobile ? null : actionButton()}
           description={resource.description}
-          resourceName={resource.resource}
+          resourceName={resource.resourceName}
           typeName={resource.type}
         />
         <WrapperTable>

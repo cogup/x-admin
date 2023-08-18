@@ -1,4 +1,4 @@
-import { openapi, swagger, type ApiAdmin } from './xadmin';
+import { openapi, type ApiAdmin } from './xadmin';
 import axios, { type AxiosInstance } from 'axios';
 import { type Resource, type ResourceTypes } from './resources';
 import { notification } from 'antd';

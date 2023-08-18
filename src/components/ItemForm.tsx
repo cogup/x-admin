@@ -11,7 +11,7 @@ import {
 } from 'antd';
 import RelationshipInput from './RelationshipInput';
 import { Header, DynamicInput } from '../ui';
-import { formatName } from '../utils';
+import { formatName, listAllAlternativeWords } from '../utils';
 import {
   type Controller,
   type Resource,
@@ -142,14 +142,14 @@ const ItemForm: React.FC<ItemFormProps> = (
   useEffect((): void => {
     try {
       setResourceView(
-        controller.getResource(resourceAction.group, ResourceTypes.READ)
+        controller.getResource(resourceAction.resourceName, ResourceTypes.READ)
       );
     } catch (_) {
       setResourceView(undefined);
     }
     try {
       setResourceList(
-        controller.getResource(resourceAction.group, ResourceTypes.LIST)
+        controller.getResource(resourceAction.resourceName, ResourceTypes.LIST)
       );
     } catch (_) {}
   }, [controller, resourceAction]);
@@ -158,20 +158,24 @@ const ItemForm: React.FC<ItemFormProps> = (
     for (const key of schemaKeys) {
       if (key.includes('Id')) {
         const resourceName = key.replace('Id', ''); // Changed
-        try {
-          const resource = controller.getResource(
-            resourceName,
-            ResourceTypes.LIST
-          );
 
-          setRelationships((prevState) => ({
-            ...prevState,
-            [key]: resource
-          }));
-        } catch (error) {
-          notification.error({
-            message: `Error fetching item: ${error}`
-          });
+        const alts = listAllAlternativeWords(resourceName);
+
+        for (const alt of alts) {
+          try {
+            const resource = controller.getResource(alt, ResourceTypes.LIST);
+
+            setRelationships((prevState) => ({
+              ...prevState,
+              [key]: resource
+            }));
+
+            break;
+          } catch (error) {
+            console.warn(
+              `Error getting resource ${alt} for relationship ${key}: ${error}`
+            );
+          }
         }
       }
     }
@@ -400,11 +404,11 @@ const ItemForm: React.FC<ItemFormProps> = (
     <Row>
       <Col style={{ width: '100%' }}>
         <Header
-          title={resourceAction.summary ?? resourceAction.resource}
+          title={resourceAction.summary ?? resourceAction.resourceName}
           subtitle={resourceAction.getApiPath(null, false)}
           description={resourceAction.description}
           button={renderButtons()}
-          resourceName={resourceAction.resource}
+          resourceName={resourceAction.resourceName}
           typeName={resourceAction.type}
         />
         <Row>

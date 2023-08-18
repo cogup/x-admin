@@ -11,8 +11,7 @@ import {
 export class Resource implements ResourceData {
   key: string;
   tags: string[];
-  group: string;
-  resource: string;
+  resourceName: string;
   type: ResourceTypes;
   template?: string;
   statusCode: number;
@@ -36,8 +35,7 @@ export class Resource implements ResourceData {
   constructor(data: ResourceData, axios: AxiosInstance) {
     this.key = data.key;
     this.tags = data.tags;
-    this.group = data.group;
-    this.resource = data.resource;
+    this.resourceName = data.resourceName;
     this.type = data.type;
     this.statusCode = data.statusCode;
     this.contentType = data.contentType;
@@ -299,8 +297,7 @@ export class Resource implements ResourceData {
 export interface ResourceData {
   key: string;
   tags: string[];
-  group: string;
-  resource: string;
+  resourceName: string;
   type: ResourceTypes;
   template?: string;
   statusCode: number;
@@ -342,7 +339,6 @@ export interface Queryparam {
 export interface ResourceDataBuilder {
   key?: string;
   tags?: string[];
-  group?: string;
   resource?: string;
   types?: ResourceTypes[];
   template?: string;

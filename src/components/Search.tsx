@@ -83,7 +83,7 @@ const Search: React.FC<SearchProps> = ({ controller }): React.ReactElement => {
     const searchParam =
       resource?.getPropieriesReferencesType(
         AdminResourceReferencesType.QUERY,
-        'searchTerm'
+        'search'
       ) ?? 'q';
     setInputValue(params[searchParam] ?? '');
 
@@ -141,13 +141,13 @@ const Search: React.FC<SearchProps> = ({ controller }): React.ReactElement => {
         if (
           currentResource !== null &&
           currentResource.type === ResourceTypes.LIST &&
-          resource.resource === currentResource.resource
+          resource.resourceName === currentResource.resourceName
         ) {
           return null;
         }
 
         const data = await resource.call({
-          query: { searchTerm: value, pageSize: 3 }
+          query: { search: value, pageSize: 3 }
         });
         const moreCount = data.data.meta.totalItems - data.data.meta.length;
         const more = moreCount > 0 ? moreCount : undefined;
@@ -156,13 +156,13 @@ const Search: React.FC<SearchProps> = ({ controller }): React.ReactElement => {
           label: renderTitle(
             resource.label,
             resource.getLocalPath({
-              query: { searchTerm: value }
+              query: { search: value }
             }),
             more
           ),
           options: data.data.data.map(
             (item: Record<string, string | number>) => {
-              const resourceInner = searchResourceInner[resource.resource];
+              const resourceInner = searchResourceInner[resource.resourceName];
               const resourcePathInner = resourceInner.getLocalPath({
                 params: { id: item[resource.metadata?.id || 'id'] }
               });
@@ -189,7 +189,7 @@ const Search: React.FC<SearchProps> = ({ controller }): React.ReactElement => {
       currentResource !== null &&
       currentResource.type === ResourceTypes.LIST
     ) {
-      navigate(currentResource.getLocalPath({ query: { searchTerm: value } }));
+      navigate(currentResource.getLocalPath({ query: { search: value } }));
     }
   };
 

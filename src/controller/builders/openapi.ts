@@ -36,6 +36,40 @@ function getAdminInfo(
   }
 }
 
+function listAllGroupsByPath(
+  adminData: AdminData | undefined
+): Record<string, string> {
+  const groups: Record<string, string> = {};
+
+  if (adminData !== undefined && adminData.resources !== undefined) {
+    Object.keys(adminData.resources).forEach((path): void => {
+      const resource = adminData.resources[path];
+
+      if (
+        groups[path] === undefined &&
+        ((resource.get && resource.get.types.includes(ResourceTypes.LIST)) ||
+          (resource.post && resource.post.types.includes(ResourceTypes.CREATE)))
+      ) {
+        const pathSplit = path.split('/');
+        const groupName = pathSplit[pathSplit.length - 1];
+        groups[path] = groupName;
+      } else if (
+        groups[path] === undefined &&
+        ((resource.get && resource.get.types.includes(ResourceTypes.READ)) ||
+          (resource.put && resource.put.types.includes(ResourceTypes.UPDATE)) ||
+          (resource.delete &&
+            resource.post.types.includes(ResourceTypes.DELETE)))
+      ) {
+        const pathSplit = path.replace('/{id}', '').split('/');
+        const groupName = pathSplit[pathSplit.length - 1];
+        groups[path] = groupName;
+      }
+    });
+  }
+
+  return groups;
+}
+
 export function openapi(
   spec: OpenApiSpec.OpenAPI,
   axios: AxiosInstance
@@ -55,6 +89,7 @@ export function openapi(
   );
 
   const paths = Object.keys(spec.paths);
+  const groupsPath = listAllGroupsByPath(spec['x-admin']);
 
   for (let i = 0; i < paths.length; i++) {
     const path = paths[i];
@@ -94,7 +129,6 @@ export function openapi(
       resourceData.description = operation.description;
       resourceData.tags = operation.tags ?? [];
       resourceData.types = adminResourceData.types as ResourceTypes[];
-      resourceData.group = adminResourceData.groupName;
 
       resourceData.metadata = Object.entries(adminResourceData)
         .map(([key, value]) => {
@@ -105,10 +139,17 @@ export function openapi(
         })
         .filter((x) => x !== undefined);
 
-      if (resourceData.group === undefined) {
-        continue;
+      if (adminResourceData.groupName === undefined) {
+        if (groupsPath[path] !== undefined) {
+          resourceData.resource = groupsPath[path];
+        } else {
+          console.warn(
+            `Group name not found for path ${path}, please add a group name to the path or add a group name to the resource`
+          );
+          continue;
+        }
       } else {
-        resourceData.resource = resourceData.group;
+        resourceData.resource = adminResourceData.groupName;
       }
 
       if (resourceData.types === undefined) {
@@ -239,8 +280,7 @@ export function openapi(
         const localResourceData: ResourceData = {
           key: resourceData.key ?? '',
           tags: resourceData.tags ?? [],
-          group: resourceData.group ?? '',
-          resource: resourceData.resource ?? '',
+          resourceName: resourceData.resource ?? '',
           type,
           template: resourceData.template,
           statusCode: resourceData.statusCode ?? 200,
@@ -263,27 +303,29 @@ export function openapi(
 
         const resource = new Resource(localResourceData, axios);
 
-        if (schema.resources[resource.group] === undefined) {
-          schema.resources[resource.group] = { [resource.type]: resource };
+        if (schema.resources[resource.resourceName] === undefined) {
+          schema.resources[resource.resourceName] = {
+            [resource.type]: resource
+          };
         } else {
           switch (resource.type) {
             case ResourceTypes.LIST:
-              schema.resources[resource.group].list = resource;
+              schema.resources[resource.resourceName].list = resource;
               break;
             case ResourceTypes.SEARCH:
-              schema.resources[resource.group].search = resource;
+              schema.resources[resource.resourceName].search = resource;
               break;
             case ResourceTypes.CREATE:
-              schema.resources[resource.group].create = resource;
+              schema.resources[resource.resourceName].create = resource;
               break;
             case ResourceTypes.READ:
-              schema.resources[resource.group].read = resource;
+              schema.resources[resource.resourceName].read = resource;
               break;
             case ResourceTypes.UPDATE:
-              schema.resources[resource.group].update = resource;
+              schema.resources[resource.resourceName].update = resource;
               break;
             case ResourceTypes.DELETE:
-              schema.resources[resource.group].delete = resource;
+              schema.resources[resource.resourceName].delete = resource;
               break;
           }
         }

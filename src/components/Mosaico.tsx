@@ -46,12 +46,12 @@ const Mosaico: React.FC<MosaicoProps> = ({
           }
 
           const iconName = getIconSuggestion(
-            resource.resource,
+            resource.resourceName,
             resource.type
           ) as IconType;
 
           return (
-            <Col key={resource.resource} span={12}>
+            <Col key={resource.resourceName} span={12}>
               <Card
                 onClick={() => {
                   handleClick(resource);
@@ -69,7 +69,7 @@ const Mosaico: React.FC<MosaicoProps> = ({
                   iconName={iconName}
                   style={{ fontSize: '2em', marginBottom: '0.2em' }}
                 />
-                <div>{capitalizeFirstLetter(resource.resource)}</div>
+                <div>{capitalizeFirstLetter(resource.resourceName)}</div>
               </Card>
             </Col>
           );

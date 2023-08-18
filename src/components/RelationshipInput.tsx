@@ -26,7 +26,7 @@ export default function RelationshipInput({
   const [options, setOptions] = useState([]);
   const [valueFormatted, setValueFormatted] = useState<string>();
   const resourceView = controller.getResource(
-    resource.group,
+    resource.resourceName,
     ResourceTypes.READ
   );
   const url =
@@ -99,10 +99,10 @@ export default function RelationshipInput({
     return label as string;
   };
 
-  const handleSearch = async (searchTerm: string): Promise<void> => {
+  const handleSearch = async (search: string): Promise<void> => {
     try {
       const response = await resource.call({
-        query: { searchTerm }
+        query: { search }
       });
       const opts = response.data.data.map((item: Params): Params => {
         return {
@@ -155,7 +155,7 @@ export default function RelationshipInput({
             });
           });
         }}
-        placeholder={`Search ${resource.resource}`}
+        placeholder={`Search ${resource.resourceName}`}
         options={options}
         disabled={disabled}
       />
