@@ -197,35 +197,33 @@ export class Controller {
     const allResources: Resource[] = [];
 
     Object.keys(this.apiAdmin.resources).forEach((group) => {
-      Object.keys(this.apiAdmin.resources[group]).forEach((resource) => {
-        if (this.apiAdmin.resources[group] !== undefined) {
-          const resources = this.apiAdmin.resources[group];
+      if (this.apiAdmin.resources[group] !== undefined) {
+        const resources = this.apiAdmin.resources[group];
 
-          if (resources.create !== undefined) {
-            allResources.push(resources.create);
-          }
-
-          if (resources.read !== undefined) {
-            allResources.push(resources.read);
-          }
-
-          if (resources.update !== undefined) {
-            allResources.push(resources.update);
-          }
-
-          if (resources.delete !== undefined) {
-            allResources.push(resources.delete);
-          }
-
-          if (resources.list !== undefined) {
-            allResources.push(resources.list);
-          }
-
-          if (resources.search !== undefined) {
-            allResources.push(resources.search);
-          }
+        if (resources.create !== undefined) {
+          allResources.push(resources.create);
         }
-      });
+
+        if (resources.read !== undefined) {
+          allResources.push(resources.read);
+        }
+
+        if (resources.update !== undefined) {
+          allResources.push(resources.update);
+        }
+
+        if (resources.delete !== undefined) {
+          allResources.push(resources.delete);
+        }
+
+        if (resources.list !== undefined) {
+          allResources.push(resources.list);
+        }
+
+        if (resources.search !== undefined) {
+          allResources.push(resources.search);
+        }
+      }
     });
 
     return allResources;

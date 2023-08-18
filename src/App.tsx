@@ -274,7 +274,7 @@ const App = (): React.ReactElement => {
     }
 
     const resourceList = controller.getResource(
-      breadcrumb[0],
+      breadcrumb[0].toLowerCase(),
       ResourceTypes.LIST
     );
 

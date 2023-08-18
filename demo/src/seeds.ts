@@ -34,7 +34,7 @@ export function seeds(fastapi: FastAPI) {
     models.Post.create({
       title: faker.lorem.sentence(),
       content: faker.lorem.paragraph(),
-      authorId: randomNumber(1, 5),
+      userId: randomNumber(1, 5),
       metadata: metadata()
     });
   }

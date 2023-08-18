@@ -94,34 +94,21 @@ export function openapi(
       resourceData.description = operation.description;
       resourceData.tags = operation.tags ?? [];
       resourceData.types = adminResourceData.types as ResourceTypes[];
-      resourceData.resource = adminResourceData.resourceName;
-      resourceData.resource = adminResourceData.resourceName;
       resourceData.group = adminResourceData.groupName;
 
       resourceData.metadata = Object.entries(adminResourceData)
         .map(([key, value]) => {
-          if (
-            key === 'types' ||
-            key === 'resourceName' ||
-            key === 'groupName'
-          ) {
+          if (key === 'types' || key === 'groupName') {
             return undefined;
           }
           return { key, value };
         })
         .filter((x) => x !== undefined);
 
-      if (
-        resourceData.group === undefined &&
-        resourceData.resource === undefined
-      ) {
+      if (resourceData.group === undefined) {
         continue;
-      }
-
-      if (resourceData.group !== undefined) {
-        resourceData.resource = resourceData.group;
       } else {
-        resourceData.group = resourceData.resource;
+        resourceData.resource = resourceData.group;
       }
 
       if (resourceData.types === undefined) {

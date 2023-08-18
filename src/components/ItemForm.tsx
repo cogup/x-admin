@@ -157,8 +157,7 @@ const ItemForm: React.FC<ItemFormProps> = (
   useEffect(() => {
     for (const key of schemaKeys) {
       if (key.includes('Id')) {
-        const resourceName =
-          key.charAt(0).toUpperCase() + key.replace('Id', '').slice(1);
+        const resourceName = key.replace('Id', ''); // Changed
         try {
           const resource = controller.getResource(
             resourceName,
