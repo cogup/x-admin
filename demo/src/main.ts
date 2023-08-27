@@ -1,4 +1,4 @@
-import { FastAPI } from '@cogup/fastapi';
+import { FastAPI } from '@cogup/fastapi/src';
 import { schema } from './schema';
 import SQLite from 'sqlite3';
 import { seeds } from './seeds';

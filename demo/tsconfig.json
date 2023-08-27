@@ -1,14 +1,16 @@
 {
     "compilerOptions": {
-        "baseUrl": "./",
-        "target": "es2022",
-        "module": "commonjs",
-        "outDir": "dist",
-        "declaration": false,
-        "moduleResolution": "node",
-        "strict": true,
-        "esModuleInterop": true,
-        "forceConsistentCasingInFileNames": true
+      "baseUrl": "./",
+      "target": "es2022",
+      "module": "commonjs",
+      "outDir": "dist",
+      "declaration": false,
+      "moduleResolution": "node",
+      "strict": true,
+      "esModuleInterop": true,
+      "forceConsistentCasingInFileNames": true,
+      "emitDecoratorMetadata": true,
+      "experimentalDecorators": true
     },
     "include": [
         "src/**/*.ts"

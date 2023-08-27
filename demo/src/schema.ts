@@ -3,13 +3,13 @@ import {
   TableBuilder,
   AutoColumn,
   ColumnType
-} from '@cogup/fastapi';
+} from '@cogup/fastapi/src';
 
 const builder = new SchemaBuilder({
   auto: [AutoColumn.ID, AutoColumn.CREATED_AT, AutoColumn.UPDATED_AT]
 });
 
-const users = new TableBuilder({
+export const users = new TableBuilder({
   name: 'users',
   schema: builder,
   auto: [AutoColumn.ID, AutoColumn.CREATED_AT, AutoColumn.UPDATED_AT]
@@ -35,7 +35,7 @@ const users = new TableBuilder({
   })
   .build();
 
-const posts = new TableBuilder({
+export const posts = new TableBuilder({
   name: 'posts',
   schema: builder,
   auto: [AutoColumn.ID, AutoColumn.CREATED_AT, AutoColumn.UPDATED_AT]
@@ -63,7 +63,7 @@ const posts = new TableBuilder({
   })
   .build();
 
-new TableBuilder({
+export const comments = new TableBuilder({
   name: 'comments',
   schema: builder,
   auto: [AutoColumn.ID, AutoColumn.CREATED_AT, AutoColumn.UPDATED_AT]
