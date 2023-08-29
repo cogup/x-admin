@@ -256,17 +256,17 @@ export class Controller {
 
   getSteps(): Steps {
     return {
-      '/wizard/first-post': [
-        {
-          resource: this.getResource('users', ResourceTypes.CREATE)
-        },
-        {
-          resource: this.getResource('posts', ResourceTypes.CREATE)
-        },
-        {
-          resource: this.getResource('comments', ResourceTypes.CREATE)
-        }
-      ]
+      // '/wizard/first-post': [
+      //   {
+      //     resource: this.getResource('users', ResourceTypes.CREATE)
+      //   },
+      //   {
+      //     resource: this.getResource('posts', ResourceTypes.CREATE)
+      //   },
+      //   {
+      //     resource: this.getResource('comments', ResourceTypes.CREATE)
+      //   }
+      // ]
     };
   }
 }

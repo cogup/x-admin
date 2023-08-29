@@ -54,14 +54,14 @@ const ListItems: React.FC<ListItemsProps> = ({
   const [data, setData] = useState<ListItem[]>([]);
   const [pagination, setPagination] = useState<{
     current: number;
-    pageSize: number;
+    limit: number;
     total: number;
   }>({
     current: 0,
-    pageSize: 0,
+    limit: 0,
     total: 0
   });
-  const { page = 1, pageSize = 10 } = useQuerystring();
+  const { page = 1, limit = 10 } = useQuerystring();
   const [loading, setLoading] = useState<boolean>(true);
   const navigate = useNavigate();
   const { search = '' } = useQuerystring();
@@ -117,7 +117,7 @@ const ListItems: React.FC<ListItemsProps> = ({
         message: `Error fetching data: ${error}`
       });
     });
-  }, [resource, page, pageSize, search]);
+  }, [resource, page, limit, search]);
 
   const fetchData = async (): Promise<void> => {
     try {
@@ -126,7 +126,7 @@ const ListItems: React.FC<ListItemsProps> = ({
       const response = await resource.call({
         query: {
           page,
-          pageSize,
+          limit,
           search
         }
       });
@@ -148,7 +148,7 @@ const ListItems: React.FC<ListItemsProps> = ({
         );
         setPagination({
           current: response.data.meta.page,
-          pageSize: response.data.meta.pageSize,
+          limit: response.data.meta.limit,
           total: response.data.meta.totalItems
         });
       } else {
@@ -192,8 +192,8 @@ const ListItems: React.FC<ListItemsProps> = ({
     }
   };
 
-  const onChangePagination = (page: number, pageSize: number): void => {
-    navigate(`?page=${page}&pageSize=${pageSize}`);
+  const onChangePagination = (page: number, limit: number): void => {
+    navigate(`?page=${page}&limit=${limit}`);
   };
 
   const onSelectRow = (

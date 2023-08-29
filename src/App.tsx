@@ -169,8 +169,9 @@ const App = (): React.ReactElement => {
 
   const fetchApiData = async (): Promise<void> => {
     const control = new ControllerBuilder({
-      docUrl: '/example.json'
+      docUrl: 'http://localhost:3000/openapi.json'
     });
+
     const controller = await control.builder();
 
     setController(controller);
@@ -258,17 +259,17 @@ const App = (): React.ReactElement => {
       );
     });
 
-    const steps = controller.getSteps();
+    // const steps = controller.getSteps();
 
-    Object.keys(steps).forEach((path) => {
-      routes.push(
-        <Route
-          key={path}
-          path={path}
-          element={<StepsMaker steps={steps[path]} controller={controller} />}
-        />
-      );
-    });
+    // Object.keys(steps).forEach((path) => {
+    //   routes.push(
+    //     <Route
+    //       key={path}
+    //       path={path}
+    //       element={<StepsMaker steps={steps[path]} controller={controller} />}
+    //     />
+    //   );
+    // });
 
     return routes;
   };

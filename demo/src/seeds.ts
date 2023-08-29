@@ -1,4 +1,4 @@
-import { FastAPI } from '@cogup/fastapi/src';
+import { FastAPI } from '@cogup/fastapi';
 import { faker } from '@faker-js/faker';
 
 function randomNumber(min: number, max: number) {

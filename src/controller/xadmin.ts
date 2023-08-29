@@ -145,7 +145,7 @@ export interface AdminResourceReferences {
 }
 
 export interface AdminResourceReferencesQueryParams {
-  pageSize?: string;
+  limit?: string;
   page?: string;
   orderBy?: string;
   order?: string;

@@ -3,7 +3,7 @@ import {
   TableBuilder,
   AutoColumn,
   ColumnType
-} from '@cogup/fastapi/src';
+} from '@cogup/fastapi';
 
 const builder = new SchemaBuilder({
   auto: [AutoColumn.ID, AutoColumn.CREATED_AT, AutoColumn.UPDATED_AT]

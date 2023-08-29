@@ -151,7 +151,7 @@ const Search: React.FC<SearchProps> = ({ controller }): React.ReactElement => {
         }
 
         const data = await resource.call({
-          query: { search: value, pageSize: 3 }
+          query: { search: value, limit: 3 }
         });
         const moreCount = data.data.meta.totalItems - data.data.meta.length;
         const more = moreCount > 0 ? moreCount : undefined;
