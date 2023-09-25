@@ -31,6 +31,9 @@ import Swagger from './components/Swagger';
 import { useIsMobile } from './use';
 import StepsMaker from './components/Steps';
 
+const DOC_URL =
+  process.env.REACT_APP_DOC_URL ?? 'http://localhost:3000/openapi.json';
+
 const { Content: ContentLayout, Header } = Layout;
 
 const LoadingPage = styled.div`
@@ -169,7 +172,7 @@ const App = (): React.ReactElement => {
 
   const fetchApiData = async (): Promise<void> => {
     const control = new ControllerBuilder({
-      docUrl: 'http://localhost:3000/openapi.json'
+      docUrl: DOC_URL
     });
 
     const controller = await control.builder();
