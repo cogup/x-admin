@@ -131,9 +131,9 @@ export interface AdminResource {
 }
 
 export interface AdminResourceData {
-  types: Array<'create' | 'read' | 'update' | 'delete' | 'list' | 'search'>;
-  resourceName: string;
-  groupName: string;
+  types?: Array<'create' | 'read' | 'update' | 'delete' | 'list' | 'search'>;
+  resourceName?: string;
+  groupName?: string;
   references?: Record<
     'create' | 'read' | 'update' | 'delete' | 'list' | 'search',
     AdminResourceReferences

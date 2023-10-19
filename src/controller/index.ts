@@ -52,14 +52,6 @@ export class ControllerBuilder {
   }
 }
 
-export interface Steps {
-  [path: string]: Step[];
-}
-
-export interface Step {
-  resource: Resource;
-}
-
 export class Controller {
   docUrl: string;
   server: string;
@@ -252,21 +244,5 @@ export class Controller {
     } catch {
       return null;
     }
-  }
-
-  getSteps(): Steps {
-    return {
-      // '/wizard/first-post': [
-      //   {
-      //     resource: this.getResource('users', ResourceTypes.CREATE)
-      //   },
-      //   {
-      //     resource: this.getResource('posts', ResourceTypes.CREATE)
-      //   },
-      //   {
-      //     resource: this.getResource('comments', ResourceTypes.CREATE)
-      //   }
-      // ]
-    };
   }
 }

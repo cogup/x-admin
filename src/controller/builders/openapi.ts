@@ -47,18 +47,20 @@ function listAllGroupsByPath(
 
       if (
         groups[path] === undefined &&
-        ((resource.get && resource.get.types.includes(ResourceTypes.LIST)) ||
-          (resource.post && resource.post.types.includes(ResourceTypes.CREATE)))
+        ((resource.get && resource.get.types?.includes(ResourceTypes.LIST)) ||
+          (resource.post &&
+            resource.post.types?.includes(ResourceTypes.CREATE)))
       ) {
         const pathSplit = path.split('/');
         const groupName = pathSplit[pathSplit.length - 1];
         groups[path] = groupName;
       } else if (
         groups[path] === undefined &&
-        ((resource.get && resource.get.types.includes(ResourceTypes.READ)) ||
-          (resource.put && resource.put.types.includes(ResourceTypes.UPDATE)) ||
+        ((resource.get && resource.get.types?.includes(ResourceTypes.READ)) ||
+          (resource.put &&
+            resource.put.types?.includes(ResourceTypes.UPDATE)) ||
           (resource.delete &&
-            resource.post.types.includes(ResourceTypes.DELETE)))
+            resource.post.types?.includes(ResourceTypes.DELETE)))
       ) {
         const pathSplit = path.replace('/{id}', '').split('/');
         const groupName = pathSplit[pathSplit.length - 1];
@@ -375,6 +377,7 @@ function convertOpenApiSchemaToSchema(
 ): Schema {
   const schema: Schema = {
     ...openApiSchema,
+    required: undefined, // TODO; precisa resolver isso. Aparentemente ele não esta defindo required para nenhuma propriedade
     allOf: undefined,
     oneOf: undefined,
     anyOf: undefined,

@@ -1,33 +1,54 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, message, Steps, theme } from 'antd';
-import { type Resource, type Controller, Step } from '../controller';
+import { type Controller } from '../controller';
+
+export interface Step {
+  key: string;
+  title: string;
+  content: StepNode;
+}
 
 interface StepsMakerProps {
   steps: Step[];
-  controller: Controller;
+  onNext?: (data: any) => void;
+  onDone?: (data: any) => void;
+  confirmToNext?: boolean;
+  controller?: Controller;
 }
+
+export interface StepProps {
+  setData: (data: Record<string, any>) => void;
+  currentData: Record<string, any>;
+  next?: () => void;
+  prev?: () => void;
+}
+
+export type StepNode = (props: StepProps) => React.ReactElement;
 
 const StepsMaker: React.FC<StepsMakerProps> = ({
   steps,
-  controller
+  controller,
+  onDone,
+  onNext
 }): React.ReactElement => {
   const { token } = theme.useToken();
   const [current, setCurrent] = useState(0);
+  const [stepData, setStepData] = useState<Record<string, any>>({});
 
-  const stepss = [
-    {
-      title: 'First',
-      content: 'First-content'
-    },
-    {
-      title: 'Second',
-      content: 'Second-content'
-    },
-    {
-      title: 'Last',
-      content: 'Last-content'
+  useEffect(() => {
+    if (current === steps.length - 1 && onDone !== undefined) {
+      onDone(stepData);
+    } else if (current < steps.length - 1 && onNext !== undefined) {
+      onNext(stepData);
     }
-  ];
+  }, [current]);
+
+  const setData = (data: Record<string, any>) => {
+    const newData = {
+      [steps[current].key]: data
+    };
+    setStepData({ ...stepData, newData });
+  };
 
   const next = () => {
     setCurrent(current + 1);
@@ -37,29 +58,56 @@ const StepsMaker: React.FC<StepsMakerProps> = ({
     setCurrent(current - 1);
   };
 
-  const items = stepss.map((item) => ({ key: item.title, title: item.title }));
+  const stepProps = steps.map((item, i) => ({
+    key: item.key,
+    title: item.title
+  }));
 
   const contentStyle: React.CSSProperties = {
     lineHeight: '260px',
     textAlign: 'center',
     color: token.colorTextTertiary,
-    backgroundColor: token.colorFillAlter,
+    backgroundColor: token.colorBgBase,
     borderRadius: token.borderRadiusLG,
-    border: `1px dashed ${token.colorBorder}`,
-    marginTop: 16
+    marginTop: 16,
+    padding: '2rem',
+    width: '100%'
   };
+  console.log(steps[current].content);
+  const CurrentStep = steps[current].content;
 
   return (
-    <>
-      <Steps current={current} items={items} />
-      <div style={contentStyle}>{stepss[current].content}</div>
-      <div style={{ marginTop: 24 }}>
-        {current < stepss.length - 1 && (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center'
+      }}
+    >
+      <Steps current={current} items={stepProps} />
+      <div style={contentStyle}>
+        <CurrentStep
+          setData={setData}
+          currentData={stepData}
+          next={next}
+          prev={prev}
+        />
+      </div>
+      <div
+        style={{
+          marginTop: 24,
+          display: 'flex',
+          flexDirection: 'row-reverse',
+          justifyContent: 'space-between',
+          width: '100%'
+        }}
+      >
+        {current < steps.length - 1 && (
           <Button type="primary" onClick={() => next()}>
             Next
           </Button>
         )}
-        {current === stepss.length - 1 && (
+        {current === steps.length - 1 && (
           <Button
             type="primary"
             onClick={() => message.success('Processing complete!')}
@@ -73,7 +121,7 @@ const StepsMaker: React.FC<StepsMakerProps> = ({
           </Button>
         )}
       </div>
-    </>
+    </div>
   );
 };
 

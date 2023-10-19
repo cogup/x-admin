@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Children } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Link,
   Route,
@@ -29,7 +29,6 @@ import { type Resource, ResourceTypes } from './controller/resources';
 import locale from 'antd/locale/pt_BR';
 import Swagger from './components/Swagger';
 import { useIsMobile } from './use';
-import StepsMaker from './components/Steps';
 
 const DOC_URL =
   process.env.REACT_APP_DOC_URL ?? 'http://localhost:3000/openapi.json';
