@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { List, Skeleton, Switch } from 'antd';
+import { List, Skeleton, Switch, Typography } from 'antd';
 import { StepProps } from '../components/Steps';
 import styled from 'styled-components';
 import { OpenAPI, Operation, PathItem } from '../controller/openapi';
@@ -7,11 +7,15 @@ import demo from './demo.json';
 import { Methods, ResourceTypes } from '../controller';
 import { AdminData } from '../controller/xadmin';
 
+const { Text, Title } = Typography;
+
 const SwitchCustom = styled(Switch)`
-  margin: 0.2em 0;
+  margin: 0.5em;
+  width: 90px;
 `;
 
 export interface Item {
+  key: string;
   method: string;
   path: string;
   summary?: string;
@@ -92,6 +96,7 @@ const getList = (spec: OpenAPI): Item[] => {
       }
 
       const item: Item = {
+        key: `${method}-${path}`,
         method,
         path,
         summary: operation.summary,
@@ -103,6 +108,7 @@ const getList = (spec: OpenAPI): Item[] => {
         update: resourceIs(spec, ResourceTypes.UPDATE, methodType, path),
         delete: resourceIs(spec, ResourceTypes.DELETE, methodType, path)
       };
+
       list.push(item);
     });
   });
@@ -126,14 +132,17 @@ const AdjustTemplates = (props: StepProps): React.ReactElement => {
   const [xAdminData, setXAdminData] = React.useState<AdminData>();
   const [list, setList] = React.useState<Item[]>([]);
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    props.setData({ url: e.target.value });
-  };
-
   useEffect(() => {
     setList(getList(specification));
     setXAdminData(specification['x-admin']);
+    props.setData({ ...specification });
   }, []);
+
+  useEffect(() => {
+    if (xAdminData !== undefined) {
+      props.setData({ ...specification, 'x-admin': xAdminData });
+    }
+  }, [xAdminData]);
 
   // save on xAdminData
   const onChangeItem = (
@@ -183,22 +192,61 @@ const AdjustTemplates = (props: StepProps): React.ReactElement => {
       itemLayout="horizontal"
       dataSource={list}
       renderItem={(item) => (
-        <List.Item>
-          <Skeleton avatar title={false} loading={loading} active>
-            <List.Item.Meta
-              title={item.method + ' ' + item.path}
-              description={item.description}
-            />
+        <List.Item
+          key={item.key}
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column'
+            }}
+          >
             <div
               style={{
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: 'space-between'
+                justifyContent: 'space-between',
+                alignItems: 'flex-start',
+                width: '100%'
+              }}
+            >
+              <Title level={5}>{item.summary}</Title>
+              <div>
+                <Text code>{item.method.toUpperCase()}</Text>{' '}
+                <Text>{item.path}</Text>
+              </div>
+              <Text
+                type="secondary"
+                style={{
+                  padding: '0.5rem',
+                  backgroundColor: '#f7f7f7',
+                  margin: '0.5rem 0 0 0',
+                  width: '100%',
+                  textAlign: 'justify',
+                  borderRadius: '0.5rem',
+                  display: 'block',
+                  maxWidth: 624
+                }}
+              >
+                {item.description}
+              </Text>
+            </div>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginTop: '1rem'
               }}
             >
               <SwitchCustom
-                key={0}
-                size="small"
+                size="default"
                 defaultChecked={item.create}
                 checkedChildren="Create"
                 unCheckedChildren="No create"
@@ -207,8 +255,7 @@ const AdjustTemplates = (props: StepProps): React.ReactElement => {
                 }
               />
               <SwitchCustom
-                key={0}
-                size="small"
+                size="default"
                 defaultChecked={item.read}
                 checkedChildren="Read"
                 unCheckedChildren="No read"
@@ -217,8 +264,7 @@ const AdjustTemplates = (props: StepProps): React.ReactElement => {
                 }
               />
               <SwitchCustom
-                key={0}
-                size="small"
+                size="default"
                 defaultChecked={item.update}
                 checkedChildren="Update"
                 unCheckedChildren="No update"
@@ -227,8 +273,7 @@ const AdjustTemplates = (props: StepProps): React.ReactElement => {
                 }
               />
               <SwitchCustom
-                key={0}
-                size="small"
+                size="default"
                 defaultChecked={item.delete}
                 checkedChildren="Delete"
                 unCheckedChildren="No delete"
@@ -237,8 +282,7 @@ const AdjustTemplates = (props: StepProps): React.ReactElement => {
                 }
               />
               <SwitchCustom
-                key={0}
-                size="small"
+                size="default"
                 defaultChecked={item.list}
                 checkedChildren="List"
                 unCheckedChildren="No list"
@@ -247,8 +291,7 @@ const AdjustTemplates = (props: StepProps): React.ReactElement => {
                 }
               />
               <SwitchCustom
-                key={0}
-                size="small"
+                size="default"
                 defaultChecked={item.search}
                 checkedChildren="Search"
                 unCheckedChildren="No search"
@@ -257,7 +300,7 @@ const AdjustTemplates = (props: StepProps): React.ReactElement => {
                 }
               />
             </div>
-          </Skeleton>
+          </div>
         </List.Item>
       )}
     />

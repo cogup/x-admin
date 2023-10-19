@@ -73,7 +73,7 @@ const StepsMaker: React.FC<StepsMakerProps> = ({
     padding: '2rem',
     width: '100%'
   };
-  console.log(steps[current].content);
+
   const CurrentStep = steps[current].content;
 
   return (
