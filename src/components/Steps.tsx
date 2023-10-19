@@ -47,7 +47,7 @@ const StepsMaker: React.FC<StepsMakerProps> = ({
     const newData = {
       [steps[current].key]: data
     };
-    setStepData({ ...stepData, newData });
+    setStepData({ ...stepData, ...newData });
   };
 
   const next = () => {
@@ -56,6 +56,12 @@ const StepsMaker: React.FC<StepsMakerProps> = ({
 
   const prev = () => {
     setCurrent(current - 1);
+  };
+
+  const done = () => {
+    if (onDone !== undefined) {
+      onDone(stepData);
+    }
   };
 
   const stepProps = steps.map((item, i) => ({
@@ -108,10 +114,7 @@ const StepsMaker: React.FC<StepsMakerProps> = ({
           </Button>
         )}
         {current === steps.length - 1 && (
-          <Button
-            type="primary"
-            onClick={() => message.success('Processing complete!')}
-          >
+          <Button type="primary" onClick={() => done()}>
             Done
           </Button>
         )}

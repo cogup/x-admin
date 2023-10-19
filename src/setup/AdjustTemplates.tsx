@@ -147,8 +147,8 @@ const AdjustTemplates = (props: StepProps): React.ReactElement => {
   // save on xAdminData
   const onChangeItem = (
     itemType: ItemType,
-    itemMethod: string,
     itemPath: string,
+    itemMethod: string,
     checked: boolean
   ) => {
     if (xAdminData === undefined) {
