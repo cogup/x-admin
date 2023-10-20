@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react';
-import { Layout, ConfigProvider } from 'antd';
+import React from 'react';
+import { ConfigProvider } from 'antd';
 import Setup from './setup/Setup';
 import Admin from './Admin';
-// import locale from 'antd/locale/pt_BR';
 
 const customTheme = {
   token: {

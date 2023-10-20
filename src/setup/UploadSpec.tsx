@@ -66,14 +66,22 @@ const UploadSpec = (props: UploadSpecProps): React.ReactElement => {
         onRemove={onRemove}
         maxCount={1}
       >
-        <InboxOutlined
+        <div
           style={{
-            fontSize: '2.5rem',
-            color: props.success ? colorSuccessText : undefined
+            cursor: 'pointer',
+            width: '100%',
+            padding: '1rem'
           }}
-        />
-        <p>Click or drag file to this area to upload</p>
-        {renderLoading()}
+        >
+          <InboxOutlined
+            style={{
+              fontSize: '2.5rem',
+              color: props.success ? colorSuccessText : undefined
+            }}
+          />
+          <p>Click or drag file to this area to upload</p>
+          {renderLoading()}
+        </div>
       </Upload>
     </div>
   );
