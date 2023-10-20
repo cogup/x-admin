@@ -17,7 +17,9 @@ interface DataSyncContextType {
 
 const DataSyncContext = createContext<DataSyncContextType>({
   data: defaultValue,
-  updateData: () => {}
+  updateData: (newData: DataSyncContextData): void => {
+    console.log('updateData not implemented');
+  }
 });
 
 interface DataSyncProviderProps {
