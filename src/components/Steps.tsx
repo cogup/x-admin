@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, message, Steps, theme } from 'antd';
+import { Button, Steps, theme } from 'antd';
 import { type Controller } from '../controller';
 
 export interface Step {
@@ -21,6 +21,7 @@ export interface StepProps {
   currentData: Record<string, any>;
   next?: () => void;
   prev?: () => void;
+  nextBottom: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export type StepNode = (props: StepProps) => React.ReactElement;
@@ -29,17 +30,23 @@ const StepsMaker: React.FC<StepsMakerProps> = ({
   steps,
   controller,
   onDone,
-  onNext
+  onNext,
+  confirmToNext = true
 }): React.ReactElement => {
   const { token } = theme.useToken();
   const [current, setCurrent] = useState(0);
   const [stepData, setStepData] = useState<Record<string, any>>({});
+  const [nextActive, setNextActive] = useState<boolean>(!confirmToNext);
 
   useEffect(() => {
     if (current === steps.length - 1 && onDone !== undefined) {
       onDone(stepData);
     } else if (current < steps.length - 1 && onNext !== undefined) {
       onNext(stepData);
+    }
+
+    if (confirmToNext) {
+      setNextActive(false);
     }
   }, [current]);
 
@@ -97,6 +104,7 @@ const StepsMaker: React.FC<StepsMakerProps> = ({
           currentData={stepData}
           next={next}
           prev={prev}
+          nextBottom={setNextActive}
         />
       </div>
       <div
@@ -109,12 +117,12 @@ const StepsMaker: React.FC<StepsMakerProps> = ({
         }}
       >
         {current < steps.length - 1 && (
-          <Button type="primary" onClick={() => next()}>
+          <Button type="primary" onClick={() => next()} disabled={!nextActive}>
             Next
           </Button>
         )}
         {current === steps.length - 1 && (
-          <Button type="primary" onClick={() => done()}>
+          <Button type="primary" onClick={() => done()} disabled={!nextActive}>
             Done
           </Button>
         )}

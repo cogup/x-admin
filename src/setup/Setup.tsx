@@ -1,11 +1,11 @@
 import React from 'react';
 import { Layout, ConfigProvider } from 'antd';
 import styled from 'styled-components';
-import locale from 'antd/locale/pt_BR';
+// import locale from 'antd/locale/pt_BR';
 import { Typography } from 'antd';
 import StepsMaker from '../components/Steps';
-import AddUrl from './AddUrl';
 import AdjustTemplates from './AdjustTemplates';
+import ImportSpec from './ImportSpec';
 
 const { Paragraph, Title } = Typography;
 const { Header, Content, Footer } = Layout;
@@ -45,13 +45,13 @@ const customTheme = {
   }
 };
 
-const App = (): React.ReactElement => {
-  const onChangeStep = (data: any) => {
+const Setup = (): React.ReactElement => {
+  const onDone = (data: any) => {
     console.log(data);
   };
 
   return (
-    <ConfigProvider theme={customTheme} locale={locale}>
+    <ConfigProvider theme={customTheme}>
       <Root>
         <Layout
           style={{
@@ -86,16 +86,16 @@ const App = (): React.ReactElement => {
             }}
           >
             <StepsMaker
-              onDone={onChangeStep}
-              onNext={onChangeStep}
+              confirmToNext={true}
+              onDone={onDone}
               steps={[
                 {
-                  key: 'addUrl',
-                  title: 'Add OpenAPI Specification',
-                  content: AddUrl
+                  key: 'specification',
+                  title: 'Import OpenAPI Specification',
+                  content: ImportSpec
                 },
                 {
-                  key: 'adjustTemplates',
+                  key: 'xadmin',
                   title: 'Adjust templates',
                   content: AdjustTemplates
                 }
@@ -127,4 +127,4 @@ const App = (): React.ReactElement => {
   );
 };
 
-export default App;
+export default Setup;
