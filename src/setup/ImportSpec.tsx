@@ -1,14 +1,22 @@
-import React, { useEffect } from 'react';
-import { Form, Input } from 'antd';
+import React from 'react';
+import {
+  Form,
+  Input,
+  Space,
+  Button,
+  message,
+  theme,
+  Divider,
+  Typography
+} from 'antd';
+import type { FormInstance } from 'antd';
 import { StepProps } from '../components/Steps';
 import axios from 'axios';
 import { OpenAPI } from '../controller/openapi';
-import { Alert, Space } from 'antd';
-import { Button, message, theme } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
-import type { FormInstance } from 'antd';
+import UploadSpec from './UploadSpec';
 
-const { Search } = Input;
+const { Title } = Typography;
 
 const SubmitButton = ({
   form,
@@ -64,11 +72,21 @@ const SubmitButton = ({
   );
 };
 
+// Verifica se o objeto é uma especificação OpenAPI válida, com versão maior ou igual a 3.0.0
+const validateOpenAPI = (specification: any) => {
+  if (
+    specification === undefined ||
+    typeof specification.openapi !== 'string'
+  ) {
+    throw new Error('Invalid OpenAPI Specification');
+  }
+};
+
 const ImportSpec = (props: StepProps): React.ReactElement => {
-  const [error, setError] = React.useState<string | null>(null);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [form] = Form.useForm();
   const [urlSuccess, setUrlSuccess] = React.useState<boolean>(false);
+  const [fileSuccess, setFileSuccess] = React.useState<boolean>(false);
   const {
     token: { colorSuccessText, colorSuccessBg, colorSuccessBorder }
   } = theme.useToken();
@@ -86,13 +104,12 @@ const ImportSpec = (props: StepProps): React.ReactElement => {
       const response = await axios.get(url as string);
       const specification = response.data as OpenAPI;
 
-      if (specification === undefined || specification.openapi !== '3.0.0') {
-        throw new Error('Invalid OpenAPI Specification');
-      }
+      validateOpenAPI(specification);
 
       props.setData({ ...specification });
       props.nextBottom(true);
       setUrlSuccess(true);
+      setFileSuccess(false);
     } catch (e: any) {
       messageApi.open({
         type: 'error',
@@ -103,16 +120,32 @@ const ImportSpec = (props: StepProps): React.ReactElement => {
     setLoading(false);
   };
 
-  const renderError = () => {
-    return (
-      <Alert
-        message="Error Text"
-        description="Error Description Error Description Error Description Error Description Error Description Error Description"
-        type="error"
-        closable
-        onClose={() => setError(null)}
-      />
-    );
+  const onUpload = (file: string) => {
+    setFileSuccess(false);
+
+    try {
+      const specification = JSON.parse(file) as OpenAPI;
+
+      validateOpenAPI(specification);
+
+      props.setData({ ...specification });
+      props.nextBottom(true);
+      setFileSuccess(true);
+      setUrlSuccess(false);
+    } catch (e: any) {
+      messageApi.open({
+        type: 'error',
+        content: e.message
+      });
+    }
+  };
+
+  const onRemoveFile = () => {
+    if (fileSuccess) {
+      setFileSuccess(false);
+      props.nextBottom(false);
+      props.setData({});
+    }
   };
 
   return (
@@ -129,9 +162,9 @@ const ImportSpec = (props: StepProps): React.ReactElement => {
       onFinish={submitUrl}
     >
       {contextHolder}
+      <Title level={4}>Use a url from an OpenAPI specification</Title>
       <Form.Item
         name="url"
-        label="Enter with openapi Specification URL"
         rules={[
           { required: true },
           { type: 'url' },
@@ -154,7 +187,12 @@ const ImportSpec = (props: StepProps): React.ReactElement => {
           <SubmitButton form={form} loading={loading} success={urlSuccess} />
         </Space.Compact>
       </Form.Item>
-      {error !== null && renderError()}
+      <Divider plain>Or</Divider>
+      <UploadSpec
+        onUpload={onUpload}
+        success={fileSuccess}
+        onRemove={onRemoveFile}
+      />
     </Form>
   );
 };
