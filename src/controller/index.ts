@@ -15,58 +15,22 @@ enum OriginalSchemaTypes {
 }
 
 export interface ControllerData {
-  docUrl?: string;
-  specification?: string;
+  specification: OpenApiSpec.OpenAPI;
 }
 
 export class ControllerBuilder {
-  docUrl?: string;
   axios: AxiosInstance;
   originalSchema: OriginalSchemaTypes | null;
-  apiAdminData: OpenApiSpec.OpenAPI | null;
-  specification?: string;
+  specification: OpenApiSpec.OpenAPI;
 
   constructor(data: ControllerData) {
-    this.docUrl = data.docUrl;
     this.axios = axios.create();
-    this.originalSchema = OriginalSchemaTypes.UNKNOWN;
-    this.apiAdminData = null;
+    this.originalSchema = OriginalSchemaTypes.OPENAPI;
     this.specification = data.specification;
   }
 
-  async builder(): Promise<Controller> {
-    try {
-      if (this.docUrl !== undefined) {
-        const response = await this.axios.get(this.docUrl);
-
-        if ('openapi' in response.data) {
-          this.originalSchema = OriginalSchemaTypes.OPENAPI;
-          this.apiAdminData = response.data as OpenApiSpec.OpenAPI;
-        } else {
-          throw new Error('Swagger not supported yet, use OpenAPI 3 schema.');
-        }
-
-        return new Controller(this);
-      } else if (this.specification !== undefined) {
-        const response = JSON.parse(this.specification);
-
-        if ('openapi' in response) {
-          this.originalSchema = OriginalSchemaTypes.OPENAPI;
-          this.apiAdminData = response as OpenApiSpec.OpenAPI;
-        } else {
-          throw new Error('Swagger not supported yet, use OpenAPI 3 schema.');
-        }
-
-        return new Controller(this);
-      }
-
-      throw new Error('Controller data is not defined');
-    } catch (error) {
-      notification.error({
-        message: `Can't fetch API data: ${error}`
-      });
-      throw new Error("Can't fetch API data");
-    }
+  builder(): Controller {
+    return new Controller(this);
   }
 }
 
@@ -77,9 +41,9 @@ export class Controller {
   apiAdmin: ApiAdmin;
   groups: string[];
   resources: Resource[];
-  specification?: string;
+  specification: OpenApiSpec.OpenAPI;
+
   constructor(data: ControllerBuilder) {
-    this.docUrl = data.docUrl;
     this.specification = data.specification;
 
     if (data.originalSchema) {
@@ -88,8 +52,8 @@ export class Controller {
       throw new Error('Original schema is not defined');
     }
 
-    if (data.apiAdminData !== null) {
-      this.apiAdmin = openapi(data.apiAdminData);
+    if (data.specification !== null) {
+      this.apiAdmin = openapi(data.specification);
       this.server = this.apiAdmin.server ?? '';
     } else {
       throw new Error('Schema is not defined');
@@ -103,7 +67,7 @@ export class Controller {
     return this.docUrl;
   }
 
-  getSpecification(): string | undefined {
+  getSpecification(): OpenApiSpec.OpenAPI | undefined {
     return this.specification;
   }
 

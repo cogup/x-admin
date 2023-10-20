@@ -13,13 +13,16 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
-    project: './tsconfig.eslint.json'
+    project: './tsconfig.eslint.json',
+    ecmaFeatures: {
+      jsx: true
+    }
   },
   plugins: ['react', 'prettier'],
   rules: {
     '@typescript-eslint/no-unused-vars': 'off',
     'no-console': 1,
-    'prettier/prettier': 2
+    'prettier/prettier': 'error'
   },
   settings: {
     react: {

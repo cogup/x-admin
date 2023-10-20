@@ -27,3 +27,6 @@ export function useIsWindowsSize(size: number): boolean {
 
   return isMobile;
 }
+
+// sync data between components
+export function useSync() {}

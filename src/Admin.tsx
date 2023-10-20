@@ -1,25 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Link,
-  Route,
-  Routes,
-  useLocation,
-  useNavigate
-} from 'react-router-dom';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import ListItems from './views/ListItems';
 import ItemForm from './views/ItemForm';
 import ItemView from './views/ItemView';
 import Mosaico from './views/Mosaico';
-import {
-  Layout,
-  theme,
-  Breadcrumb,
-  Menu as Navbar,
-  Typography,
-  notification,
-  Button
-} from 'antd';
-import { LoadingOutlined, MenuOutlined } from '@ant-design/icons';
+import { Layout, theme, Breadcrumb, notification } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import MenuGroups from './components/Sidebar';
 import { type Controller, ControllerBuilder } from './controller';
@@ -27,8 +13,10 @@ import Search from './components/Search';
 import { type Resource, ResourceTypes } from './controller/resources';
 import Swagger from './views/Swagger';
 import { useIsMobile } from './use';
+import GlobalHeader from './components/GlobalHeader';
+import { useDataSync } from './utils/sync';
 
-const { Content: ContentLayout, Header } = Layout;
+const { Content: ContentLayout } = Layout;
 
 const LoadingPage = styled.div`
   display: flex;
@@ -36,32 +24,6 @@ const LoadingPage = styled.div`
   align-items: center;
   height: 100vh;
   width: 100vw;
-`;
-
-const CustomHeader = styled(Header)`
-  display: flex;
-  justify-content: flex-start;
-  padding-inline: 2em;
-`;
-
-const CustomHeaderMobile = styled(Header)`
-  display: flex;
-  justify-content: space-between;
-  padding-inline: 2em;
-  align-items: center;
-`;
-
-const Logo = styled.div`
-  float: left;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  h1 {
-    color: #fff;
-    font-size: 2em;
-    margin: 0;
-  }
 `;
 
 const Root = styled.div`
@@ -128,27 +90,30 @@ const Content = ({
 };
 
 const Admin = (): React.ReactElement => {
+  const { data } = useDataSync();
   const [controller, setController] = useState<Controller>();
   const [breadcrumb, setBreadcrumb] = useState<string[]>([]);
-  const [currentPathname, setCurrentPathname] = useState<string>('');
+  const [menuActive, setMenuActive] = useState<boolean>(false);
   const location = useLocation();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
-  const [menuActived, setMenuActived] = useState<boolean>(false);
-
-  const {
-    token: { colorWhite }
-  } = theme.useToken();
 
   useEffect(() => {
-    setCurrentPathname(location.pathname);
-    setMenuActived(false);
-  }, [location]);
+    if (data.specification === undefined) {
+      notification.error({
+        message: 'Error',
+        description: 'Specification not found'
+      });
+      return;
+    }
 
-  useEffect(() => {
-    fetchApiData().catch((err) => {
-      notification.error(err);
+    const control = new ControllerBuilder({
+      specification: data.specification
     });
+
+    const controller = control.builder();
+
+    setController(controller);
   }, []);
 
   useEffect(() => {
@@ -167,17 +132,6 @@ const Admin = (): React.ReactElement => {
       setBreadcrumb([]);
     }
   }, [location, controller]);
-
-  const fetchApiData = async (): Promise<void> => {
-    const specification = localStorage.getItem('specification') as string;
-    const control = new ControllerBuilder({
-      specification
-    });
-
-    const controller = await control.builder();
-
-    setController(controller);
-  };
 
   if (controller == null) {
     return (
@@ -261,18 +215,6 @@ const Admin = (): React.ReactElement => {
       );
     });
 
-    // const steps = controller.getSteps();
-
-    // Object.keys(steps).forEach((path) => {
-    //   routes.push(
-    //     <Route
-    //       key={path}
-    //       path={path}
-    //       element={<StepsMaker steps={steps[path]} controller={controller} />}
-    //     />
-    //   );
-    // });
-
     return routes;
   };
 
@@ -338,34 +280,12 @@ const Admin = (): React.ReactElement => {
       onClick: () => {
         navigate('/docs');
       }
-    },
-    {
-      label: 'Exit',
-      key: '/exit',
-      onClick: () => {
-        localStorage.removeItem('specification');
-        window.location.href = '/';
-      }
     }
   ];
 
   if (isMobile) {
-    const renderButtonMenu = () => {
-      return !menuActived ? (
-        <Button
-          type="default"
-          ghost
-          onClick={() => setMenuActived(true)}
-          style={{ color: colorWhite, borderColor: colorWhite }}
-          icon={<MenuOutlined />}
-        />
-      ) : (
-        <Button
-          type="default"
-          onClick={() => setMenuActived(false)}
-          icon={<MenuOutlined />}
-        />
-      );
+    const onMenuActive = (active: boolean) => {
+      setMenuActive(active);
     };
 
     return (
@@ -376,16 +296,10 @@ const Admin = (): React.ReactElement => {
             overflow: 'hidden'
           }}
         >
-          <CustomHeaderMobile>
-            <Logo>
-              <Link to={'/'}>
-                <Typography.Title level={1} style={{ color: colorWhite }}>
-                  {controller.apiAdmin.info.title}
-                </Typography.Title>
-              </Link>
-            </Logo>
-            {renderButtonMenu()}
-          </CustomHeaderMobile>
+          <GlobalHeader
+            title={controller.apiAdmin.info.title}
+            onMenuActive={onMenuActive}
+          />
           <Layout
             style={{
               height: '100%',
@@ -394,7 +308,7 @@ const Admin = (): React.ReactElement => {
               width: '100%'
             }}
           >
-            {menuActived ? (
+            {menuActive ? (
               <MenuGroups controller={controller} aditionalItems={itemsNav} />
             ) : (
               <Layout
@@ -417,22 +331,12 @@ const Admin = (): React.ReactElement => {
   return (
     <Root>
       <Layout style={{ height: '100vh', overflow: 'hidden' }}>
-        <CustomHeader>
-          <Logo>
-            <Link to={'/'}>
-              <Typography.Title level={1} style={{ color: colorWhite }}>
-                {controller.apiAdmin.info.title}
-              </Typography.Title>
-            </Link>
-          </Logo>
+        <GlobalHeader
+          title={controller.apiAdmin.info.title}
+          itemsNav={itemsNav}
+        >
           <Search controller={controller} />
-          <Navbar
-            theme="dark"
-            mode="horizontal"
-            items={itemsNav}
-            selectedKeys={[currentPathname]}
-          />
-        </CustomHeader>
+        </GlobalHeader>
         <Layout style={{ height: '100%', backgroundColor: '#001529' }}>
           <MenuGroups controller={controller} />
           <Layout

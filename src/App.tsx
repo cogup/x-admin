@@ -1,36 +1,28 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ConfigProvider, theme } from 'antd';
 import Setup from './setup/Setup';
 import Admin from './Admin';
+import { useDataSync } from './utils/sync';
 
 const { defaultAlgorithm, darkAlgorithm } = theme;
 
-const customTheme = {
-  token: {
-    borderRadiusLG: 10
-  },
-  algorithm: defaultAlgorithm
-};
-
 const App = (): React.ReactElement => {
-  const darkMode = localStorage.getItem('darkMode');
+  const { data } = useDataSync();
+  const [customTheme, setCustomTheme] = React.useState({
+    token: {
+      borderRadiusLG: 10
+    },
+    algorithm: defaultAlgorithm
+  });
 
-  if (darkMode === 'true') {
-    customTheme.algorithm = darkAlgorithm;
-  } else if (
-    window.matchMedia &&
-    window.matchMedia('(prefers-color-scheme: dark)').matches
-  ) {
-    customTheme.algorithm = darkAlgorithm;
-  } else {
-    customTheme.algorithm = defaultAlgorithm;
-  }
-
-  const specification = localStorage.getItem('specification');
+  useEffect(() => {
+    const algorithm = data.darkMode ? darkAlgorithm : defaultAlgorithm;
+    setCustomTheme({ ...customTheme, algorithm });
+  }, [data]);
 
   return (
     <ConfigProvider theme={customTheme}>
-      {specification === null ? <Setup /> : <Admin />}
+      {data.specification === undefined ? <Setup /> : <Admin />}
     </ConfigProvider>
   );
 };

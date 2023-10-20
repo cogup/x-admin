@@ -1,7 +1,7 @@
 import React from 'react';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
-import App from './App';
+import AppSync from './AppSync';
 import 'antd/dist/reset.css';
 import { createRoot } from 'react-dom/client';
 
@@ -10,7 +10,7 @@ const root = createRoot(container); // createRoot(container!) if you use TypeScr
 
 root.render(
   <BrowserRouter>
-    <App />
+    <AppSync />
   </BrowserRouter>
 );
 

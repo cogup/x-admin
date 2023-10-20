@@ -28,7 +28,7 @@ export const CodeEditor = (props: CodeEditorProps): React.ReactElement => {
     <UiwCodeEditor
       value={code}
       language={language}
-      onChange={(e): void => setCode(e.target.value)}
+      onChange={(e: any): void => setCode(e.target.value)}
       padding={15}
       minHeight={200}
       style={{

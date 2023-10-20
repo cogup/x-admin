@@ -1,15 +1,13 @@
 import React from 'react';
 import { Layout } from 'antd';
 import styled from 'styled-components';
-import { Typography, theme } from 'antd';
 import StepsMaker from '../components/Steps';
 import AdjustTemplates from './AdjustTemplates';
 import ImportSpec from './ImportSpec';
-import Done from './Done';
-import ToggleDarkMode from '../components/ToggleDarkMode';
+import GlobalHeader from '../components/GlobalHeader';
+import { useDataSync } from '../utils/sync';
 
-const { Title } = Typography;
-const { Header, Content, Footer } = Layout;
+const { Content, Footer } = Layout;
 
 const Root = styled.div`
   display: flex;
@@ -41,11 +39,16 @@ const Root = styled.div`
 `;
 
 const Setup = (): React.ReactElement => {
+  const { data, updateData } = useDataSync();
   const [done, setDone] = React.useState<boolean>(false);
 
-  const onDone = (data: any) => {
+  const onDone = (newData: any) => {
     setDone(true);
-    localStorage.setItem('specification', JSON.stringify(data.xAdmin));
+
+    updateData({
+      ...data,
+      specification: newData.xAdmin
+    });
   };
 
   return (
@@ -56,25 +59,7 @@ const Setup = (): React.ReactElement => {
           minHeight: '100vh'
         }}
       >
-        <Header
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}
-        >
-          <Title
-            style={{
-              color: 'white',
-              fontSize: '1.5rem',
-              fontWeight: 'bold',
-              textAlign: 'center'
-            }}
-          >
-            X Admin
-          </Title>
-          <ToggleDarkMode />
-        </Header>
+        <GlobalHeader title="X Admin" />
         <Content
           style={{
             display: 'flex',
@@ -83,26 +68,22 @@ const Setup = (): React.ReactElement => {
             padding: '2rem'
           }}
         >
-          {done ? (
-            <Done />
-          ) : (
-            <StepsMaker
-              confirmToNext={true}
-              onDone={onDone}
-              steps={[
-                {
-                  key: 'specification',
-                  title: 'Import OpenAPI Specification',
-                  content: ImportSpec
-                },
-                {
-                  key: 'xAdmin',
-                  title: 'Adjust templates',
-                  content: AdjustTemplates
-                }
-              ]}
-            />
-          )}
+          <StepsMaker
+            confirmToNext={true}
+            onDone={onDone}
+            steps={[
+              {
+                key: 'specification',
+                title: 'Import OpenAPI Specification',
+                content: ImportSpec
+              },
+              {
+                key: 'xAdmin',
+                title: 'Adjust templates',
+                content: AdjustTemplates
+              }
+            ]}
+          />
         </Content>
         <Footer
           style={{
