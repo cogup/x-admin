@@ -13,11 +13,15 @@ const customTheme = {
 };
 
 const App = (): React.ReactElement => {
-  if (
+  const darkMode = localStorage.getItem('darkMode');
+
+  if (darkMode === 'true') {
+    customTheme.algorithm = darkAlgorithm;
+  } else if (
     window.matchMedia &&
     window.matchMedia('(prefers-color-scheme: dark)').matches
   ) {
-    customTheme.algorithm = defaultAlgorithm; //darkAlgorithm;
+    customTheme.algorithm = darkAlgorithm;
   } else {
     customTheme.algorithm = defaultAlgorithm;
   }

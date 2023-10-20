@@ -9,7 +9,7 @@ import {
   type FormInstance,
   notification
 } from 'antd';
-import RelationshipInput from './RelationshipInput';
+import RelationshipInput from '../components/RelationshipInput';
 import { Header, DynamicInput } from '../ui';
 import { formatName, listAllAlternativeWords } from '../utils';
 import {

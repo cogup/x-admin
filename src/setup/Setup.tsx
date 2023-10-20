@@ -6,6 +6,7 @@ import StepsMaker from '../components/Steps';
 import AdjustTemplates from './AdjustTemplates';
 import ImportSpec from './ImportSpec';
 import Done from './Done';
+import ToggleDarkMode from '../components/ToggleDarkMode';
 
 const { Title } = Typography;
 const { Header, Content, Footer } = Layout;
@@ -72,6 +73,7 @@ const Setup = (): React.ReactElement => {
           >
             X Admin
           </Title>
+          <ToggleDarkMode />
         </Header>
         <Content
           style={{

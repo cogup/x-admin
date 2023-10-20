@@ -6,16 +6,15 @@ import {
   useLocation,
   useNavigate
 } from 'react-router-dom';
-import ListItems from './components/ListItems';
-import ItemForm from './components/ItemForm';
-import ItemView from './components/ItemView';
-import Mosaico from './components/Mosaico';
+import ListItems from './views/ListItems';
+import ItemForm from './views/ItemForm';
+import ItemView from './views/ItemView';
+import Mosaico from './views/Mosaico';
 import {
   Layout,
   theme,
   Breadcrumb,
   Menu as Navbar,
-  ConfigProvider,
   Typography,
   notification,
   Button
@@ -26,8 +25,7 @@ import MenuGroups from './components/Sidebar';
 import { type Controller, ControllerBuilder } from './controller';
 import Search from './components/Search';
 import { type Resource, ResourceTypes } from './controller/resources';
-import locale from 'antd/locale/pt_BR';
-import Swagger from './components/Swagger';
+import Swagger from './views/Swagger';
 import { useIsMobile } from './use';
 
 const { Content: ContentLayout, Header } = Layout;
