@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { List, Skeleton, Switch, Typography } from 'antd';
+import { List, Skeleton, Switch, Typography, theme } from 'antd';
 import { StepProps } from '../components/Steps';
 import styled from 'styled-components';
 import { OpenAPI, Operation, PathItem } from '../controller/openapi';
@@ -128,6 +128,10 @@ const AdjustTemplates = (props: StepProps): React.ReactElement => {
   const [xAdminData, setXAdminData] = React.useState<AdminData>();
   const [list, setList] = React.useState<Item[]>([]);
 
+  const {
+    token: { colorText, colorBgBase, colorInfoBg, colorInfoText }
+  } = theme.useToken();
+
   const specification = props.currentData.specification as OpenAPI;
 
   props.nextBottom(true);
@@ -224,7 +228,8 @@ const AdjustTemplates = (props: StepProps): React.ReactElement => {
                 type="secondary"
                 style={{
                   padding: '0.5rem',
-                  backgroundColor: '#f7f7f7',
+                  backgroundColor: colorInfoBg,
+                  color: colorInfoText,
                   margin: '0.5rem 0 0 0',
                   width: '100%',
                   textAlign: 'justify',

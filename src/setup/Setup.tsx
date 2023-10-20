@@ -1,7 +1,7 @@
 import React from 'react';
 import { Layout } from 'antd';
 import styled from 'styled-components';
-import { Typography } from 'antd';
+import { Typography, theme } from 'antd';
 import StepsMaker from '../components/Steps';
 import AdjustTemplates from './AdjustTemplates';
 import ImportSpec from './ImportSpec';

@@ -110,6 +110,10 @@ const Content = ({
   children,
   background
 }: ContentProps): React.ReactElement => {
+  const {
+    token: { colorBgBase }
+  } = theme.useToken();
+
   return (
     <ContentLayout
       style={{
@@ -117,7 +121,7 @@ const Content = ({
         minHeight: 'auto',
         marginBottom: 24,
         borderRadius: customTheme.token.borderRadiusLG,
-        backgroundColor: background ? '#fff' : 'transparent'
+        backgroundColor: background ? colorBgBase : 'transparent'
       }}
     >
       {children}
