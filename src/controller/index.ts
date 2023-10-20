@@ -15,34 +15,52 @@ enum OriginalSchemaTypes {
 }
 
 export interface ControllerData {
-  docUrl: string;
+  docUrl?: string;
+  specification?: string;
 }
 
 export class ControllerBuilder {
-  docUrl: string;
+  docUrl?: string;
   axios: AxiosInstance;
   originalSchema: OriginalSchemaTypes | null;
   apiAdminData: OpenApiSpec.OpenAPI | null;
+  specification?: string;
 
   constructor(data: ControllerData) {
     this.docUrl = data.docUrl;
     this.axios = axios.create();
     this.originalSchema = OriginalSchemaTypes.UNKNOWN;
     this.apiAdminData = null;
+    this.specification = data.specification;
   }
 
   async builder(): Promise<Controller> {
     try {
-      const response = await this.axios.get(this.docUrl);
+      if (this.docUrl !== undefined) {
+        const response = await this.axios.get(this.docUrl);
 
-      if ('openapi' in response.data) {
-        this.originalSchema = OriginalSchemaTypes.OPENAPI;
-        this.apiAdminData = response.data as OpenApiSpec.OpenAPI;
-      } else {
-        throw new Error('Swagger not supported yet, use OpenAPI 3 schema.');
+        if ('openapi' in response.data) {
+          this.originalSchema = OriginalSchemaTypes.OPENAPI;
+          this.apiAdminData = response.data as OpenApiSpec.OpenAPI;
+        } else {
+          throw new Error('Swagger not supported yet, use OpenAPI 3 schema.');
+        }
+
+        return new Controller(this);
+      } else if (this.specification !== undefined) {
+        const response = JSON.parse(this.specification);
+
+        if ('openapi' in response) {
+          this.originalSchema = OriginalSchemaTypes.OPENAPI;
+          this.apiAdminData = response as OpenApiSpec.OpenAPI;
+        } else {
+          throw new Error('Swagger not supported yet, use OpenAPI 3 schema.');
+        }
+
+        return new Controller(this);
       }
 
-      return new Controller(this);
+      throw new Error('Controller data is not defined');
     } catch (error) {
       notification.error({
         message: `Can't fetch API data: ${error}`
@@ -53,15 +71,16 @@ export class ControllerBuilder {
 }
 
 export class Controller {
-  docUrl: string;
+  docUrl?: string;
   server: string;
   originalSchema: OriginalSchemaTypes;
   apiAdmin: ApiAdmin;
   groups: string[];
   resources: Resource[];
-
+  specification?: string;
   constructor(data: ControllerBuilder) {
     this.docUrl = data.docUrl;
+    this.specification = data.specification;
 
     if (data.originalSchema) {
       this.originalSchema = data.originalSchema;
@@ -80,8 +99,12 @@ export class Controller {
     this.resources = this.getAllResources();
   }
 
-  getDocFullUrl(): string {
+  getDocFullUrl(): string | undefined {
     return this.docUrl;
+  }
+
+  getSpecification(): string | undefined {
+    return this.specification;
   }
 
   getResource(groupName: string, resourceType: ResourceTypes): Resource {

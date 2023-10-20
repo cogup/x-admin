@@ -3,7 +3,6 @@ import { List, Skeleton, Switch, Typography } from 'antd';
 import { StepProps } from '../components/Steps';
 import styled from 'styled-components';
 import { OpenAPI, Operation, PathItem } from '../controller/openapi';
-import demo from './demo.json';
 import { Methods, ResourceTypes } from '../controller';
 import { AdminData } from '../controller/xadmin';
 
@@ -116,8 +115,6 @@ const getList = (spec: OpenAPI): Item[] => {
   return list;
 };
 
-const specification = demo as OpenAPI;
-
 enum ItemType {
   SEARCH = 'search',
   LIST = 'list',
@@ -128,15 +125,17 @@ enum ItemType {
 }
 
 const AdjustTemplates = (props: StepProps): React.ReactElement => {
-  const [loading, setLoading] = React.useState<boolean>(false);
   const [xAdminData, setXAdminData] = React.useState<AdminData>();
   const [list, setList] = React.useState<Item[]>([]);
+
+  const specification = props.currentData.specification as OpenAPI;
+
+  props.nextBottom(true);
 
   useEffect(() => {
     setList(getList(specification));
     setXAdminData(specification['x-admin']);
     props.setData({ ...specification });
-    props.nextBottom(true);
   }, []);
 
   useEffect(() => {

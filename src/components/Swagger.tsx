@@ -4,13 +4,13 @@ import 'swagger-ui-react/swagger-ui.css';
 import { Controller } from '../controller';
 
 interface SwaggerUIProps {
-  constroller: Controller;
+  controller: Controller;
 }
 
 const SwaggerUIComponent = ({
-  constroller
+  controller
 }: SwaggerUIProps): React.ReactElement => {
-  return <SwaggerUI url={constroller.getDocFullUrl()} />;
+  return <SwaggerUI spec={controller.getSpecification()} />;
 };
 
 export default SwaggerUIComponent;
