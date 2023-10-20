@@ -135,7 +135,6 @@ const AdjustTemplates = (props: StepProps): React.ReactElement => {
   useEffect(() => {
     setList(getList(specification));
     setXAdminData(specification['x-admin']);
-    props.setData({ ...specification });
   }, []);
 
   useEffect(() => {

@@ -336,6 +336,14 @@ const Admin = (): React.ReactElement => {
       onClick: () => {
         navigate('/docs');
       }
+    },
+    {
+      label: 'Exit',
+      key: '/exit',
+      onClick: () => {
+        localStorage.removeItem('specification');
+        window.location.href = '/';
+      }
     }
   ];
 

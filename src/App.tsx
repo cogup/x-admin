@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Layout, ConfigProvider } from 'antd';
 import Setup from './setup/Setup';
 import Admin from './Admin';
@@ -11,10 +11,6 @@ const customTheme = {
 };
 
 const App = (): React.ReactElement => {
-  const onDone = (data: any) => {
-    localStorage.setItem('specification', JSON.stringify(data.xAdmin));
-  };
-
   const specification = localStorage.getItem('specification');
 
   return (

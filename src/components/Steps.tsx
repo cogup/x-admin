@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Steps, theme } from 'antd';
-import { type Controller } from '../controller';
 
 export interface Step {
   key: string;
@@ -13,7 +12,6 @@ interface StepsMakerProps {
   onNext?: (data: any) => void;
   onDone?: (data: any) => void;
   confirmToNext?: boolean;
-  controller?: Controller;
 }
 
 export interface StepProps {
@@ -28,7 +26,6 @@ export type StepNode = (props: StepProps) => React.ReactElement;
 
 const StepsMaker: React.FC<StepsMakerProps> = ({
   steps,
-  controller,
   onDone,
   onNext,
   confirmToNext = true
@@ -39,12 +36,6 @@ const StepsMaker: React.FC<StepsMakerProps> = ({
   const [nextActive, setNextActive] = useState<boolean>(!confirmToNext);
 
   useEffect(() => {
-    if (current === steps.length - 1 && onDone !== undefined) {
-      onDone(stepData);
-    } else if (current < steps.length - 1 && onNext !== undefined) {
-      onNext(stepData);
-    }
-
     if (confirmToNext) {
       setNextActive(false);
     }
@@ -59,6 +50,9 @@ const StepsMaker: React.FC<StepsMakerProps> = ({
 
   const next = () => {
     setCurrent(current + 1);
+    if (onNext !== undefined) {
+      onNext(stepData);
+    }
   };
 
   const prev = () => {

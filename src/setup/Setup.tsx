@@ -5,6 +5,7 @@ import { Typography } from 'antd';
 import StepsMaker from '../components/Steps';
 import AdjustTemplates from './AdjustTemplates';
 import ImportSpec from './ImportSpec';
+import Done from './Done';
 
 const { Title } = Typography;
 const { Header, Content, Footer } = Layout;
@@ -39,7 +40,10 @@ const Root = styled.div`
 `;
 
 const Setup = (): React.ReactElement => {
+  const [done, setDone] = React.useState<boolean>(false);
+
   const onDone = (data: any) => {
+    setDone(true);
     localStorage.setItem('specification', JSON.stringify(data.xAdmin));
   };
 
@@ -77,22 +81,26 @@ const Setup = (): React.ReactElement => {
             padding: '2rem'
           }}
         >
-          <StepsMaker
-            confirmToNext={true}
-            onDone={onDone}
-            steps={[
-              {
-                key: 'specification',
-                title: 'Import OpenAPI Specification',
-                content: ImportSpec
-              },
-              {
-                key: 'xAdmin',
-                title: 'Adjust templates',
-                content: AdjustTemplates
-              }
-            ]}
-          />
+          {done ? (
+            <Done />
+          ) : (
+            <StepsMaker
+              confirmToNext={true}
+              onDone={onDone}
+              steps={[
+                {
+                  key: 'specification',
+                  title: 'Import OpenAPI Specification',
+                  content: ImportSpec
+                },
+                {
+                  key: 'xAdmin',
+                  title: 'Adjust templates',
+                  content: AdjustTemplates
+                }
+              ]}
+            />
+          )}
         </Content>
         <Footer
           style={{
