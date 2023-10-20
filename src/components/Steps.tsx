@@ -1,69 +1,122 @@
-import React, { useState } from 'react';
-import { Button, message, Steps, theme } from 'antd';
-import { type Resource, type Controller, Step } from '../controller';
+import React, { useEffect, useState } from 'react';
+import { Button, Steps, theme } from 'antd';
+
+export interface Step {
+  key: string;
+  title: string;
+  content: StepNode;
+}
 
 interface StepsMakerProps {
   steps: Step[];
-  controller: Controller;
+  onNext?: (data: any) => void;
+  onDone?: (data: any) => void;
+  confirmToNext?: boolean;
 }
+
+export interface StepProps {
+  setData: (data: Record<string, any>) => void;
+  currentData: Record<string, any>;
+  next?: () => void;
+  prev?: () => void;
+  nextBottom: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export type StepNode = (props: StepProps) => React.ReactElement;
 
 const StepsMaker: React.FC<StepsMakerProps> = ({
   steps,
-  controller
+  onDone,
+  onNext,
+  confirmToNext = true
 }): React.ReactElement => {
   const { token } = theme.useToken();
   const [current, setCurrent] = useState(0);
+  const [stepData, setStepData] = useState<Record<string, any>>({});
+  const [nextActive, setNextActive] = useState<boolean>(!confirmToNext);
 
-  const stepss = [
-    {
-      title: 'First',
-      content: 'First-content'
-    },
-    {
-      title: 'Second',
-      content: 'Second-content'
-    },
-    {
-      title: 'Last',
-      content: 'Last-content'
+  useEffect(() => {
+    if (confirmToNext) {
+      setNextActive(false);
     }
-  ];
+  }, [current]);
+
+  const setData = (data: Record<string, any>) => {
+    const newData = {
+      [steps[current].key]: data
+    };
+    setStepData({ ...stepData, ...newData });
+  };
 
   const next = () => {
     setCurrent(current + 1);
+    if (onNext !== undefined) {
+      onNext(stepData);
+    }
   };
 
   const prev = () => {
     setCurrent(current - 1);
   };
 
-  const items = stepss.map((item) => ({ key: item.title, title: item.title }));
+  const done = () => {
+    if (onDone !== undefined) {
+      onDone(stepData);
+    }
+  };
+
+  const stepProps = steps.map((item, i) => ({
+    key: item.key,
+    title: item.title
+  }));
 
   const contentStyle: React.CSSProperties = {
     lineHeight: '260px',
     textAlign: 'center',
     color: token.colorTextTertiary,
-    backgroundColor: token.colorFillAlter,
+    backgroundColor: token.colorBgBase,
     borderRadius: token.borderRadiusLG,
-    border: `1px dashed ${token.colorBorder}`,
-    marginTop: 16
+    marginTop: 16,
+    padding: '2rem',
+    width: '100%'
   };
 
+  const CurrentStep = steps[current].content;
+
   return (
-    <>
-      <Steps current={current} items={items} />
-      <div style={contentStyle}>{stepss[current].content}</div>
-      <div style={{ marginTop: 24 }}>
-        {current < stepss.length - 1 && (
-          <Button type="primary" onClick={() => next()}>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center'
+      }}
+    >
+      <Steps current={current} items={stepProps} />
+      <div style={contentStyle}>
+        <CurrentStep
+          setData={setData}
+          currentData={stepData}
+          next={next}
+          prev={prev}
+          nextBottom={setNextActive}
+        />
+      </div>
+      <div
+        style={{
+          marginTop: 24,
+          display: 'flex',
+          flexDirection: 'row-reverse',
+          justifyContent: 'space-between',
+          width: '100%'
+        }}
+      >
+        {current < steps.length - 1 && (
+          <Button type="primary" onClick={() => next()} disabled={!nextActive}>
             Next
           </Button>
         )}
-        {current === stepss.length - 1 && (
-          <Button
-            type="primary"
-            onClick={() => message.success('Processing complete!')}
-          >
+        {current === steps.length - 1 && (
+          <Button type="primary" onClick={() => done()} disabled={!nextActive}>
             Done
           </Button>
         )}
@@ -73,7 +126,7 @@ const StepsMaker: React.FC<StepsMakerProps> = ({
           </Button>
         )}
       </div>
-    </>
+    </div>
   );
 };
 

@@ -134,7 +134,7 @@ export interface Schema {
   uniqueItems?: boolean;
   maxProperties?: number;
   minProperties?: number;
-  required?: boolean;
+  required?: string[];
   enum?: any[];
   type?: 'string' | 'number' | 'integer' | 'boolean' | 'array' | 'object';
   allOf?: Array<Schema | Reference>;
@@ -155,6 +155,7 @@ export interface Schema {
   externalDocs?: ExternalDocumentation;
   deprecated?: boolean;
   xml?: XML;
+  [key: string]: any;
 }
 
 // Discriminator Object
