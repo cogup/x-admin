@@ -9,9 +9,7 @@ const { defaultAlgorithm, darkAlgorithm } = theme;
 const App = (): React.ReactElement => {
   const { data } = useDataSync();
   const [customTheme, setCustomTheme] = React.useState({
-    token: {
-      borderRadiusLG: 10
-    },
+    token: {},
     algorithm: defaultAlgorithm
   });
 

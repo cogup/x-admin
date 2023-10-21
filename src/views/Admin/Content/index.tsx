@@ -17,7 +17,8 @@ const Content = ({ children }: ContentProps): React.ReactElement => {
         padding: 24,
         minHeight: 'auto',
         marginBottom: 24,
-        backgroundColor: token.colorBgContainer
+        backgroundColor: token.colorBgContainer,
+        borderRadius: token.borderRadiusLG
       }}
     >
       {children}
