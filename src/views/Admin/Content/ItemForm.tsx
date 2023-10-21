@@ -409,8 +409,8 @@ const ItemForm: React.FC<ItemFormProps> = (
   }
 
   return (
-    <Row>
-      <Col style={{ width: '100%' }}>
+    <div>
+      <div style={{ width: '100%' }}>
         <Header
           title={resourceAction.summary ?? resourceAction.resourceName}
           subtitle={resourceAction.getApiPath(null, false)}
@@ -419,8 +419,8 @@ const ItemForm: React.FC<ItemFormProps> = (
           resourceName={resourceAction.resourceName}
           typeName={resourceAction.type}
         />
-        <Row>
-          <Col style={{ width: '100%' }}>
+        <div>
+          <div style={{ width: '100%' }}>
             <Form
               onFinish={(_) => {
                 handleSubmit().catch((error) => {
@@ -437,11 +437,11 @@ const ItemForm: React.FC<ItemFormProps> = (
             >
               {renderInputs()}
             </Form>
-          </Col>
-        </Row>
+          </div>
+        </div>
         {renderMobileButtons()}
-      </Col>
-    </Row>
+      </div>
+    </div>
   );
 };
 

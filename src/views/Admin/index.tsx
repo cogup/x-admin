@@ -26,32 +26,9 @@ const LoadingPage = styled.div`
   width: 100vw;
 `;
 
-const Root = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  width: 100%;
-
-  section {
-    opacity: 1;
-    animation: fadeInSteps 0.6s forwards;
-  }
-
-  @keyframes fadeInSteps {
-    0% {
-      opacity: 0;
-      transform: scale(1.01);
-    }
-    100% {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-
-  &.isMobile {
-    .ant-breadcrumb {
-      padding: 0 1rem;
-    }
+const Mobile = styled.div`
+  .ant-breadcrumb {
+    padding: 0 1rem;
   }
 `;
 
@@ -149,20 +126,12 @@ const Admin = (): React.ReactElement => {
       <Route
         key="home"
         path="/"
-        element={
-          <Content background={false}>
-            <Mosaico controller={controller} />
-          </Content>
-        }
+        element={<Mosaico controller={controller} />}
       />,
       <Route
         key="docs"
         path="/docs"
-        element={
-          <Content background={true}>
-            <Swagger controller={controller} />
-          </Content>
-        }
+        element={<Swagger controller={controller} />}
       />
     ];
 
@@ -174,11 +143,7 @@ const Admin = (): React.ReactElement => {
         <Route
           key={index}
           path={path}
-          element={
-            <Content background={true}>
-              {getTemplate(resource, controller)}
-            </Content>
-          }
+          element={<Content>{getTemplate(resource, controller)}</Content>}
         />
       );
     });
@@ -202,7 +167,7 @@ const Admin = (): React.ReactElement => {
     };
 
     return (
-      <Root className={'isMobile'}>
+      <Mobile>
         <Layout
           style={{
             height: '100vh',
@@ -236,33 +201,28 @@ const Admin = (): React.ReactElement => {
             )}
           </Layout>
         </Layout>
-      </Root>
+      </Mobile>
     );
   }
 
   return (
-    <Root>
-      <Layout style={{ height: '100vh', overflow: 'hidden' }}>
-        <GlobalHeader
-          title={controller.apiAdmin.info.title}
-          itemsNav={itemsNav}
+    <Layout style={{ height: '100vh', overflow: 'hidden' }}>
+      <GlobalHeader title={controller.apiAdmin.info.title} itemsNav={itemsNav}>
+        <Search controller={controller} />
+      </GlobalHeader>
+      <Layout style={{ height: '100%' }}>
+        <MenuGroups controller={controller} />
+        <Layout
+          style={{
+            padding: '0 2rem',
+            overflow: 'auto'
+          }}
         >
-          <Search controller={controller} />
-        </GlobalHeader>
-        <Layout style={{ height: '100%' }}>
-          <MenuGroups controller={controller} />
-          <Layout
-            style={{
-              padding: '0 2rem',
-              overflow: 'auto'
-            }}
-          >
-            <Breadcrumb breadcrumb={breadcrumb} controller={controller} />
-            <Routes>{renderRoutes()}</Routes>
-          </Layout>
+          <Breadcrumb breadcrumb={breadcrumb} controller={controller} />
+          <Routes>{renderRoutes()}</Routes>
         </Layout>
       </Layout>
-    </Root>
+    </Layout>
   );
 };
 

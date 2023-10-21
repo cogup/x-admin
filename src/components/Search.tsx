@@ -29,7 +29,6 @@ const Search: React.FC<SearchProps> = ({ controller }): React.ReactElement => {
     useState<boolean>(true);
   const [suggestionButton, setSuggestionButton] = useState<boolean>(false);
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
-  const [lastResource, setLastResource] = useState<Resource | null>(null);
   const params = useQuerystring();
 
   const { token } = theme.useToken();
@@ -75,7 +74,6 @@ const Search: React.FC<SearchProps> = ({ controller }): React.ReactElement => {
       return;
     }
 
-    setLastResource(currentResource);
     setCurrentResource(resource);
 
     const existSearch =
