@@ -5,6 +5,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useIsMobile } from '../use';
 import { MenuOutlined } from '@ant-design/icons';
 import ToggleDarkMode from './ToggleDarkMode';
+import ExitButton from './ExitButton';
 
 const { Header } = Layout;
 
@@ -35,6 +36,18 @@ const Logo = styled.div`
   }
 `;
 
+const Bookmarks = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 0 0.5em;
+
+  button {
+    margin: 0 0.2rem;
+  }
+`;
+
 interface GlobalHeaderProps {
   title: string;
   children?: React.ReactNode;
@@ -53,9 +66,7 @@ const GlobalHeader = ({
   const isMobile = useIsMobile();
   const [menuActived, setMenuActived] = useState<boolean>(false);
 
-  const {
-    token: { colorWhite }
-  } = theme.useToken();
+  const { token } = theme.useToken();
 
   useEffect(() => {
     setCurrentPathname(location.pathname);
@@ -75,7 +86,10 @@ const GlobalHeader = ({
           type="default"
           ghost
           onClick={() => setMenuActived(true)}
-          style={{ color: colorWhite, borderColor: colorWhite }}
+          style={{
+            color: token.colorTextBase,
+            borderColor: token.colorTextBase
+          }}
           icon={<MenuOutlined />}
         />
       ) : (
@@ -91,7 +105,7 @@ const GlobalHeader = ({
       <CustomHeaderMobile>
         <Logo>
           <Link to={'/'}>
-            <Typography.Title level={1} style={{ color: colorWhite }}>
+            <Typography.Title level={1} style={{ color: token.colorTextBase }}>
               {title}
             </Typography.Title>
           </Link>
@@ -102,14 +116,18 @@ const GlobalHeader = ({
   }
 
   return (
-    <CustomHeader>
+    <CustomHeader
+      style={{
+        backgroundColor: token.colorBgBase
+      }}
+    >
       <Logo
         style={{
           width: '200px'
         }}
       >
         <Link to={'/'}>
-          <Typography.Title level={1} style={{ color: colorWhite }}>
+          <Typography.Title level={1} style={{ color: token.colorTextBase }}>
             {title}
           </Typography.Title>
         </Link>
@@ -122,7 +140,6 @@ const GlobalHeader = ({
         {children}
       </div>
       <Menu
-        theme="dark"
         mode="horizontal"
         items={itemsNav}
         selectedKeys={[currentPathname]}
@@ -133,13 +150,10 @@ const GlobalHeader = ({
           justifyContent: 'flex-end'
         }}
       />
-      <div
-        style={{
-          marginRight: '0.5rem'
-        }}
-      >
+      <Bookmarks>
+        <ExitButton />
         <ToggleDarkMode />
-      </div>
+      </Bookmarks>
     </CustomHeader>
   );
 };

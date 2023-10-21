@@ -9,7 +9,7 @@ import {
   Tooltip,
   notification
 } from 'antd';
-import { useIsLaptop, useIsMobile, useQuerystring } from '../use';
+import { useIsLaptop, useIsMobile, useQuerystring } from '../../../use';
 import {
   DeleteOutlined,
   EditOutlined,
@@ -17,8 +17,12 @@ import {
   ReadOutlined
 } from '@ant-design/icons';
 import styled from 'styled-components';
-import { Header } from '../ui';
-import { type Resource, type Controller, ResourceTypes } from '../controller';
+import { Header } from '../../../ui';
+import {
+  type Resource,
+  type Controller,
+  ResourceTypes
+} from '../../../controller';
 
 const WrapperTable = styled(Row)`
   .ant-table-cell {

@@ -9,13 +9,17 @@ import {
   Button,
   Popconfirm
 } from 'antd';
-import { ResourceTypes, type Controller, type Resource } from '../controller';
+import {
+  ResourceTypes,
+  type Controller,
+  type Resource
+} from '../../../controller';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { DynamicIcon, Header } from '../ui';
+import { DynamicIcon, Header } from '../../../ui';
 import { DeleteOutlined, QuestionCircleOutlined } from '@ant-design/icons';
-import { getIconSuggestion } from '../utils';
-import { IconType } from '../ui/iconTypes';
-import { useIsMobile } from '../use';
+import { getIconSuggestion } from '../../../utils';
+import { IconType } from '../../../ui/iconTypes';
+import { useIsMobile } from '../../../use';
 import styled from 'styled-components';
 
 const WrapperButtonsMobile = styled(Row)`

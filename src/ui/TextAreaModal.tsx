@@ -124,6 +124,7 @@ hljs.configure({
 
 function markdownToHtml(markdown: string): string {
   if (markdown) {
+    //TODO: Fix this
     //@ts-ignore
     const html = marked.setOptions({ mangle: false }).parse(markdown);
     return html;

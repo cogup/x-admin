@@ -25,6 +25,8 @@
         "import"
     ],
     "rules": {
+        // ignore @typescript-eslint/ban-ts-comment
+        "@typescript-eslint/ban-ts-comment": "off"
     },
     "settings": {
         "import/resolver": {

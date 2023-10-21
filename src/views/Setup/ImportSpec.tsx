@@ -10,9 +10,9 @@ import {
   Typography
 } from 'antd';
 import type { FormInstance } from 'antd';
-import { StepProps } from '../components/Steps';
+import { StepProps } from '../../components/Steps';
 import axios from 'axios';
-import { OpenAPI } from '../controller/openapi';
+import { OpenAPI } from '../../controller/openapi';
 import { LoadingOutlined } from '@ant-design/icons';
 import UploadSpec from './UploadSpec';
 

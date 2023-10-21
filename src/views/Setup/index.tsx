@@ -1,11 +1,11 @@
 import React from 'react';
 import { Layout } from 'antd';
 import styled from 'styled-components';
-import StepsMaker from '../components/Steps';
+import StepsMaker from '../../components/Steps';
 import AdjustTemplates from './AdjustTemplates';
 import ImportSpec from './ImportSpec';
-import GlobalHeader from '../components/GlobalHeader';
-import { useDataSync } from '../utils/sync';
+import GlobalHeader from '../../components/GlobalHeader';
+import { useDataSync } from '../../utils/sync';
 
 const { Content, Footer } = Layout;
 

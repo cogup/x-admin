@@ -36,7 +36,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   const [collapsed, setCollapsed] = useState<boolean>(false);
   const isMobile = useIsMobile();
   const navigate = useNavigate();
-  let resource = controller.getCurrentResource(location.pathname);
+  const resource = controller.getCurrentResource(location.pathname);
 
   const [currentResource, setCurrentResource] = useState<Resource | null>(
     resource
@@ -120,7 +120,6 @@ const Sidebar: React.FC<SidebarProps> = ({
       selectedKeys={[location.pathname]}
       defaultOpenKeys={[currentResource?.resourceName ?? '']}
       mode="inline"
-      theme="dark"
       style={style}
       items={getItems()}
     />
@@ -139,8 +138,9 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   return (
     <Sider
-      collapsible
+      collapsible={false}
       collapsed={collapsed}
+      defaultCollapsed={false}
       onCollapse={(value): void => {
         setCollapsed(value);
       }}

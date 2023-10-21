@@ -9,16 +9,16 @@ import {
   type FormInstance,
   notification
 } from 'antd';
-import RelationshipInput from '../components/RelationshipInput';
-import { Header, DynamicInput } from '../ui';
-import { formatName, listAllAlternativeWords } from '../utils';
+import RelationshipInput from '../../../components/RelationshipInput';
+import { Header, DynamicInput } from '../../../ui';
+import { formatName, listAllAlternativeWords } from '../../../utils';
 import {
   type Controller,
   type Resource,
   ResourceTypes,
   type Schema
-} from '../controller';
-import { useIsMobile } from '../use';
+} from '../../../controller';
+import { useIsMobile } from '../../../use';
 import styled from 'styled-components';
 
 const WrapperButtonsMobile = styled(Row)`

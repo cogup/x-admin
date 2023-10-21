@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { AutoComplete, Input, theme } from 'antd';
+import { AutoComplete, Input, notification, theme } from 'antd';
 import styled from 'styled-components';
 import {
   ResourceTypes,
@@ -187,7 +187,12 @@ const Search: React.FC<SearchProps> = ({ controller }): React.ReactElement => {
   const onChange = (value: string): void => {
     setInputValue(value);
 
-    searchAllResource(value).catch((_) => {});
+    searchAllResource(value).catch((_) => {
+      notification.error({
+        message: 'Error',
+        description: 'Error on search'
+      });
+    });
 
     if (
       currentResource !== null &&
@@ -241,7 +246,12 @@ const Search: React.FC<SearchProps> = ({ controller }): React.ReactElement => {
         if (event.type === 'click' && !suggestionButton) {
           setSuggestionButton(true);
           setDropdownOpen(false);
-          searchAllResource(inputValue).catch((_err) => {});
+          searchAllResource(inputValue).catch((_err) => {
+            notification.error({
+              message: 'Error',
+              description: 'Error on search'
+            });
+          });
         } else if (event.type === 'click' && suggestionButton) {
           setSuggestionButton(false);
           setDropdownOpen(true);
@@ -278,7 +288,7 @@ const Search: React.FC<SearchProps> = ({ controller }): React.ReactElement => {
   };
 
   return (
-    <SearchStyled theme={themeToken} activeSuggestions={suggestionButton}>
+    <SearchStyled activeSuggestions={suggestionButton}>
       <AutoComplete
         popupClassName="certain-category-search-dropdown"
         options={result}

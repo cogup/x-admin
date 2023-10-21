@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { ConfigProvider, theme } from 'antd';
-import Setup from './setup/Setup';
-import Admin from './Admin';
+import Setup from './views/Setup';
+import Admin from './views/Admin';
 import { useDataSync } from './utils/sync';
 
 const { defaultAlgorithm, darkAlgorithm } = theme;

@@ -34,7 +34,6 @@ const DynamicInput: React.FC<DynamicInputProps> = ({
   disabled,
   label
 }) => {
-  console.log(defaultValue);
   if (schema == null) {
     return null;
   }

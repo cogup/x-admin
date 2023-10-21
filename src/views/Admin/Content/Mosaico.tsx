@@ -1,11 +1,15 @@
 import React, { useEffect } from 'react';
 import { Row, Col, Card, Layout } from 'antd';
-import { DynamicIcon, Header } from '../ui';
-import { getIconSuggestion, capitalizeFirstLetter } from '../utils';
-import { ResourceTypes, type Controller, type Resource } from '../controller';
+import { DynamicIcon, Header } from '../../../ui';
+import { getIconSuggestion, capitalizeFirstLetter } from '../../../utils';
+import {
+  ResourceTypes,
+  type Controller,
+  type Resource
+} from '../../../controller';
 import { useNavigate } from 'react-router-dom';
-import { type IconType } from '../ui/iconTypes';
-import { useIsMobile } from '../use';
+import { type IconType } from '../../../ui/iconTypes';
+import { useIsMobile } from '../../../use';
 
 interface MosaicoProps {
   groupName: string;

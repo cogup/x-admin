@@ -1,13 +1,10 @@
+import React from 'react';
 import { LogoutOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, theme } from 'antd';
-import React from 'react';
 import { useDataSync } from '../utils/sync';
 
 const ExitButton = () => {
   const { data, updateData } = useDataSync();
-  const {
-    token: { colorTextBase }
-  } = theme.useToken();
 
   return (
     <Popconfirm
@@ -28,8 +25,7 @@ const ExitButton = () => {
         style={{
           background: 'transparent',
           border: 'none',
-          boxShadow: 'none',
-          color: colorTextBase
+          boxShadow: 'none'
         }}
       />
     </Popconfirm>

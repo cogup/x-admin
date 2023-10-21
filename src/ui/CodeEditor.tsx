@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import UiwCodeEditor from '@uiw/react-textarea-code-editor';
+import { theme } from 'antd';
 
 interface CodeEditorProps {
   defaultValue?: string;
@@ -9,6 +10,8 @@ interface CodeEditorProps {
 export const CodeEditor = (props: CodeEditorProps): React.ReactElement => {
   const [code, setCode] = React.useState(props.defaultValue ?? '');
   const [language, setLanguage] = React.useState<string | undefined>(undefined);
+
+  const { token } = theme.useToken();
 
   useEffect(() => {
     if (props.onChange) {
@@ -33,7 +36,10 @@ export const CodeEditor = (props: CodeEditorProps): React.ReactElement => {
       minHeight={200}
       style={{
         fontSize: 12,
-        backgroundColor: '#001529',
+        backgroundColor: token.colorBgSpotlight,
+        borderRadius: token.borderRadius,
+        borderColor: token.colorBorder,
+        border: '1px solid',
         fontFamily:
           'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace'
       }}

@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import { List, Skeleton, Switch, Typography, theme } from 'antd';
-import { StepProps } from '../components/Steps';
+import { List, Switch, Typography, theme } from 'antd';
+import { StepProps } from '../../components/Steps';
 import styled from 'styled-components';
-import { OpenAPI, Operation, PathItem } from '../controller/openapi';
-import { Methods, ResourceTypes } from '../controller';
-import { AdminData } from '../controller/xadmin';
+import { OpenAPI, Operation, PathItem } from '../../controller/openapi';
+import { Methods, ResourceTypes } from '../../controller';
+import { AdminData } from '../../controller/xadmin';
 
 const { Text, Title } = Typography;
 

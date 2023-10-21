@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
-import ListItems from './views/ListItems';
-import ItemForm from './views/ItemForm';
-import ItemView from './views/ItemView';
-import Mosaico from './views/Mosaico';
+import ListItems from './Content/ListItems';
+import ItemForm from './Content/ItemForm';
+import ItemView from './Content/ItemView';
+import Mosaico from './Content/Mosaico';
 import { Layout, theme, Breadcrumb, notification } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
-import MenuGroups from './components/Sidebar';
-import { type Controller, ControllerBuilder } from './controller';
-import Search from './components/Search';
-import { type Resource, ResourceTypes } from './controller/resources';
-import Swagger from './views/Swagger';
-import { useIsMobile } from './use';
-import GlobalHeader from './components/GlobalHeader';
-import { useDataSync } from './utils/sync';
+import MenuGroups from '../../components/Sidebar';
+import { type Controller, ControllerBuilder } from '../../controller';
+import Search from '../../components/Search';
+import { type Resource, ResourceTypes } from '../../controller/resources';
+import Swagger from './Content/Swagger';
+import { useIsMobile } from '../../use';
+import GlobalHeader from '../../components/GlobalHeader';
+import { useDataSync } from '../../utils/sync';
 
 const { Content: ContentLayout } = Layout;
 
@@ -66,13 +66,8 @@ const customTheme = {
   }
 };
 
-const Content = ({
-  children,
-  background
-}: ContentProps): React.ReactElement => {
-  const {
-    token: { colorBgBase }
-  } = theme.useToken();
+const Content = ({ children }: ContentProps): React.ReactElement => {
+  const { token } = theme.useToken();
 
   return (
     <ContentLayout
@@ -81,7 +76,7 @@ const Content = ({
         minHeight: 'auto',
         marginBottom: 24,
         borderRadius: customTheme.token.borderRadiusLG,
-        backgroundColor: background ? colorBgBase : 'transparent'
+        backgroundColor: token.colorBgContainer
       }}
     >
       {children}
@@ -97,6 +92,8 @@ const Admin = (): React.ReactElement => {
   const location = useLocation();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
+
+  const { token } = theme.useToken();
 
   useEffect(() => {
     if (data.specification === undefined) {
@@ -241,7 +238,14 @@ const Admin = (): React.ReactElement => {
 
     const others = breadcrumb.slice(1);
 
-    const items = [
+    interface Items {
+      key: string;
+      title: string;
+      onClick?: any;
+      path: string;
+    }
+
+    const items: Items[] = [
       {
         key: 'home',
         title: 'Admin',
@@ -260,7 +264,6 @@ const Admin = (): React.ReactElement => {
       items.push({
         key: item,
         title: item,
-        onClick: () => {},
         path: ''
       });
     });
@@ -303,7 +306,7 @@ const Admin = (): React.ReactElement => {
           <Layout
             style={{
               height: '100%',
-              backgroundColor: '#001529',
+              backgroundColor: token.colorBgBase,
               flexDirection: 'column',
               width: '100%'
             }}
@@ -337,7 +340,7 @@ const Admin = (): React.ReactElement => {
         >
           <Search controller={controller} />
         </GlobalHeader>
-        <Layout style={{ height: '100%', backgroundColor: '#001529' }}>
+        <Layout style={{ height: '100%' }}>
           <MenuGroups controller={controller} />
           <Layout
             style={{

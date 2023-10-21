@@ -146,7 +146,7 @@ export class Resource implements ResourceData {
     return propiery;
   }
 
-  getApiPath(data?: ApiParams | null, validParams: boolean = true): string {
+  getApiPath(data?: ApiParams | null, validParams = true): string {
     let apiPath = this.apiPath;
 
     if (data?.params !== undefined) {
