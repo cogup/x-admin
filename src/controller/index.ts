@@ -1,7 +1,6 @@
 import { openapi, type ApiAdmin } from './xadmin';
 import axios, { type AxiosInstance } from 'axios';
 import { ResourceTypes, type Resource } from './resources';
-import { notification } from 'antd';
 export { ResourceTypes } from './resources';
 export type { Resource } from './resources';
 export { ApiAdmin, Methods } from './xadmin';
@@ -92,7 +91,6 @@ export class Controller {
     try {
       return this.getResource(groupName, resourceType);
     } catch (error) {
-      console.warn(error);
       return null;
     }
   }
@@ -134,7 +132,7 @@ export class Controller {
       return null;
     }
     const path = localPath.split('/');
-    const resourceName = this.resolveResourceName(path[2]);
+    const resourceName = path[2];
     const resourceType = path[path.length - 1] as ResourceTypes;
 
     try {

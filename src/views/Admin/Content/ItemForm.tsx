@@ -310,10 +310,11 @@ const ItemForm: React.FC<ItemFormProps> = (
   };
 
   const renderInput = (key: string): React.ReactNode => {
+    let count = 0;
     if (key in relationships) {
       return (
         <RelationshipInput
-          key={key}
+          key={count++}
           resource={relationships[key]}
           defaultValue={getDefaultValue(key)}
           onChange={(value: any): void => {
@@ -326,7 +327,7 @@ const ItemForm: React.FC<ItemFormProps> = (
     } else {
       return (
         <DynamicInput
-          key={key}
+          key={count++}
           label={formatName(key)}
           defaultValue={getDefaultValue(key)}
           onChange={(value: any): void => {
@@ -345,14 +346,14 @@ const ItemForm: React.FC<ItemFormProps> = (
     }
 
     return schemaKeys
-      .map((key): React.ReactNode => {
+      .map((key, index): React.ReactNode => {
         if (formType === ResourceTypes.CREATE && isDisabled(key)) {
           return null;
         }
 
         return (
           <Form.Item
-            key={key}
+            key={index}
             label={formatName(key)}
             tooltip={resourceAction.request?.properties?.[key]?.description}
             name={key}

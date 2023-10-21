@@ -42,7 +42,7 @@ const Mosaico: React.FC<MosaicoProps> = ({
         }
       />
       <Row gutter={[16, 16]} style={{ marginTop: '16px' }}>
-        {resources.map((resource) => {
+        {resources.map((resource, index) => {
           if (
             ![ResourceTypes.CREATE, ResourceTypes.LIST].includes(resource.type)
           ) {
@@ -55,7 +55,7 @@ const Mosaico: React.FC<MosaicoProps> = ({
           ) as IconType;
 
           return (
-            <Col key={resource.resourceName} span={12}>
+            <Col key={index} span={12}>
               <Card
                 onClick={() => {
                   handleClick(resource);
@@ -112,8 +112,8 @@ const Mosaicos: React.FC<MosaicosProps> = ({
         />
       </Row>
       <Row gutter={[16, 16]}>
-        {groups.map((groupName) => (
-          <Col key={groupName} span={boxSize}>
+        {groups.map((groupName, index) => (
+          <Col key={index} span={boxSize}>
             <Mosaico groupName={groupName} controller={controller} />
           </Col>
         ))}

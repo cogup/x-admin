@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { AutoComplete, Input, notification, theme } from 'antd';
-import styled from 'styled-components';
 import {
   ResourceTypes,
   type Controller,
@@ -12,38 +11,6 @@ import { useQuerystring } from '../use';
 import { AdminResourceReferencesType } from '../controller/xadmin';
 import { toPlural } from '../utils';
 
-interface StyleProps {
-  theme?: Record<string, string>;
-  activeSuggestions: boolean;
-}
-
-const SearchStyled = styled.div<StyleProps>`
-  display: flex;
-  flex: 1;
-  justify-content: flex-start;
-  align-items: center;
-  width: 400px;
-  margin-left: 2rem;
-
-  .search-input {
-    width: 400px;
-
-    ${(props): string => {
-      if (props.activeSuggestions === true) {
-        return `
-            button {
-              background-color: ${props.theme.colorPrimary as string};
-              svg {
-                color: ${props.theme.colorWhite as string};
-              }
-            }
-          `;
-      } else {
-        return '';
-      }
-    }}
-  }
-`;
 interface SearchProps {
   controller: Controller;
 }
@@ -63,8 +30,39 @@ const Search: React.FC<SearchProps> = ({ controller }): React.ReactElement => {
   const [suggestionButton, setSuggestionButton] = useState<boolean>(false);
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const [lastResource, setLastResource] = useState<Resource | null>(null);
-  const { token: themeToken } = theme.useToken();
   const params = useQuerystring();
+
+  const { token } = theme.useToken();
+
+  useEffect(() => {
+    const resourcesInners: Record<string, Resource> = {};
+    const resources = controller
+      .getAllGroupsName()
+      .map((groupName) => {
+        const resource = controller.getResourceSafe(
+          groupName,
+          ResourceTypes.SEARCH
+        );
+
+        if (resource === null) {
+          return null;
+        }
+
+        const inner = controller.getResourceSafe(groupName, ResourceTypes.READ);
+
+        if (inner === null) {
+          return null;
+        }
+
+        resourcesInners[groupName] = inner;
+        return resource;
+      })
+      .filter((resource): resource is Resource => resource !== null);
+
+    setSearchResourceInner(resourcesInners);
+
+    setSearchResource(resources);
+  }, []);
 
   useEffect(() => {
     const resource = controller.getCurrentResource(location.pathname);
@@ -72,21 +70,13 @@ const Search: React.FC<SearchProps> = ({ controller }): React.ReactElement => {
     if (
       resource === null ||
       resource === undefined ||
-      resource === lastResource
+      resource === currentResource
     ) {
       return;
     }
 
     setLastResource(currentResource);
     setCurrentResource(resource);
-    setDropdownOpen(false);
-    setSuggestionButton(false);
-    const searchParam =
-      resource?.getPropieriesReferencesType(
-        AdminResourceReferencesType.QUERY,
-        'search'
-      ) ?? 'q';
-    setInputValue(params[searchParam] ?? '');
 
     const existSearch =
       resource.type !== ResourceTypes.SEARCH
@@ -100,33 +90,20 @@ const Search: React.FC<SearchProps> = ({ controller }): React.ReactElement => {
       setAutoSuggestionActive(false);
       setSuggestionButton(true);
       setDropdownOpen(false);
+
+      const searchParam =
+        resource?.getPropertyReferencesType(
+          AdminResourceReferencesType.QUERY,
+          'search'
+        ) ?? 'q';
+
+      setInputValue(params[searchParam] ?? '');
+    } else {
+      setAutoSuggestionActive(true);
+      setDropdownOpen(false);
+      setSuggestionButton(false);
     }
-  }, [location.pathname]);
-
-  useEffect(() => {
-    const resourcesInners: Record<string, Resource> = {};
-    const resources = controller
-      .getAllGroupsName()
-      .map((groupName) => {
-        try {
-          const resource = controller.getResource(
-            groupName,
-            ResourceTypes.SEARCH
-          );
-          const inner = controller.getResource(groupName, ResourceTypes.READ);
-
-          resourcesInners[groupName] = inner;
-          return resource;
-        } catch (err) {
-          return null;
-        }
-      })
-      .filter((resource): resource is Resource => resource !== null);
-
-    setSearchResourceInner(resourcesInners);
-
-    setSearchResource(resources);
-  }, []);
+  }, [location]);
 
   function getTitle(resource: Resource, item: Params): string {
     if (resource.metadata !== undefined) {
@@ -288,11 +265,19 @@ const Search: React.FC<SearchProps> = ({ controller }): React.ReactElement => {
   };
 
   return (
-    <SearchStyled activeSuggestions={suggestionButton}>
+    <div
+      style={{
+        display: 'flex',
+        flex: 1,
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        width: '400px',
+        marginLeft: '2rem'
+      }}
+    >
       <AutoComplete
         popupClassName="certain-category-search-dropdown"
         options={result}
-        className="search-input"
         onChange={onChange}
         onSelect={handleSelect}
         value={inputValue}
@@ -300,15 +285,22 @@ const Search: React.FC<SearchProps> = ({ controller }): React.ReactElement => {
         open={dropdownOpen}
         onFocus={onFocus}
         onKeyUp={onKeyUp}
+        style={{
+          width: '400px'
+        }}
       >
         <Input.Search
           size="large"
           placeholder="Search..."
           onSearch={onEnterButtonClick}
           enterButton={textButton()}
+          style={{
+            backgroundColor: token.colorWhite,
+            color: token.colorPrimary
+          }}
         />
       </AutoComplete>
-    </SearchStyled>
+    </div>
   );
 };
 

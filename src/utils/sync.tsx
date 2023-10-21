@@ -18,7 +18,7 @@ interface DataSyncContextType {
 const DataSyncContext = createContext<DataSyncContextType>({
   data: defaultValue,
   updateData: (newData: DataSyncContextData): void => {
-    console.log('updateData not implemented');
+    console.warn('updateData not implemented');
   }
 });
 
@@ -33,8 +33,6 @@ export function DataSyncProvider({ children }: DataSyncProviderProps) {
       ? JSON.parse(localStorage.getItem('sync') as string)
       : defaultValue;
   const [data, setData] = useState(valueLoaded);
-
-  console.log(data);
 
   // Função para atualizar os dados
   const updateData = (newData: DataSyncContextData) => {

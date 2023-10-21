@@ -19,7 +19,7 @@ export const CodeEditor = (props: CodeEditorProps): React.ReactElement => {
     }
 
     const detect = detectLanguage(code);
-    console.log(detect);
+
     if (detect.score > 0.7) {
       setLanguage(detect.language);
     } else {

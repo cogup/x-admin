@@ -85,7 +85,7 @@ export class Resource implements ResourceData {
     const newBody: Record<string, any> = {};
 
     for (const key in body) {
-      const item = this.getPropieriesReferencesType(
+      const item = this.getPropertyReferencesType(
         AdminResourceReferencesType.BODY,
         key
       );
@@ -125,25 +125,23 @@ export class Resource implements ResourceData {
     }
   }
 
-  getPropieriesReferencesType(
+  getPropertyReferencesType(
     type: AdminResourceReferencesType,
-    propiery: string
+    property: string
   ): string {
     if (this.references == null) {
-      return propiery;
+      return property;
     }
 
     if (
       type === AdminResourceReferencesType.QUERY &&
       this.references?.query !== undefined &&
-      this.references.query[propiery] !== undefined
+      this.references.query[property] !== undefined
     ) {
-      return this.references.query[propiery] as string;
-    } else {
-      return propiery;
+      return this.references.query[property] as string;
     }
 
-    return propiery;
+    return property;
   }
 
   getApiPath(data?: ApiParams | null, validParams = true): string {
@@ -151,7 +149,7 @@ export class Resource implements ResourceData {
 
     if (data?.params !== undefined) {
       for (const key in data?.params) {
-        const item = this.getPropieriesReferencesType(
+        const item = this.getPropertyReferencesType(
           AdminResourceReferencesType.PARAMS,
           key
         );
@@ -200,7 +198,7 @@ export class Resource implements ResourceData {
 
     if (data?.params !== undefined) {
       for (const key in data?.params) {
-        const item = this.getPropieriesReferencesType(
+        const item = this.getPropertyReferencesType(
           AdminResourceReferencesType.PARAMS,
           key
         );
@@ -242,7 +240,7 @@ export class Resource implements ResourceData {
     let queryparams = '';
 
     for (const key in data) {
-      const item = this.getPropieriesReferencesType(
+      const item = this.getPropertyReferencesType(
         AdminResourceReferencesType.QUERY,
         key
       );

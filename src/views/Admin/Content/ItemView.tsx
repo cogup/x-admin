@@ -93,7 +93,7 @@ const ItemView: React.FC<ItemViewProps> = ({
   const renderItems = (): React.ReactElement[] | null => {
     if (data === null) return null;
 
-    return Object.entries(data).map(([key, value]) => {
+    return Object.entries(data).map(([key, value], index) => {
       const label = (
         <>
           <DynamicIcon iconName={getIconSuggestion(key) as IconType} />
@@ -102,7 +102,7 @@ const ItemView: React.FC<ItemViewProps> = ({
       );
 
       return (
-        <Descriptions.Item key={key} label={label}>
+        <Descriptions.Item key={index} label={label}>
           {renderLink(value)}
         </Descriptions.Item>
       );
@@ -184,7 +184,7 @@ const ItemView: React.FC<ItemViewProps> = ({
   };
 
   return (
-    <>
+    <Row>
       <Header
         title={resource.summary ?? resource.resourceName}
         subtitle={resource.apiPath}
@@ -201,7 +201,7 @@ const ItemView: React.FC<ItemViewProps> = ({
       {isMobile && (
         <WrapperButtonsMobile>{actionButton()}</WrapperButtonsMobile>
       )}
-    </>
+    </Row>
   );
 };
 

@@ -168,11 +168,11 @@ const Admin = (): React.ReactElement => {
 
     const allResources = controller.getAllResources();
 
-    allResources.forEach((resource) => {
+    allResources.forEach((resource, index) => {
       const path = resource.getLocalPath();
       routes.push(
         <Route
-          key={path}
+          key={index}
           path={path}
           element={
             <Content background={true}>
