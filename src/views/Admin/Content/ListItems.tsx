@@ -241,6 +241,7 @@ const ListItems: React.FC<ListItemsProps> = ({
     if (resourceDelete != null && selectedRowData.length > 0) {
       return (
         <Popconfirm
+          placement="left"
           title="Delete the task"
           description="Are you sure you want to delete the selected items?"
           icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
@@ -266,7 +267,10 @@ const ListItems: React.FC<ListItemsProps> = ({
     if (resourceCreate != null) {
       return (
         <Button type="primary" onClick={onClickCreate}>
-          Create new {resourceCreate.resourceName}
+          Create new{' '}
+          {controller
+            .resolveResourceName(resourceCreate.resourceName)
+            .toLowerCase()}
         </Button>
       );
     }
@@ -426,6 +430,7 @@ const ListItems: React.FC<ListItemsProps> = ({
               }}
             >
               <Popconfirm
+                placement="left"
                 title="Delete the task"
                 description="Are you sure to delete this task?"
                 icon={<QuestionCircleOutlined style={{ color: 'red' }} />}

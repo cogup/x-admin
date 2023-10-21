@@ -7,6 +7,7 @@ import styled from 'styled-components';
 
 const HeaderStyled = styled(Row)`
   margin-bottom: 1rem;
+  width: 100%;
 
   .title {
     display: flex;

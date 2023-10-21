@@ -154,11 +154,15 @@ const ItemView: React.FC<ItemViewProps> = ({
             }
             style={{ marginRight: '0.5rem' }}
           >
-            Edit {resourceUpdate.resourceName}
+            Edit{' '}
+            {controller
+              .resolveResourceName(resourceUpdate.resourceName)
+              .toLowerCase()}
           </Button>
         )}
         {resourceDelete && (
           <Popconfirm
+            placement="left"
             title="Delete the task"
             description="Are you sure you want to delete the selected items?"
             icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
@@ -194,7 +198,12 @@ const ItemView: React.FC<ItemViewProps> = ({
         typeName={resource.type}
       />
 
-      <Card title="Visualização do Item">
+      <Card
+        title="Visualização do Item"
+        style={{
+          width: '100%'
+        }}
+      >
         <Descriptions bordered>{renderItems()}</Descriptions>
       </Card>
 
