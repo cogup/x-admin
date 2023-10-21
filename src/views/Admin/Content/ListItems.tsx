@@ -34,7 +34,6 @@ const WrapperTable = styled(Row)`
 `;
 
 const WrapperButtonsMobile = styled(Row)`
-  background-color: #fff;
   display: flex;
   justify-content: flex-end;
   padding: 1rem 0;

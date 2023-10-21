@@ -255,7 +255,7 @@ const Search: React.FC<SearchProps> = ({ controller }): React.ReactElement => {
 
   const textButton = (): string | undefined => {
     if (suggestionButton) {
-      const plural = toPlural(currentResource?.label ?? '');
+      const plural = toPlural(currentResource?.label ?? '').toLowerCase();
       return `in ${plural}`;
     }
 

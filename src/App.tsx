@@ -1,12 +1,15 @@
 import React, { useEffect } from 'react';
-import { ConfigProvider, theme } from 'antd';
+import { ConfigProvider, GlobalToken, theme } from 'antd';
 import Setup from './views/Setup';
 import Admin from './views/Admin';
-import { useDataSync } from './utils/sync';
+import { DataSyncContextData, useDataSync } from './utils/sync';
 import styled from 'styled-components';
 
 interface RootProps {
   colorPrimary: string;
+  backgroundImage?: string;
+  backgroundGradient?: boolean;
+  backgroundColor?: boolean;
 }
 
 const Root = styled.div<RootProps>`
@@ -34,11 +37,28 @@ const Root = styled.div<RootProps>`
     }
   }
 
-  background: url(https://images.unsplash.com/photo-1485470733090-0aae1788d5af?auto=format&fit=crop&q=80&w=1817&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: fixed;
+  ${({
+    colorPrimary,
+    backgroundImage,
+    backgroundGradient,
+    backgroundColor
+  }) => {
+    if (backgroundImage) {
+      return `
+      background: url(${backgroundImage});
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-attachment: fixed;
+      `;
+    }
+
+    if (backgroundGradient || backgroundColor) {
+      return `
+      background: ${colorPrimary};
+    `;
+    }
+  }}
 
   display: flex;
   flex-direction: column;
@@ -48,7 +68,8 @@ const Root = styled.div<RootProps>`
 `;
 
 interface GlassProps {
-  color?: string;
+  darkMode?: boolean;
+  backgroundGradient?: boolean;
 }
 
 const Glass = styled.div<GlassProps>`
@@ -56,16 +77,15 @@ const Glass = styled.div<GlassProps>`
   width: 100%;
   height: 100%;
 
-  ${({ color }) =>
-    color
-      ? `
-     background: linear-gradient(
-        135deg,
-        rgba(${color}, 1) 0%,
-        rgba(${color}, 0) 100%
-      ) !important;
-  `
-      : null}
+  ${({ darkMode, backgroundGradient }) => {
+    if (backgroundGradient) {
+      const color = darkMode ? '0, 0, 0' : '255, 255, 255';
+
+      return `
+        background: linear-gradient(135deg, rgba(${color}, 1) 0%, rgba(${color}, 0.2) 100%);
+      `;
+    }
+  }}
 `;
 
 const { defaultAlgorithm, darkAlgorithm } = theme;
@@ -88,28 +108,43 @@ const customThemeLight = {
   algorithm: defaultAlgorithm
 };
 
-const customThemeDark = {
-  token: {
-    colorBgLayout: 'transparent',
-    colorBgContainer: 'rgba(22, 22, 22, 0.95)'
-  },
-  components: {
-    Layout: {
-      siderBg: 'transparent',
-      headerBg: 'transparent'
-    },
-    Menu: {
-      subMenuItemBg: 'transparent',
-      itemBg: 'transparent'
-    }
-  },
-  algorithm: darkAlgorithm
+const defineColorBgLayoutDark = (
+  data: DataSyncContextData,
+  token: GlobalToken
+) => {
+  if (data.backgroundImage) {
+    return 'transparent';
+  }
+
+  if (data.backgroundGradient) {
+    return 'transparent';
+  }
+
+  return '#0f0f0f';
 };
 
 const App = (): React.ReactElement => {
   const { data } = useDataSync();
 
   const { token } = theme.useToken();
+
+  const customThemeDark = {
+    token: {
+      colorBgLayout: defineColorBgLayoutDark(data, token),
+      colorBgContainer: 'rgba(22, 22, 22, 0.95)'
+    },
+    components: {
+      Layout: {
+        siderBg: 'transparent',
+        headerBg: 'transparent'
+      },
+      Menu: {
+        subMenuItemBg: 'transparent',
+        itemBg: 'transparent'
+      }
+    },
+    algorithm: darkAlgorithm
+  };
 
   const [customTheme, setCustomTheme] = React.useState(
     data.darkMode ? customThemeDark : customThemeLight
@@ -120,12 +155,26 @@ const App = (): React.ReactElement => {
   }, [data]);
 
   return (
-    <Root colorPrimary={token.colorPrimary}>
-      <Glass color={data.darkMode ? '0, 0, 0' : '255, 255, 255'}>
+    <Root
+      colorPrimary={token.colorPrimary}
+      backgroundImage={data.backgroundImage}
+      backgroundGradient={data.backgroundGradient}
+      backgroundColor={data.backgroundColor}
+    >
+      {data.backgroundImage || data.backgroundGradient ? (
+        <Glass
+          darkMode={data.darkMode}
+          backgroundGradient={data.backgroundGradient}
+        >
+          <ConfigProvider theme={customTheme}>
+            {data.specification === undefined ? <Setup /> : <Admin />}
+          </ConfigProvider>
+        </Glass>
+      ) : (
         <ConfigProvider theme={customTheme}>
           {data.specification === undefined ? <Setup /> : <Admin />}
         </ConfigProvider>
-      </Glass>
+      )}
     </Root>
   );
 };

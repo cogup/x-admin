@@ -126,12 +126,24 @@ const Admin = (): React.ReactElement => {
       <Route
         key="home"
         path="/"
-        element={<Mosaico controller={controller} />}
+        element={
+          isMobile ? (
+            <Content>
+              <Mosaico controller={controller} />
+            </Content>
+          ) : (
+            <Mosaico controller={controller} />
+          )
+        }
       />,
       <Route
         key="docs"
         path="/docs"
-        element={<Swagger controller={controller} />}
+        element={
+          <Content>
+            <Swagger controller={controller} />
+          </Content>
+        }
       />
     ];
 
