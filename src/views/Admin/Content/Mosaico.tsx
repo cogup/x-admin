@@ -103,7 +103,7 @@ const Mosaicos: React.FC<MosaicosProps> = ({
   }, [isMobile]);
 
   return (
-    <Layout>
+    <div>
       <Row>
         <Header
           title={controller.apiAdmin.info.title}
@@ -118,7 +118,7 @@ const Mosaicos: React.FC<MosaicosProps> = ({
           </Col>
         ))}
       </Row>
-    </Layout>
+    </div>
   );
 };
 

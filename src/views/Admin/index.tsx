@@ -4,7 +4,9 @@ import ListItems from './Content/ListItems';
 import ItemForm from './Content/ItemForm';
 import ItemView from './Content/ItemView';
 import Mosaico from './Content/Mosaico';
-import { Layout, theme, Breadcrumb, notification } from 'antd';
+import Content from './Content';
+import Breadcrumb from '../../components/Breadcrumb';
+import { Layout, theme, notification } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import MenuGroups from '../../components/Sidebar';
@@ -15,8 +17,6 @@ import Swagger from './Content/Swagger';
 import { useIsMobile } from '../../use';
 import GlobalHeader from '../../components/GlobalHeader';
 import { useDataSync } from '../../utils/sync';
-
-const { Content: ContentLayout } = Layout;
 
 const LoadingPage = styled.div`
   display: flex;
@@ -54,35 +54,6 @@ const Root = styled.div`
     }
   }
 `;
-
-interface ContentProps {
-  background?: boolean;
-  children: React.ReactNode;
-}
-
-const customTheme = {
-  token: {
-    borderRadiusLG: 10
-  }
-};
-
-const Content = ({ children }: ContentProps): React.ReactElement => {
-  const { token } = theme.useToken();
-
-  return (
-    <ContentLayout
-      style={{
-        padding: 24,
-        minHeight: 'auto',
-        marginBottom: 24,
-        borderRadius: customTheme.token.borderRadiusLG,
-        backgroundColor: token.colorBgContainer
-      }}
-    >
-      {children}
-    </ContentLayout>
-  );
-};
 
 const Admin = (): React.ReactElement => {
   const { data } = useDataSync();
@@ -215,67 +186,6 @@ const Admin = (): React.ReactElement => {
     return routes;
   };
 
-  const gotToBreadcrumb = (path: string): any => {
-    return (e: any): void => {
-      e.preventDefault();
-      navigate(path);
-    };
-  };
-
-  const renderBreadcrumb = (): React.ReactNode | null => {
-    if (breadcrumb == null || breadcrumb.length === 0) {
-      return null;
-    }
-
-    const resourceList = controller.getResourceSafe(
-      breadcrumb[0].toLowerCase(),
-      ResourceTypes.LIST
-    );
-
-    if (resourceList === null) {
-      return null;
-    }
-
-    const others = breadcrumb.slice(1);
-
-    interface Items {
-      key: string;
-      title: string;
-      onClick?: any;
-      path: string;
-    }
-
-    const items: Items[] = [
-      {
-        key: 'home',
-        title: 'Admin',
-        onClick: gotToBreadcrumb('/'),
-        path: ''
-      },
-      {
-        key: breadcrumb[0],
-        title: breadcrumb[0],
-        onClick: gotToBreadcrumb(resourceList.getLocalPath()),
-        path: ''
-      }
-    ];
-
-    others.forEach((item) => {
-      items.push({
-        key: item,
-        title: item,
-        path: ''
-      });
-    });
-
-    return (
-      <Breadcrumb
-        style={{ margin: '16px 0', cursor: 'pointer' }}
-        items={items}
-      />
-    );
-  };
-
   const itemsNav = [
     {
       label: 'Docs',
@@ -317,11 +227,10 @@ const Admin = (): React.ReactElement => {
               <Layout
                 style={{
                   padding: '0',
-                  overflow: 'auto',
-                  borderRadius: customTheme.token.borderRadiusLG
+                  overflow: 'auto'
                 }}
               >
-                {renderBreadcrumb()}
+                <Breadcrumb breadcrumb={breadcrumb} controller={controller} />
                 <Routes>{renderRoutes()}</Routes>
               </Layout>
             )}
@@ -345,11 +254,10 @@ const Admin = (): React.ReactElement => {
           <Layout
             style={{
               padding: '0 2rem',
-              overflow: 'auto',
-              borderRadius: customTheme.token.borderRadiusLG
+              overflow: 'auto'
             }}
           >
-            {renderBreadcrumb()}
+            <Breadcrumb breadcrumb={breadcrumb} controller={controller} />
             <Routes>{renderRoutes()}</Routes>
           </Layout>
         </Layout>
