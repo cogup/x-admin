@@ -118,7 +118,7 @@ const GlobalHeader = ({
   return (
     <CustomHeader
       style={{
-        backgroundColor: token.colorBgBase
+        backgroundColor: token.colorBgContainer
       }}
     >
       <Logo
