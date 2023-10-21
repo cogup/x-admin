@@ -10,20 +10,24 @@ export function useIsMobile(): boolean {
   return useIsWindowsSize(768);
 }
 
-export function useIsLaptop(): boolean {
+export function useIsTablet(): boolean {
   return useIsWindowsSize(1024);
 }
 
+export function useIsDesktop(): boolean {
+  return useIsWindowsSize(1280);
+}
+
 export function useIsWindowsSize(size: number): boolean {
-  const [isMobile, setIsMobile] = useState(window.innerWidth < size);
+  const [grid, setGrid] = useState(window.innerWidth < size);
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < size);
+      setGrid(window.innerWidth < size);
     };
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  return isMobile;
+  return grid;
 }

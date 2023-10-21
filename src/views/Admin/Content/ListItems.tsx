@@ -9,7 +9,7 @@ import {
   Tooltip,
   notification
 } from 'antd';
-import { useIsLaptop, useIsMobile, useQuerystring } from '../../../use';
+import { useIsTablet, useIsMobile, useQuerystring } from '../../../use';
 import {
   DeleteOutlined,
   EditOutlined,
@@ -74,7 +74,7 @@ const ListItems: React.FC<ListItemsProps> = ({
   const [resourceUpdate, setResourceUpdate] = useState<Resource | null>(null);
   const [resourceRead, setResourceRead] = useState<Resource | null>(null);
   const isMobile = useIsMobile();
-  const isLaptop = useIsLaptop();
+  const isLaptop = useIsTablet();
 
   useEffect((): void => {
     const generateColumns = (): void => {

@@ -9,7 +9,12 @@ import {
 } from '../../../controller';
 import { useNavigate } from 'react-router-dom';
 import { type IconType } from '../../../ui/iconTypes';
-import { useIsMobile } from '../../../use';
+import {
+  useIsTablet,
+  useIsMobile,
+  useIsWindowsSize,
+  useIsDesktop
+} from '../../../use';
 
 interface MosaicoProps {
   groupName: string;
@@ -92,15 +97,18 @@ const Mosaicos: React.FC<MosaicosProps> = ({
 }): React.ReactElement => {
   const groups = controller.getAllGroupsName();
   const isMobile = useIsMobile();
+  const isDesktop = useIsDesktop();
   const [boxSize, setBoxSize] = React.useState(6);
 
   useEffect(() => {
     if (isMobile) {
       setBoxSize(24);
+    } else if (isDesktop) {
+      setBoxSize(12);
     } else {
       setBoxSize(6);
     }
-  }, [isMobile]);
+  }, [isMobile, isDesktop]);
 
   return (
     <div>
