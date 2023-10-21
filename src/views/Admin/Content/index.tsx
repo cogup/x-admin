@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, theme } from 'antd';
+import { ConfigProvider, Layout, theme } from 'antd';
 
 const { Content: ContentLayout } = Layout;
 

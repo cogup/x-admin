@@ -9,13 +9,6 @@ import ExitButton from './ExitButton';
 
 const { Header } = Layout;
 
-const CustomHeader = styled(Header)`
-  display: flex;
-  justify-content: flex-start;
-  padding-inline: 0em;
-  align-items: center;
-`;
-
 const CustomHeaderMobile = styled(Header)`
   display: flex;
   justify-content: space-between;
@@ -116,45 +109,60 @@ const GlobalHeader = ({
   }
 
   return (
-    <CustomHeader
+    <Header
       style={{
-        backgroundColor: token.colorBgContainer
+        position: 'sticky',
+        top: 0,
+        zIndex: 1,
+        width: '100vw',
+        display: 'flex',
+        alignItems: 'center',
+        padding: '0'
       }}
     >
-      <Logo
-        style={{
-          width: '200px'
-        }}
-      >
-        <Link to={'/'}>
-          <Typography.Title level={1} style={{ color: token.colorTextBase }}>
-            {title}
-          </Typography.Title>
-        </Link>
-      </Logo>
       <div
         style={{
-          flex: 2
+          display: 'flex',
+          alignItems: 'center',
+          width: '100vw',
+          padding: '0 1em'
         }}
       >
-        {children}
+        <Logo
+          style={{
+            width: '200px'
+          }}
+        >
+          <Link to={'/'}>
+            <Typography.Title level={1} style={{ color: token.colorTextBase }}>
+              {title}
+            </Typography.Title>
+          </Link>
+        </Logo>
+        <div
+          style={{
+            flex: 2
+          }}
+        >
+          {children}
+        </div>
+        <Menu
+          mode="horizontal"
+          items={itemsNav}
+          selectedKeys={[currentPathname]}
+          style={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'flex-end'
+          }}
+        />
+        <Bookmarks>
+          <ExitButton />
+          <ToggleDarkMode />
+        </Bookmarks>
       </div>
-      <Menu
-        mode="horizontal"
-        items={itemsNav}
-        selectedKeys={[currentPathname]}
-        style={{
-          flex: 1,
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'flex-end'
-        }}
-      />
-      <Bookmarks>
-        <ExitButton />
-        <ToggleDarkMode />
-      </Bookmarks>
-    </CustomHeader>
+    </Header>
   );
 };
 

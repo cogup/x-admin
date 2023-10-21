@@ -295,7 +295,6 @@ const Search: React.FC<SearchProps> = ({ controller }): React.ReactElement => {
           onSearch={onEnterButtonClick}
           enterButton={textButton()}
           style={{
-            backgroundColor: token.colorWhite,
             color: token.colorPrimary
           }}
         />
