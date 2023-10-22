@@ -111,22 +111,13 @@ const Mosaicos: React.FC<MosaicosProps> = ({
   }, [isMobile, isDesktop]);
 
   return (
-    <div>
-      <Row>
-        <Header
-          title={controller.apiAdmin.info.title}
-          subtitle={controller.server}
-          description={controller.apiAdmin.info.description}
-        />
-      </Row>
-      <Row gutter={[16, 16]}>
-        {groups.map((groupName, index) => (
-          <Col key={index} span={boxSize}>
-            <Mosaico groupName={groupName} controller={controller} />
-          </Col>
-        ))}
-      </Row>
-    </div>
+    <Row gutter={[16, 16]}>
+      {groups.map((groupName, index) => (
+        <Col key={index} span={boxSize}>
+          <Mosaico groupName={groupName} controller={controller} />
+        </Col>
+      ))}
+    </Row>
   );
 };
 

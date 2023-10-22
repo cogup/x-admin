@@ -3,6 +3,7 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import AppSync from './AppSync';
 import 'antd/dist/reset.css';
+import './index.css';
 import { createRoot } from 'react-dom/client';
 
 const container = document.getElementById('root');

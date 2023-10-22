@@ -38,22 +38,6 @@ interface WrapperContentProps {
 
 const WrapperContent = styled(Layout)<WrapperContentProps>`
   // customize scrollbar
-  &::-webkit-scrollbar {
-    width: 0.5rem;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: ${({ color }) => color};
-    border-radius: 0.5rem;
-  }
-
-  &::-webkit-scrollbar-thumb:hover {
-    background: ${({ color }) => color};
-  }
 `;
 
 const Admin = (): React.ReactElement => {

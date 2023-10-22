@@ -144,6 +144,9 @@ const Sidebar: React.FC<SidebarProps> = ({
       onCollapse={(value): void => {
         setCollapsed(value);
       }}
+      style={{
+        marginTop: 40
+      }}
     >
       {renderMenu({
         height: '100%',

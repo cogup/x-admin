@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
   Card,
-  Descriptions,
   Row,
   Col,
   Spin,
@@ -17,7 +16,11 @@ import {
 } from '../../../controller';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { DynamicIcon, Header } from '../../../ui';
-import { DeleteOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import {
+  DeleteOutlined,
+  EditFilled,
+  QuestionCircleOutlined
+} from '@ant-design/icons';
 import { getIconSuggestion } from '../../../utils';
 import { IconType } from '../../../ui/iconTypes';
 import { useIsMobile } from '../../../use';
@@ -27,6 +30,12 @@ const WrapperButtonsMobile = styled(Row)`
   display: flex;
   justify-content: space-between;
   padding: 1rem 0;
+  width: 100%;
+
+  button {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
 `;
 
 interface ItemViewProps {
@@ -126,7 +135,9 @@ const ItemView: React.FC<ItemViewProps> = ({
       <>
         {resourceUpdate && (
           <Button
+            icon={<EditFilled />}
             type="primary"
+            size={isMobile ? 'large' : 'middle'}
             onClick={() =>
               navigate(
                 resourceUpdate.getLocalPath({
@@ -135,12 +146,7 @@ const ItemView: React.FC<ItemViewProps> = ({
               )
             }
             style={{ marginRight: '0.5rem' }}
-          >
-            Edit{' '}
-            {controller
-              .resolveResourceName(resourceUpdate.resourceName)
-              .toLowerCase()}
-          </Button>
+          />
         )}
         {resourceDelete && (
           <Popconfirm
@@ -159,10 +165,9 @@ const ItemView: React.FC<ItemViewProps> = ({
             <Button
               type="primary"
               danger={true}
+              size={isMobile ? 'large' : 'middle'}
               icon={<DeleteOutlined style={{ fontSize: '1.0rem' }} />}
-            >
-              Delete selected
-            </Button>
+            />
           </Popconfirm>
         )}
       </>

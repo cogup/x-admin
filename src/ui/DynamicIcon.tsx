@@ -18,13 +18,26 @@ const DynamicIcon: FC<DynamicIconProps> = ({ iconName, style }) => {
         throw new Error(`Icon "${iconName}" not found.`);
       }
 
-      return { default: Icon as AntdIconComponent };
+      const IconBuilded = Icon as AntdIconComponent;
+
+      const IconComp = () => (
+        <span
+          style={{
+            ...style,
+            padding: '0 0.3rem'
+          }}
+        >
+          <IconBuilded />
+        </span>
+      );
+
+      return { default: IconComp };
     });
   }, [iconName]);
 
   return (
-    <Suspense fallback={<div>... </div>}>
-      <IconComponent style={style} />
+    <Suspense fallback={<div>...</div>}>
+      <IconComponent />
     </Suspense>
   );
 };

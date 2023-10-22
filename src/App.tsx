@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import Glass from './ui/Glass';
 
 interface RootProps {
+  colorBase?: string;
   colorPrimary: string;
   backgroundImage?: string;
   backgroundGradient?: boolean;
@@ -66,28 +67,26 @@ const Root = styled.div<RootProps>`
   height: 100%;
   width: 100%;
   overflow: hidden;
+
+  *::-webkit-scrollbar {
+    width: 0.5rem;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background: ${({ colorBase }) => colorBase};
+    border-radius: 0.5rem;
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+    background: ${({ colorBase }) => colorBase};
+  }
 `;
 
 const { defaultAlgorithm, darkAlgorithm } = theme;
-
-const customThemeLight = {
-  token: {
-    colorBgLayout: 'transparent',
-    colorBgContainer: 'rgba(255, 255, 255, 0.9)',
-    colorTextBase: '#222'
-  },
-  components: {
-    Layout: {
-      siderBg: 'transparent',
-      headerBg: 'transparent'
-    },
-    Menu: {
-      subMenuItemBg: 'transparent',
-      itemBg: 'transparent'
-    }
-  },
-  algorithm: defaultAlgorithm
-};
 
 const defineColorBgLayoutDark = (
   data: DataSyncContextData,
@@ -109,10 +108,31 @@ const App = (): React.ReactElement => {
 
   const { token } = theme.useToken();
 
+  const customThemeLight = {
+    token: {
+      colorBgLayout: 'transparent',
+      colorBgContainer: 'rgba(255, 255, 255, 0.9)',
+      colorTextBase: '#222',
+      colorPrimary: token.colorPrimary
+    },
+    components: {
+      Layout: {
+        siderBg: 'transparent',
+        headerBg: 'transparent'
+      },
+      Menu: {
+        subMenuItemBg: 'transparent',
+        itemBg: 'transparent'
+      }
+    },
+    algorithm: defaultAlgorithm
+  };
+
   const customThemeDark = {
     token: {
       colorBgLayout: defineColorBgLayoutDark(data, token),
-      colorBgContainer: 'rgba(22, 22, 22, 0.95)'
+      colorBgContainer: 'rgba(22, 22, 22, 0.95)',
+      colorPrimary: token.colorPrimary
     },
     components: {
       Layout: {
@@ -137,7 +157,8 @@ const App = (): React.ReactElement => {
 
   return (
     <Root
-      colorPrimary={token.colorPrimary}
+      colorBase={customTheme.token.colorBgContainer}
+      colorPrimary={customTheme.token.colorPrimary}
       backgroundImage={data.backgroundImage}
       backgroundGradient={data.backgroundGradient}
       backgroundColor={data.backgroundColor}

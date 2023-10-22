@@ -108,7 +108,12 @@ const Header: React.FC<HeaderProps> = ({
                 <Row>
                   <Col className="title">
                     {icon !== undefined ? (
-                      <DynamicIcon iconName={icon} />
+                      <DynamicIcon
+                        iconName={icon}
+                        style={{
+                          color: token.colorText
+                        }}
+                      />
                     ) : null}
                     <Typography.Title level={4} style={{ marginBottom: 0 }}>
                       {title}
