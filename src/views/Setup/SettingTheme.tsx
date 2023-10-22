@@ -71,6 +71,17 @@ const SettingTheme = (props: StepProps): React.ReactElement => {
       </Space>
 
       <Space direction="vertical">
+        <Title level={4}>Chose a theme</Title>
+        <Space direction="vertical">
+          <ColorPicker
+            showText
+            defaultValue={token.colorPrimary}
+            onChangeComplete={onChangeColor}
+          />
+        </Space>
+      </Space>
+
+      <Space direction="vertical">
         <Title level={4} style={{ marginTop: '1rem' }}>
           Would you like to use an image as a background?
         </Title>
