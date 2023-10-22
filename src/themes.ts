@@ -58,27 +58,31 @@ const fixTheme = (theme: CustomThemeNoFix): CustomTheme => {
 const defaultPrimaryColor = '#8F00D3';
 
 const getThemes = (data: DataSyncContextData): Themes => {
+  const colorPrimary = data.primaryColor || defaultPrimaryColor;
+
+  const colorL = color(colorPrimary);
   const light = {
     token: {
+      colorWhite: colorL.isDark() ? '#fff' : '#555',
       colorBgLayout: 'transparent',
       colorBgContainer: 'rgba(255, 255, 255, 0.9)',
       colorTextBase: '#222',
-      colorPrimary: data.primaryColor || defaultPrimaryColor,
-      colorLink: data.primaryColor || defaultPrimaryColor,
-      colorInfo:
-        data.primaryColor || color(defaultPrimaryColor).lighten(0.6).hex()
+      colorPrimary: data.primaryColor || colorPrimary,
+      colorLink: data.primaryColor || colorPrimary,
+      colorInfo: data.primaryColor || colorL.lighten(0.6).hex()
     },
     algorithm: theme.defaultAlgorithm
   };
+
+  const colorD = color(colorPrimary).darken(0.5);
 
   const dark = {
     token: {
       colorBgLayout: defineColorBgLayoutDark(data),
       colorBgContainer: 'rgba(22, 22, 22, 0.95)',
       colorTextBase: '#fff',
-      colorPrimary: data.primaryColor || defaultPrimaryColor,
-      colorLink:
-        data.primaryColor || color(defaultPrimaryColor).lighten(0.6).hex()
+      colorPrimary: data.primaryColor || colorD.hex(),
+      colorLink: data.primaryColor || colorD.darken(0.6).hex()
     },
     algorithm: theme.darkAlgorithm
   };
