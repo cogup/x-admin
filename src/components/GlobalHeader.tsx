@@ -9,6 +9,26 @@ import ExitButton from './ExitButton';
 
 const { Header } = Layout;
 
+interface CustomHeaderProps {
+  overlap?: boolean;
+}
+
+const CustomHeader = styled(Header)<CustomHeaderProps>`
+  //animation: fadeInSteps 1s forwards;
+  ${(props) => props.overlap && 'animation: fadeInSteps 0.6s forwards;'}
+
+  @keyframes fadeInSteps {
+    0% {
+      backdrop-filter: blur(0px) opacity(0%);
+      box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.1);
+    }
+    100% {
+      backdrop-filter: blur(5px) opacity(100%);
+      box-shadow: 0 0px 10px 0 rgba(0, 0, 0, 0.1);
+    }
+  }
+`;
+
 const CustomHeaderMobile = styled(Header)`
   display: flex;
   justify-content: space-between;
@@ -46,18 +66,22 @@ interface GlobalHeaderProps {
   children?: React.ReactNode;
   onMenuActive?: (state: boolean) => void;
   itemsNav?: Array<any>;
+  overlap?: boolean;
 }
 
 const GlobalHeader = ({
   title,
   children,
   itemsNav,
-  onMenuActive
+  onMenuActive,
+  overlap
 }: GlobalHeaderProps): React.ReactElement => {
   const [currentPathname, setCurrentPathname] = useState<string>('');
   const location = useLocation();
   const isMobile = useIsMobile();
   const [menuActived, setMenuActived] = useState<boolean>(false);
+
+  console.log(overlap);
 
   const { token } = theme.useToken();
 
@@ -107,17 +131,18 @@ const GlobalHeader = ({
       </CustomHeaderMobile>
     );
   }
-
   return (
-    <Header
+    <CustomHeader
+      overlap={overlap}
       style={{
-        position: 'sticky',
+        position: 'fixed',
         top: 0,
         zIndex: 1,
         width: '100vw',
         display: 'flex',
         alignItems: 'center',
-        padding: '0'
+        padding: '0',
+        height: 63
       }}
     >
       <div
@@ -162,7 +187,7 @@ const GlobalHeader = ({
           <ToggleDarkMode />
         </Bookmarks>
       </div>
-    </Header>
+    </CustomHeader>
   );
 };
 

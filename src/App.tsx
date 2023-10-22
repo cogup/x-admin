@@ -4,6 +4,7 @@ import Setup from './views/Setup';
 import Admin from './views/Admin';
 import { DataSyncContextData, useDataSync } from './utils/sync';
 import styled from 'styled-components';
+import Glass from './ui/Glass';
 
 interface RootProps {
   colorPrimary: string;
@@ -65,27 +66,6 @@ const Root = styled.div<RootProps>`
   height: 100%;
   width: 100%;
   overflow: hidden;
-`;
-
-interface GlassProps {
-  darkMode?: boolean;
-  backgroundGradient?: boolean;
-}
-
-const Glass = styled.div<GlassProps>`
-  backdrop-filter: blur(5px);
-  width: 100%;
-  height: 100%;
-
-  ${({ darkMode, backgroundGradient }) => {
-    if (backgroundGradient) {
-      const color = darkMode ? '0, 0, 0' : '255, 255, 255';
-
-      return `
-        background: linear-gradient(135deg, rgba(${color}, 1) 0%, rgba(${color}, 0.2) 100%);
-      `;
-    }
-  }}
 `;
 
 const { defaultAlgorithm, darkAlgorithm } = theme;
@@ -165,6 +145,7 @@ const App = (): React.ReactElement => {
         <Glass
           darkMode={data.darkMode}
           backgroundGradient={data.backgroundGradient}
+          backgroundUrl={data.backgroundImage !== undefined}
         >
           <ConfigProvider theme={customTheme}>
             {data.specification === undefined ? <Setup /> : <Admin />}

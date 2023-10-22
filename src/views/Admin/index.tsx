@@ -17,6 +17,7 @@ import Swagger from './Content/Swagger';
 import { useIsMobile } from '../../use';
 import GlobalHeader from '../../components/GlobalHeader';
 import { useDataSync } from '../../utils/sync';
+import { use } from 'marked';
 
 const LoadingPage = styled.div`
   display: flex;
@@ -37,9 +38,11 @@ const Admin = (): React.ReactElement => {
   const [controller, setController] = useState<Controller>();
   const [breadcrumb, setBreadcrumb] = useState<string[]>([]);
   const [menuActive, setMenuActive] = useState<boolean>(false);
+  const [contentOverlap, setContentOverlap] = useState<boolean>(false);
   const location = useLocation();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
+  const contentRef = React.useRef<HTMLDivElement>(null);
 
   const { token } = theme.useToken();
 
@@ -77,6 +80,28 @@ const Admin = (): React.ReactElement => {
       setBreadcrumb([]);
     }
   }, [location, controller]);
+
+  useEffect(() => {
+    if (contentRef.current === null) {
+      return;
+    }
+
+    const handleScroll = () => {
+      const scrollTop = contentRef.current?.scrollTop || 0;
+      console.log(scrollTop);
+      if (scrollTop > 25) {
+        setContentOverlap(true);
+      } else {
+        setContentOverlap(false);
+      }
+    };
+
+    contentRef.current?.addEventListener('scroll', handleScroll);
+
+    return () => {
+      contentRef.current?.removeEventListener('scroll', handleScroll);
+    };
+  }, [contentRef]);
 
   if (controller == null) {
     return (
@@ -219,14 +244,26 @@ const Admin = (): React.ReactElement => {
 
   return (
     <Layout style={{ height: '100vh', overflow: 'hidden' }}>
-      <GlobalHeader title={controller.apiAdmin.info.title} itemsNav={itemsNav}>
+      <GlobalHeader
+        title={controller.apiAdmin.info.title}
+        itemsNav={itemsNav}
+        overlap={contentOverlap}
+      >
         <Search controller={controller} />
       </GlobalHeader>
-      <Layout style={{ height: '100%' }}>
+      <div
+        style={{
+          paddingTop: 65
+        }}
+      >
         <MenuGroups controller={controller} />
+      </div>
+      <Layout style={{ height: '100%' }}>
         <Layout
+          ref={contentRef}
           style={{
             padding: '0 2rem',
+            paddingTop: 65,
             overflow: 'auto'
           }}
         >
