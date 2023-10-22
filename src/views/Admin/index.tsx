@@ -32,14 +32,6 @@ const Mobile = styled.div`
   }
 `;
 
-interface WrapperContentProps {
-  color: string;
-}
-
-const WrapperContent = styled(Layout)<WrapperContentProps>`
-  // customize scrollbar
-`;
-
 const Admin = (): React.ReactElement => {
   const { data } = useDataSync();
   const [controller, setController] = useState<Controller>();
@@ -242,19 +234,16 @@ const Admin = (): React.ReactElement => {
       >
         <MenuGroups controller={controller} />
       </div>
-      <Layout>
-        <WrapperContent
-          color={token.colorBgContainer}
-          ref={contentRef}
-          style={{
-            padding: '0 2rem',
-            paddingTop: 65,
-            overflow: 'auto'
-          }}
-        >
-          <Breadcrumb breadcrumb={breadcrumb} controller={controller} />
-          <Routes>{renderRoutes()}</Routes>
-        </WrapperContent>
+      <Layout
+        ref={contentRef}
+        style={{
+          padding: '0 2rem',
+          paddingTop: 65,
+          overflow: 'auto'
+        }}
+      >
+        <Breadcrumb breadcrumb={breadcrumb} controller={controller} />
+        <Routes>{renderRoutes()}</Routes>
       </Layout>
     </Layout>
   );

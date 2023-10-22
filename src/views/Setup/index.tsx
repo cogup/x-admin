@@ -41,6 +41,7 @@ const Root = styled.div`
 const Setup = (): React.ReactElement => {
   const { data, updateData } = useDataSync();
   const [done, setDone] = React.useState<boolean>(false);
+  const contentRef = React.useRef<HTMLDivElement>(null);
 
   const onDone = (newData: any) => {
     setDone(true);
@@ -59,51 +60,60 @@ const Setup = (): React.ReactElement => {
           minHeight: '100vh'
         }}
       >
-        <GlobalHeader title="X Admin" />
-        <Content
+        <GlobalHeader title="X Admin" contentRef={contentRef} />
+        <div
+          ref={contentRef}
           style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            padding: '2rem'
+            overflow: 'auto',
+            height: '100vh',
+            paddingTop: 45
           }}
         >
-          <StepsMaker
-            confirmToNext={true}
-            onDone={onDone}
-            steps={[
-              {
-                key: 'specification',
-                title: 'Import OpenAPI Specification',
-                content: ImportSpec
-              },
-              {
-                key: 'xAdmin',
-                title: 'Adjust templates',
-                content: AdjustTemplates
-              }
-            ]}
-          />
-        </Content>
-        <Footer
-          style={{
-            textAlign: 'center'
-          }}
-        >
-          X-Admin ©2023 Created by{' '}
-          <a href="http://cogup.ai" target="_blank" rel="noreferrer">
-            Cogup
-          </a>{' '}
-          and{' '}
-          <a
-            href="http://github/cogup/x-admin"
-            target="_blank"
-            rel="noreferrer"
+          <Layout.Content
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              padding: '2rem'
+            }}
           >
-            community contributors
-          </a>
-          .
-        </Footer>
+            <StepsMaker
+              confirmToNext={true}
+              onDone={onDone}
+              steps={[
+                {
+                  key: 'specification',
+                  title: 'Import OpenAPI Specification',
+                  content: ImportSpec
+                },
+                {
+                  key: 'xAdmin',
+                  title: 'Adjust templates',
+                  content: AdjustTemplates
+                }
+              ]}
+            />
+          </Layout.Content>
+          <Footer
+            style={{
+              textAlign: 'center'
+            }}
+          >
+            X-Admin ©2023 Created by{' '}
+            <a href="http://cogup.ai" target="_blank" rel="noreferrer">
+              Cogup
+            </a>{' '}
+            and{' '}
+            <a
+              href="http://github/cogup/x-admin"
+              target="_blank"
+              rel="noreferrer"
+            >
+              community contributors
+            </a>
+            .
+          </Footer>
+        </div>
       </Layout>
     </Root>
   );
