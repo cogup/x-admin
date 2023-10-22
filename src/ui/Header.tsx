@@ -1,18 +1,28 @@
 import React from 'react';
-import { Row, Typography, Col } from 'antd';
+import { Row, Typography, Col, theme } from 'antd';
 import DynamicIcon from './DynamicIcon';
 import { getIconSuggestion } from '../utils';
 import { type IconType } from './iconTypes';
 import styled from 'styled-components';
+import { QuestionCircleOutlined } from '@ant-design/icons';
+import { Tooltip } from 'antd';
 
 const HeaderStyled = styled(Row)`
-  margin-bottom: 1rem;
+  margin-bottom: 2.5rem;
   width: 100%;
 
   .title {
     display: flex;
     align-items: center;
     justify-content: center;
+
+    .quest-icon {
+      margin-left: 0.2rem;
+      margin-bottom: 0.5rem;
+      svg {
+        font-size: 0.7rem;
+      }
+    }
 
     span {
       margin-right: 0.5em;
@@ -46,12 +56,20 @@ const Header: React.FC<HeaderProps> = ({
     throw new Error('Title is required');
   }
 
+  const { token } = theme.useToken();
+
   const renderSubtitle = (): React.ReactNode => {
     if (subtitle !== undefined) {
       return (
-        <Typography.Title level={5} style={{ margin: 0 }}>
+        <Typography.Text
+          style={{
+            margin: 0,
+            color: token.colorTextSecondary
+          }}
+          code
+        >
           {subtitle}
-        </Typography.Title>
+        </Typography.Text>
       );
     }
 
@@ -66,14 +84,6 @@ const Header: React.FC<HeaderProps> = ({
     return null;
   };
 
-  const renderDescription = (): React.ReactNode => {
-    if (description !== undefined) {
-      return <Typography.Paragraph>{description}</Typography.Paragraph>;
-    }
-
-    return null;
-  };
-
   const icon =
     resourceName !== undefined && typeName !== undefined
       ? (getIconSuggestion(resourceName, typeName) as IconType)
@@ -82,7 +92,16 @@ const Header: React.FC<HeaderProps> = ({
   return (
     <HeaderStyled>
       <Col flex={1}>
-        <Row justify="space-between" style={{ marginBottom: '1rem' }}>
+        <Row
+          justify="space-between"
+          style={{
+            marginBottom: '1rem',
+            margin: -24,
+            padding: '12px 24px',
+            borderRadius: token.borderRadiusLG,
+            backgroundColor: '#fff'
+          }}
+        >
           <Col>
             <Row>
               <Col>
@@ -91,9 +110,18 @@ const Header: React.FC<HeaderProps> = ({
                     {icon !== undefined ? (
                       <DynamicIcon iconName={icon} />
                     ) : null}
-                    <Typography.Title level={2} style={{ marginBottom: 0 }}>
+                    <Typography.Title level={4} style={{ marginBottom: 0 }}>
                       {title}
                     </Typography.Title>
+                    <Tooltip placement="top" title={description}>
+                      <QuestionCircleOutlined
+                        className="quest-icon"
+                        style={{
+                          cursor: 'pointer',
+                          color: token.colorLink
+                        }}
+                      />
+                    </Tooltip>
                   </Col>
                 </Row>
                 <Row>
@@ -104,7 +132,6 @@ const Header: React.FC<HeaderProps> = ({
           </Col>
           {renderButton()}
         </Row>
-        {renderDescription()}
       </Col>
     </HeaderStyled>
   );
