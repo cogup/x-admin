@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { Row, Col, Card, Layout } from 'antd';
-import { DynamicIcon, Header } from '../../../ui';
+import { Row, Col, Card, theme } from 'antd';
+import { DynamicIcon } from '../../../ui';
 import { getIconSuggestion, capitalizeFirstLetter } from '../../../utils';
 import {
   ResourceTypes,
@@ -9,12 +9,7 @@ import {
 } from '../../../controller';
 import { useNavigate } from 'react-router-dom';
 import { type IconType } from '../../../ui/iconTypes';
-import {
-  useIsTablet,
-  useIsMobile,
-  useIsWindowsSize,
-  useIsDesktop
-} from '../../../use';
+import { useIsMobile, useIsDesktop } from '../../../use';
 
 interface MosaicoProps {
   groupName: string;
@@ -27,6 +22,7 @@ const Mosaico: React.FC<MosaicoProps> = ({
 }): React.ReactElement => {
   const navigate = useNavigate();
   const resources = controller.getAllResourcesByGroup(groupName);
+  const { token } = theme.useToken();
 
   const handleClick = (resource: Resource): void => {
     const localPath = resource.getLocalPath();
@@ -66,7 +62,10 @@ const Mosaico: React.FC<MosaicoProps> = ({
                   handleClick(resource);
                 }}
                 hoverable
-                style={{ cursor: 'pointer' }}
+                style={{
+                  cursor: 'pointer',
+                  backgroundColor: token.colorPrimary
+                }}
                 bodyStyle={{
                   display: 'flex',
                   alignItems: 'center',

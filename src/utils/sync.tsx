@@ -38,6 +38,7 @@ interface DataSyncContextType {
   data: DataSyncContextData;
   updateData: (key: DataType, value: any) => void;
   updateAllData: (newData: DataSyncContextData) => void;
+  removeData: (key: DataType) => void;
 }
 
 const DataSyncContext = createContext<DataSyncContextType>({
@@ -47,6 +48,9 @@ const DataSyncContext = createContext<DataSyncContextType>({
   },
   updateAllData: (_: DataSyncContextData): void => {
     console.warn('updateData not implemented');
+  },
+  removeData: (_: string): void => {
+    console.warn('removeData not implemented');
   }
 });
 
@@ -110,12 +114,22 @@ export function DataSyncProvider({ children }: DataSyncProviderProps) {
     });
   };
 
+  const removeData = (key: DataType) => {
+    setData((prevData) => {
+      const newData = { ...prevData };
+      delete newData[key];
+      localStorage.removeItem(key);
+      return newData;
+    });
+  };
+
   return (
     <DataSyncContext.Provider
       value={{
         data,
         updateData,
-        updateAllData
+        updateAllData,
+        removeData
       }}
     >
       {children}

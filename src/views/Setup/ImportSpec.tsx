@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Input, Space, message, theme, Divider, Typography } from 'antd';
 import { StepProps } from '../../components/Steps';
 import axios from 'axios';
@@ -33,10 +33,8 @@ const ImportSpec = (props: StepProps): React.ReactElement => {
 
   const submitUrl = async () => {
     setLoading(true);
-
     const url = form.getFieldValue('url');
     setUrlSuccess(false);
-    props.nextBottom(false);
 
     try {
       const response = await axios.get(url as string);
@@ -45,7 +43,7 @@ const ImportSpec = (props: StepProps): React.ReactElement => {
       validateOpenAPI(specification);
 
       props.setData({ specification, url });
-      props.nextBottom(true);
+
       setDefaultUrl(url);
       setUrlSuccess(true);
       setFileSuccess(false);
@@ -68,7 +66,6 @@ const ImportSpec = (props: StepProps): React.ReactElement => {
       validateOpenAPI(specification);
 
       props.setData({ specification });
-      props.nextBottom(true);
       setFileSuccess(true);
       setUrlSuccess(false);
     } catch (e: any) {
@@ -82,10 +79,13 @@ const ImportSpec = (props: StepProps): React.ReactElement => {
   const onRemoveFile = () => {
     if (fileSuccess) {
       setFileSuccess(false);
-      props.nextBottom(false);
       props.setData({});
     }
   };
+
+  useEffect(() => {
+    props.nextBottomActive(fileSuccess || urlSuccess);
+  }, [fileSuccess, urlSuccess]);
 
   return (
     <Form

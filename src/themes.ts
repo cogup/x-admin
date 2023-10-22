@@ -69,7 +69,7 @@ const getThemes = (data: DataSyncContextData): Themes => {
     token: {
       colorBgLayout: defineColorBgLayoutDark(data),
       colorBgContainer: 'rgba(22, 22, 22, 0.95)',
-      colorTextBase: token.colorTextBase,
+      colorTextBase: '#fff',
       colorPrimary: data.primaryColor || token.colorPrimary
     },
     algorithm: theme.darkAlgorithm

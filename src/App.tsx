@@ -1,19 +1,25 @@
 import React, { useEffect } from 'react';
-import { ConfigProvider, GlobalToken, theme } from 'antd';
+import { theme } from 'antd';
 import Setup from './views/Setup';
 import Admin from './views/Admin';
-import { DataSyncContextData, useDataSync } from './utils/sync';
+import { useDataSync } from './utils/sync';
 import styled from 'styled-components';
 import Glass from './ui/Glass';
-import getThemes from './themes';
 import Theming from './components/Theming';
+import {
+  Route,
+  Routes,
+  redirect,
+  useLocation,
+  useNavigate
+} from 'react-router-dom';
 
 interface RootProps {
-  colorBase?: string;
-  colorPrimary: string;
-  backgroundImage?: string;
-  backgroundGradient?: boolean;
-  backgroundColor?: boolean;
+  $colorBase?: string;
+  $colorPrimary: string;
+  $backgroundImage?: string;
+  $backgroundGradient?: boolean;
+  $backgroundColor?: boolean;
 }
 
 const Root = styled.div<RootProps>`
@@ -42,14 +48,14 @@ const Root = styled.div<RootProps>`
   }
 
   ${({
-    colorPrimary,
-    backgroundImage,
-    backgroundGradient,
-    backgroundColor
+    $colorPrimary,
+    $backgroundImage,
+    $backgroundGradient,
+    $backgroundColor
   }) => {
-    if (backgroundImage) {
+    if ($backgroundImage) {
       return `
-      background: url(${backgroundImage});
+      background: url(${$backgroundImage});
       background-position: center;
       background-repeat: no-repeat;
       background-size: cover;
@@ -57,9 +63,9 @@ const Root = styled.div<RootProps>`
       `;
     }
 
-    if (backgroundGradient || backgroundColor) {
+    if ($backgroundGradient || $backgroundColor) {
       return `
-      background: ${colorPrimary};
+      background: ${$colorPrimary};
     `;
     }
   }}
@@ -79,47 +85,57 @@ const Root = styled.div<RootProps>`
   }
 
   *::-webkit-scrollbar-thumb {
-    background: ${({ colorBase }) => colorBase};
+    background: ${({ $colorBase }) => $colorBase};
     border-radius: 0.5rem;
   }
 
   *::-webkit-scrollbar-thumb:hover {
-    background: ${({ colorBase }) => colorBase};
+    background: ${({ $colorBase }) => $colorBase};
   }
 `;
 
-const App = (): React.ReactElement => {
+const Inner = (): React.ReactElement => {
   const { data } = useDataSync();
-
-  const themes = getThemes(data);
-
-  const [customTheme, setCustomTheme] = React.useState(
-    data.darkMode ? themes.dark : themes.light
-  );
+  const { token } = theme.useToken();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    setCustomTheme(data.darkMode ? themes.dark : themes.light);
-  }, [data]);
+    if (location.pathname === '/' && data.specification !== undefined) {
+      navigate('/admin');
+    } else if (location.pathname === '/' && data.specification === undefined) {
+      navigate('/setup');
+    }
+  }, []);
 
   return (
     <Root
-      colorBase={customTheme.token.colorBgContainer}
-      colorPrimary={customTheme.token.colorPrimary}
-      backgroundImage={data.backgroundImage}
-      backgroundGradient={data.backgroundGradient}
-      backgroundColor={data.backgroundColor}
+      $colorBase={token.colorBgContainer}
+      $colorPrimary={token.colorPrimary}
+      $backgroundImage={data.backgroundImage}
+      $backgroundGradient={data.backgroundGradient}
+      $backgroundColor={data.backgroundColor}
     >
       <Glass
-        darkMode={data.darkMode}
-        backgroundGradient={data.backgroundGradient}
-        backgroundUrl={data.backgroundImage !== undefined}
-        theme={data.theme}
+        $darkMode={data.darkMode}
+        $backgroundGradient={data.backgroundGradient}
+        $backgroundUrl={data.backgroundImage !== undefined}
+        $theme={data.theme}
       >
-        <Theming internal={false}>
-          {data.specification === undefined ? <Setup /> : <Admin />}
-        </Theming>
+        <Routes>
+          <Route path="/admin" element={<Admin />} />
+          <Route path="/setup" element={<Setup />} />
+        </Routes>
       </Glass>
     </Root>
+  );
+};
+
+const App = (): React.ReactElement => {
+  return (
+    <Theming internal={false}>
+      <Inner />
+    </Theming>
   );
 };
 

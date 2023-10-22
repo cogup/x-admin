@@ -19,7 +19,9 @@ const SettingTheme = (props: StepProps): React.ReactElement => {
   );
   const { token } = theme.useToken();
 
-  props.nextBottom(true);
+  useEffect(() => {
+    props.nextBottomActive(true);
+  }, []);
 
   useEffect(() => {
     updateData(DataType.PRIMARY_COLOR, primaryColor);

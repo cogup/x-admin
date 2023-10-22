@@ -2,10 +2,10 @@ import styled from 'styled-components';
 import { Theme } from '../utils/sync';
 
 interface GlassProps {
-  darkMode?: boolean;
-  backgroundGradient?: boolean;
-  backgroundUrl?: boolean;
-  theme?: Theme;
+  $darkMode: boolean;
+  $backgroundGradient?: boolean;
+  $backgroundUrl?: boolean;
+  $theme?: Theme;
 }
 
 const Glass = styled.div<GlassProps>`
@@ -13,15 +13,15 @@ const Glass = styled.div<GlassProps>`
   width: 100%;
   height: 100%;
 
-  ${({ darkMode, backgroundGradient, backgroundUrl, theme }) => {
+  ${({ $darkMode, $backgroundGradient, $backgroundUrl, $theme }) => {
     if (
-      backgroundGradient ||
-      (backgroundUrl && darkMode) ||
-      theme === Theme.DARKER ||
-      theme === Theme.DARK
+      $backgroundGradient ||
+      ($backgroundUrl && $darkMode) ||
+      $theme === Theme.DARKER ||
+      $theme === Theme.DARK
     ) {
       const color =
-        darkMode || theme === Theme.DARKER || theme === Theme.DARK
+        $darkMode || $theme === Theme.DARKER || $theme === Theme.DARK
           ? '0, 0, 0'
           : '255, 255, 255';
 

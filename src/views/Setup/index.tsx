@@ -4,10 +4,11 @@ import styled from 'styled-components';
 import StepsMaker from '../../components/Steps';
 import ImportSpec from './ImportSpec';
 import GlobalHeader from '../../components/GlobalHeader';
-import { DataType, useDataSync } from '../../utils/sync';
 import SettingTheme from './SettingTheme';
 import { OpenAPI } from '../../controller/openapi';
 import Adjust from './Adjust';
+import { useNavigate } from 'react-router-dom';
+import Theming from '../../components/Theming';
 
 const Root = styled.div`
   display: flex;
@@ -51,14 +52,11 @@ interface SetupData {
 }
 
 const Setup = (): React.ReactElement => {
-  const { updateData } = useDataSync();
   const contentRef = React.useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
-  const onDone = (newData: SetupData) => {
-    updateData(DataType.SPECIFICATION, newData.adjust);
-    updateData(DataType.BACKGROUND_IMAGE, newData.theme?.backgroundImage);
-    updateData(DataType.PRIMARY_COLOR, newData.theme?.primaryColor);
-    updateData(DataType.BACKGROUND_GRADIENT, newData.theme?.activeGradient);
+  const onDone = (_: SetupData) => {
+    navigate('/admin');
   };
 
   return (
@@ -86,27 +84,29 @@ const Setup = (): React.ReactElement => {
               padding: '2rem'
             }}
           >
-            <StepsMaker
-              confirmToNext={true}
-              onDone={onDone}
-              steps={[
-                {
-                  key: 'specification',
-                  title: 'Import OpenAPI',
-                  content: ImportSpec
-                },
-                {
-                  key: 'adjust',
-                  title: 'Adjust settings',
-                  content: Adjust
-                },
-                {
-                  key: 'theme',
-                  title: 'Custom theme',
-                  content: SettingTheme
-                }
-              ]}
-            />
+            <Theming internal={true}>
+              <StepsMaker
+                confirmToNext={true}
+                onDone={onDone}
+                steps={[
+                  {
+                    key: 'specification',
+                    title: 'Import OpenAPI',
+                    content: ImportSpec
+                  },
+                  {
+                    key: 'adjust',
+                    title: 'Adjust settings',
+                    content: Adjust
+                  },
+                  {
+                    key: 'theme',
+                    title: 'Custom theme',
+                    content: SettingTheme
+                  }
+                ]}
+              />
+            </Theming>
           </Layout.Content>
           <Layout.Footer
             style={{

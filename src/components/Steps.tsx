@@ -19,7 +19,7 @@ export interface StepProps {
   currentData: Record<string, any>;
   next?: () => void;
   prev?: () => void;
-  nextBottom: React.Dispatch<React.SetStateAction<boolean>>;
+  nextBottomActive: (active: boolean) => void;
 }
 
 export type StepNode = (props: StepProps) => React.ReactElement;
@@ -27,19 +27,12 @@ export type StepNode = (props: StepProps) => React.ReactElement;
 const StepsMaker: React.FC<StepsMakerProps> = ({
   steps,
   onDone,
-  onNext,
-  confirmToNext = true
+  onNext
 }): React.ReactElement => {
   const { token } = theme.useToken();
   const [current, setCurrent] = useState(0);
   const [stepData, setStepData] = useState<Record<string, any>>({});
-  const [nextActive, setNextActive] = useState<boolean>(!confirmToNext);
-
-  useEffect(() => {
-    if (confirmToNext) {
-      setNextActive(false);
-    }
-  }, [current]);
+  const [nextActive, setNextActive] = useState<boolean>(false);
 
   const setData = (data: Record<string, any>) => {
     const newData = {
@@ -65,8 +58,12 @@ const StepsMaker: React.FC<StepsMakerProps> = ({
     }
   };
 
+  const onNextActive = (active: boolean) => {
+    setNextActive(active);
+  };
+
   const stepProps = steps.map((item, i) => ({
-    key: item.key,
+    key: i,
     title: item.title
   }));
 
@@ -81,6 +78,8 @@ const StepsMaker: React.FC<StepsMakerProps> = ({
   };
 
   const CurrentStep = steps[current].content;
+
+  console.log('onNextActive', nextActive);
 
   return (
     <div
@@ -97,7 +96,7 @@ const StepsMaker: React.FC<StepsMakerProps> = ({
           currentData={stepData}
           next={next}
           prev={prev}
-          nextBottom={setNextActive}
+          nextBottomActive={onNextActive}
         />
       </div>
       <div

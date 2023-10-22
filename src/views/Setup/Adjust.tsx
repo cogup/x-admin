@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Button,
   Divider,
@@ -7,12 +7,9 @@ import {
   List,
   Select,
   Space,
-  Switch,
-  Typography,
-  theme
+  Typography
 } from 'antd';
 import { StepProps } from '../../components/Steps';
-import styled from 'styled-components';
 import { OpenAPI, Operation, PathItem } from '../../controller/openapi';
 import { Methods, ResourceTypes } from '../../controller';
 import { AdminData } from '../../controller/xadmin';
@@ -20,7 +17,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { DataType, useDataSync } from '../../utils/sync';
 import AdjustListItem from './components/AdjustListItem';
 
-const { Text, Title } = Typography;
+const { Title } = Typography;
 
 export interface Item {
   key: string;
@@ -157,23 +154,19 @@ const loadServersUrl = (specification: OpenAPI): string[] => {
 
 const Adjust = (props: StepProps): React.ReactElement => {
   const { updateData } = useDataSync();
-  const [xAdminData, setXAdminData] = React.useState<AdminData>();
-  const [resources, setResources] = React.useState<Item[]>([]);
-  const [specification, setSpecification] = React.useState<OpenAPI>(
-    props.currentData.specification.specification
+  const [xAdminData, setXAdminData] = useState<AdminData>();
+  const [resources, setResources] = useState<Item[]>([]);
+  const [specification, setSpecification] = useState<OpenAPI>({
+    ...props.currentData.specification.specification
+  });
+  const [serversUrl, setServersUrl] = useState<string[]>(
+    loadServersUrl(specification)
   );
-  const [serversUrl, setServersUrl] = React.useState<string[]>(
-    loadServersUrl(props.currentData.specification.specification)
-  );
-  const [newUrl, setNewUrl] = React.useState<string>('');
-  const { token } = theme.useToken();
-
-  const defaultUrl = getDefaultServerUrl(
-    props.currentData.specification.specification
-  );
-  props.nextBottom(true);
+  const [newUrl, setNewUrl] = useState<string>('');
+  const defaultUrl = getDefaultServerUrl(specification);
 
   useEffect(() => {
+    props.nextBottomActive(true);
     setResources(getList(specification));
     setXAdminData(specification['x-admin']);
   }, []);
