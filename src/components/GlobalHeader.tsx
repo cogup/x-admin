@@ -7,29 +7,18 @@ import { MenuOutlined } from '@ant-design/icons';
 import ToggleDarkMode from './ToggleDarkMode';
 import ExitButton from './ExitButton';
 
-const { Header } = Layout;
+const CustomHeader = styled(Layout.Header)`
+  transition:
+    backdrop-filter 0.6s,
+    box-shadow 0.6s;
 
-interface CustomHeaderProps {
-  overlap?: boolean;
-}
-
-const CustomHeader = styled(Header)<CustomHeaderProps>`
-  //animation: fadeInSteps 1s forwards;
-  ${(props) => props.overlap && 'animation: fadeInSteps 0.6s forwards;'}
-
-  @keyframes fadeInSteps {
-    0% {
-      backdrop-filter: blur(0px) opacity(0%);
-      box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.1);
-    }
-    100% {
-      backdrop-filter: blur(5px) opacity(100%);
-      box-shadow: 0 0px 10px 0 rgba(0, 0, 0, 0.1);
-    }
+  &.overlap {
+    backdrop-filter: blur(5px) opacity(100%);
+    box-shadow: 0 0px 10px 0 rgba(0, 0, 0, 0.1);
   }
 `;
 
-const CustomHeaderMobile = styled(Header)`
+const CustomHeaderMobile = styled(Layout.Header)`
   display: flex;
   justify-content: space-between;
   padding-inline: 2em;
@@ -66,7 +55,7 @@ interface GlobalHeaderProps {
   children?: React.ReactNode;
   onMenuActive?: (state: boolean) => void;
   itemsNav?: Array<any>;
-  overlap?: boolean;
+  contentRef?: React.RefObject<HTMLDivElement>;
 }
 
 const GlobalHeader = ({
@@ -74,14 +63,13 @@ const GlobalHeader = ({
   children,
   itemsNav,
   onMenuActive,
-  overlap
+  contentRef
 }: GlobalHeaderProps): React.ReactElement => {
   const [currentPathname, setCurrentPathname] = useState<string>('');
   const location = useLocation();
   const isMobile = useIsMobile();
   const [menuActived, setMenuActived] = useState<boolean>(false);
-
-  console.log(overlap);
+  const [overlapClass, setOverlapClass] = useState<string>('');
 
   const { token } = theme.useToken();
 
@@ -95,6 +83,32 @@ const GlobalHeader = ({
       onMenuActive(menuActived);
     }
   }, [menuActived]);
+
+  useEffect(() => {
+    console.log(contentRef);
+  }, [contentRef]);
+
+  useEffect(() => {
+    if (contentRef === undefined || contentRef.current === null) {
+      return;
+    }
+
+    const handleScroll = () => {
+      const scrollTop = contentRef.current?.scrollTop || 0;
+      console.log(scrollTop);
+      if (scrollTop > 25) {
+        setOverlapClass('overlap');
+      } else {
+        setOverlapClass('');
+      }
+    };
+
+    contentRef.current?.addEventListener('scroll', handleScroll);
+
+    return () => {
+      contentRef.current?.removeEventListener('scroll', handleScroll);
+    };
+  }, [contentRef?.current]);
 
   if (isMobile) {
     const renderButtonMenu = () => {
@@ -131,9 +145,10 @@ const GlobalHeader = ({
       </CustomHeaderMobile>
     );
   }
+
   return (
     <CustomHeader
-      overlap={overlap}
+      className={overlapClass}
       style={{
         position: 'fixed',
         top: 0,

@@ -17,7 +17,6 @@ import Swagger from './Content/Swagger';
 import { useIsMobile } from '../../use';
 import GlobalHeader from '../../components/GlobalHeader';
 import { useDataSync } from '../../utils/sync';
-import { use } from 'marked';
 
 const LoadingPage = styled.div`
   display: flex;
@@ -33,12 +32,35 @@ const Mobile = styled.div`
   }
 `;
 
+interface WrapperContentProps {
+  color: string;
+}
+
+const WrapperContent = styled(Layout)<WrapperContentProps>`
+  // customize scrollbar
+  &::-webkit-scrollbar {
+    width: 0.5rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: ${({ color }) => color};
+    border-radius: 0.5rem;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: ${({ color }) => color};
+  }
+`;
+
 const Admin = (): React.ReactElement => {
   const { data } = useDataSync();
   const [controller, setController] = useState<Controller>();
   const [breadcrumb, setBreadcrumb] = useState<string[]>([]);
   const [menuActive, setMenuActive] = useState<boolean>(false);
-  const [contentOverlap, setContentOverlap] = useState<boolean>(false);
   const location = useLocation();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
@@ -80,28 +102,6 @@ const Admin = (): React.ReactElement => {
       setBreadcrumb([]);
     }
   }, [location, controller]);
-
-  useEffect(() => {
-    if (contentRef.current === null) {
-      return;
-    }
-
-    const handleScroll = () => {
-      const scrollTop = contentRef.current?.scrollTop || 0;
-      console.log(scrollTop);
-      if (scrollTop > 25) {
-        setContentOverlap(true);
-      } else {
-        setContentOverlap(false);
-      }
-    };
-
-    contentRef.current?.addEventListener('scroll', handleScroll);
-
-    return () => {
-      contentRef.current?.removeEventListener('scroll', handleScroll);
-    };
-  }, [contentRef]);
 
   if (controller == null) {
     return (
@@ -247,7 +247,7 @@ const Admin = (): React.ReactElement => {
       <GlobalHeader
         title={controller.apiAdmin.info.title}
         itemsNav={itemsNav}
-        overlap={contentOverlap}
+        contentRef={contentRef}
       >
         <Search controller={controller} />
       </GlobalHeader>
@@ -259,7 +259,8 @@ const Admin = (): React.ReactElement => {
         <MenuGroups controller={controller} />
       </div>
       <Layout style={{ height: '100%' }}>
-        <Layout
+        <WrapperContent
+          color={token.colorBgContainer}
           ref={contentRef}
           style={{
             padding: '0 2rem',
@@ -269,7 +270,7 @@ const Admin = (): React.ReactElement => {
         >
           <Breadcrumb breadcrumb={breadcrumb} controller={controller} />
           <Routes>{renderRoutes()}</Routes>
-        </Layout>
+        </WrapperContent>
       </Layout>
     </Layout>
   );

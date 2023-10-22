@@ -73,7 +73,8 @@ const { defaultAlgorithm, darkAlgorithm } = theme;
 const customThemeLight = {
   token: {
     colorBgLayout: 'transparent',
-    colorBgContainer: 'rgba(255, 255, 255, 0.9)'
+    colorBgContainer: 'rgba(255, 255, 255, 0.9)',
+    colorTextBase: '#222'
   },
   components: {
     Layout: {
