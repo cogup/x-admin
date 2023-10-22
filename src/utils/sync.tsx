@@ -21,7 +21,8 @@ export enum DataType {
 
 const defaultData: DataSyncContextData = {
   darkMode: false,
-  theme: Theme.LIGHT
+  theme: Theme.LIGHT,
+  primaryColor: '#8F00D3'
 };
 
 export interface DataSyncContextData {

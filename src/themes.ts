@@ -1,5 +1,6 @@
 import { theme } from 'antd';
 import { DataSyncContextData, Theme } from './utils/sync';
+import color from 'color';
 
 const defineColorBgLayoutDark = (data: DataSyncContextData) => {
   if (data.backgroundImage) {
@@ -15,6 +16,7 @@ interface CustomThemeNoFix {
     colorBgContainer: string;
     colorTextBase: string;
     colorPrimary: string;
+    colorLink: string;
   };
   algorithm: any;
 }
@@ -53,14 +55,18 @@ const fixTheme = (theme: CustomThemeNoFix): CustomTheme => {
   };
 };
 
+const defaultPrimaryColor = '#8F00D3';
+
 const getThemes = (data: DataSyncContextData): Themes => {
-  const { token } = theme.useToken();
   const light = {
     token: {
       colorBgLayout: 'transparent',
       colorBgContainer: 'rgba(255, 255, 255, 0.9)',
       colorTextBase: '#222',
-      colorPrimary: data.primaryColor || token.colorPrimary
+      colorPrimary: data.primaryColor || defaultPrimaryColor,
+      colorLink: data.primaryColor || defaultPrimaryColor,
+      colorInfo:
+        data.primaryColor || color(defaultPrimaryColor).lighten(0.6).hex()
     },
     algorithm: theme.defaultAlgorithm
   };
@@ -70,7 +76,9 @@ const getThemes = (data: DataSyncContextData): Themes => {
       colorBgLayout: defineColorBgLayoutDark(data),
       colorBgContainer: 'rgba(22, 22, 22, 0.95)',
       colorTextBase: '#fff',
-      colorPrimary: data.primaryColor || token.colorPrimary
+      colorPrimary: data.primaryColor || defaultPrimaryColor,
+      colorLink:
+        data.primaryColor || color(defaultPrimaryColor).lighten(0.6).hex()
     },
     algorithm: theme.darkAlgorithm
   };
