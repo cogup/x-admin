@@ -5,6 +5,7 @@ import Admin from './views/Admin';
 import { DataSyncContextData, useDataSync } from './utils/sync';
 import styled from 'styled-components';
 import Glass from './ui/Glass';
+import getThemes from './themes';
 
 interface RootProps {
   colorBase?: string;
@@ -86,92 +87,22 @@ const Root = styled.div<RootProps>`
   }
 `;
 
-const { defaultAlgorithm, darkAlgorithm } = theme;
-
-const defineColorBgLayoutDark = (data: DataSyncContextData) => {
-  if (data.backgroundImage) {
-    return 'transparent';
-  }
-
-  if (data.backgroundGradient) {
-    return 'transparent';
-  }
-
-  return '#0f0f0f';
-};
-
 const App = (): React.ReactElement => {
   const { data } = useDataSync();
 
-  const { token } = theme.useToken();
+  const themes = getThemes(data);
 
-  const customThemeLightDefault = {
-    token: {
-      colorBgLayout: 'transparent',
-      colorBgContainer: 'rgba(255, 255, 255, 0.9)',
-      colorTextBase: '#222',
-      colorPrimary: data.primaryColor || token.colorPrimary
-    },
-    components: {
-      Layout: {
-        siderBg: 'transparent',
-        headerBg: 'transparent'
-      },
-      Menu: {
-        subMenuItemBg: 'transparent',
-        itemBg: 'transparent'
-      }
-    },
-    algorithm: defaultAlgorithm
-  };
-
-  const customThemeLightDarker = {
-    token: {
-      colorBgLayout: 'transparent',
-      colorBgContainer: 'rgba(255, 255, 255, 0.9)',
-      colorTextBase: '#fff',
-      colorPrimary: data.primaryColor || token.colorPrimary
-    },
-    components: {
-      Layout: {
-        siderBg: 'transparent',
-        headerBg: 'transparent'
-      },
-      Menu: {
-        subMenuItemBg: 'transparent',
-        itemBg: 'transparent'
-      }
-    },
-    algorithm: defaultAlgorithm
-  };
-
-  const customThemeDark = {
-    token: {
-      colorBgLayout: defineColorBgLayoutDark(data),
-      colorBgContainer: 'rgba(22, 22, 22, 0.95)',
-      colorPrimary: data.primaryColor || token.colorPrimary
-    },
-    components: {
-      Layout: {
-        siderBg: 'transparent',
-        headerBg: 'transparent'
-      },
-      Menu: {
-        subMenuItemBg: 'transparent',
-        itemBg: 'transparent'
-      }
-    },
-    algorithm: darkAlgorithm
-  };
-
-  const customThemeLight = customThemeLightDarker;
+  console.log({
+    theme: data.theme,
+    themes
+  });
 
   const [customTheme, setCustomTheme] = React.useState(
-    data.darkMode ? customThemeDark : customThemeLight
+    data.darkMode ? themes.dark : themes.light
   );
 
   useEffect(() => {
-    setCustomTheme(data.darkMode ? customThemeDark : customThemeLight);
+    setCustomTheme(data.darkMode ? themes.dark : themes.light);
   }, [data]);
 
   return (
@@ -186,6 +117,7 @@ const App = (): React.ReactElement => {
         darkMode={data.darkMode}
         backgroundGradient={data.backgroundGradient}
         backgroundUrl={data.backgroundImage !== undefined}
+        theme={data.theme}
       >
         <ConfigProvider theme={customTheme}>
           {data.specification === undefined ? <Setup /> : <Admin />}

@@ -1,17 +1,18 @@
 import React, { createContext, useContext, useState } from 'react';
 import { OpenAPI } from '../controller/openapi';
 
-const defaultValue: DataSyncContextData = {
-  darkMode: false
-};
-
-// add themes, light, lightdarke, darklight and dark
+// add themes, light, darker, lighting and dark
 export enum Theme {
   LIGHT = 'light',
-  LIGHTDARK = 'lightdark',
-  DARKLIGHT = 'darklight',
+  LIGHTING = 'lighting',
+  DARKER = 'darker',
   DARK = 'dark'
 }
+
+const defaultData: DataSyncContextData = {
+  darkMode: false,
+  theme: Theme.DARKER
+};
 
 export interface DataSyncContextData {
   darkMode: boolean;
@@ -29,7 +30,7 @@ interface DataSyncContextType {
 }
 
 const DataSyncContext = createContext<DataSyncContextType>({
-  data: defaultValue,
+  data: defaultData,
   updateData: (newData: DataSyncContextData): void => {
     console.warn('updateData not implemented');
   }
@@ -41,11 +42,15 @@ interface DataSyncProviderProps {
 
 // 2. Crie um provedor de contexto que irá manter os dados compartilhados
 export function DataSyncProvider({ children }: DataSyncProviderProps) {
-  const valueLoaded: DataSyncContextData =
+  const dataLoaded =
     localStorage.getItem('sync') !== null
-      ? JSON.parse(localStorage.getItem('sync') as string)
-      : defaultValue;
-  const [data, setData] = useState(valueLoaded);
+      ? {
+          ...defaultData,
+          ...JSON.parse(localStorage.getItem('sync') as string)
+        }
+      : defaultData;
+
+  const [data, setData] = useState(dataLoaded);
 
   // Função para atualizar os dados
   const updateData = (newData: DataSyncContextData) => {
