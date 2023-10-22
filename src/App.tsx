@@ -124,6 +124,7 @@ const Inner = (): React.ReactElement => {
       >
         <Routes>
           <Route path="/admin" element={<Admin />} />
+          <Route path="/admin/*" element={<Admin />} />
           <Route path="/setup" element={<Setup />} />
         </Routes>
       </Glass>

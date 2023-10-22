@@ -316,7 +316,7 @@ const ItemForm: React.FC<ItemFormProps> = (
         <RelationshipInput
           key={count++}
           resource={relationships[key]}
-          defaultValue={getDefaultValue(key)}
+          initialValues={getDefaultValue(key)}
           onChange={(value: any): void => {
             handleChange(key, value);
           }}
@@ -329,7 +329,7 @@ const ItemForm: React.FC<ItemFormProps> = (
         <DynamicInput
           key={count++}
           label={formatName(key)}
-          defaultValue={getDefaultValue(key)}
+          initialValues={getDefaultValue(key)}
           onChange={(value: any): void => {
             handleChange(key, value);
           }}

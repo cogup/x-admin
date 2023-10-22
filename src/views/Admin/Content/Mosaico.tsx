@@ -25,7 +25,7 @@ const Mosaico: React.FC<MosaicoProps> = ({
   const { token } = theme.useToken();
 
   const handleClick = (resource: Resource): void => {
-    const localPath = resource.getLocalPath();
+    const localPath = `/admin${resource.getLocalPath()}`;
     navigate(localPath);
   };
 

@@ -22,7 +22,7 @@ const { TextArea } = Input;
 interface DynamicInputProps {
   schema: Schema | null;
   onChange: (value: any) => void;
-  defaultValue?: any;
+  initialValues?: any;
   disabled?: boolean;
   label: string;
 }
@@ -30,7 +30,7 @@ interface DynamicInputProps {
 const DynamicInput: React.FC<DynamicInputProps> = ({
   schema,
   onChange,
-  defaultValue,
+  initialValues,
   disabled,
   label
 }) => {
@@ -55,7 +55,7 @@ const DynamicInput: React.FC<DynamicInputProps> = ({
           format="YYYY-MM-DDTHH:mm:ssZ"
           onChange={onChange}
           disabled={disabled}
-          defaultValue={dayjs(defaultValue)}
+          defaultValue={dayjs(initialValues)}
         />
       );
     } else if (format === 'time') {
@@ -63,7 +63,7 @@ const DynamicInput: React.FC<DynamicInputProps> = ({
         <TimePicker
           onChange={onChange}
           disabled={disabled}
-          defaultValue={dayjs(defaultValue, 'HH:mm:ss')}
+          defaultValue={dayjs(initialValues, 'HH:mm:ss')}
         />
       );
     }
@@ -76,7 +76,7 @@ const DynamicInput: React.FC<DynamicInputProps> = ({
         style={{ width: '100%' }}
         placeholder="Selecione uma opção"
         onChange={onChange}
-        defaultValue={defaultValue}
+        defaultValue={initialValues}
         disabled={disabled}
       >
         {schemaItem.enum?.map((item, index) => (
@@ -107,7 +107,7 @@ const DynamicInput: React.FC<DynamicInputProps> = ({
       <Input
         type="color"
         onChange={onChange}
-        defaultValue={defaultValue ?? '#000000'}
+        defaultValue={initialValues ?? '#000000'}
         disabled={disabled}
       />
     );
@@ -145,7 +145,7 @@ const DynamicInput: React.FC<DynamicInputProps> = ({
           onChange={(e): void => {
             onChange(e.target.value);
           }}
-          defaultValue={defaultValue}
+          defaultValue={initialValues}
           disabled={disabled}
         />
       ) : (
@@ -154,7 +154,7 @@ const DynamicInput: React.FC<DynamicInputProps> = ({
           onChange={(e): void => {
             onChange(e.target.value);
           }}
-          defaultValue={defaultValue}
+          defaultValue={initialValues}
           disabled={disabled}
           type={getInputStringType()}
         />
@@ -206,7 +206,7 @@ const DynamicInput: React.FC<DynamicInputProps> = ({
         max={schemaItem.maximum}
         step={type === 'integer' ? 1 : 0.01}
         onChange={onChange}
-        defaultValue={defaultValue}
+        defaultValue={initialValues}
         disabled={disabled}
       />
     );
@@ -217,7 +217,7 @@ const DynamicInput: React.FC<DynamicInputProps> = ({
       onChange={(e): void => {
         onChange(e.target.value);
       }}
-      defaultChecked={defaultValue}
+      defaultChecked={initialValues}
       disabled={disabled}
     />
   );
@@ -231,7 +231,7 @@ const DynamicInput: React.FC<DynamicInputProps> = ({
           style={{ width: '100%' }}
           placeholder="Selecione os itens"
           onChange={onChange}
-          defaultValue={defaultValue}
+          defaultValue={initialValues}
           disabled={disabled}
         >
           {items.enum.map((item, index) => (
@@ -251,7 +251,7 @@ const DynamicInput: React.FC<DynamicInputProps> = ({
       onChange={(e): void => {
         onChange(e.target.value);
       }}
-      defaultValue={defaultValue}
+      defaultValue={initialValues}
       autoSize={{ minRows: 3, maxRows: 6 }}
       disabled={disabled}
     />
@@ -263,7 +263,7 @@ const DynamicInput: React.FC<DynamicInputProps> = ({
         min={schemaItem.minimum ?? 0}
         max={schemaItem.maximum ?? 100}
         onChange={onChange}
-        defaultValue={defaultValue ?? 0}
+        defaultValue={initialValues ?? 0}
         disabled={disabled}
       />
     );
@@ -295,7 +295,7 @@ const DynamicInput: React.FC<DynamicInputProps> = ({
     return (
       <TextAreaModal
         onChange={onChange}
-        defaultValue={defaultValue}
+        defaultValue={initialValues}
         disabled={disabled}
         label={label}
       />
@@ -303,7 +303,7 @@ const DynamicInput: React.FC<DynamicInputProps> = ({
   };
 
   const renderCodeInput = (): React.ReactElement => {
-    return <CodeEditor onChange={onChange} defaultValue={defaultValue} />;
+    return <CodeEditor onChange={onChange} defaultValue={initialValues} />;
   };
   const inputTypeMap = {
     string: renderStringInput,

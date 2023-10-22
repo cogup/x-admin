@@ -128,11 +128,12 @@ export class Controller {
   }
 
   findResourceByLocalPathComplex(localPath: string): Resource | null {
-    if (localPath === '/') {
+    if (localPath === '/' || localPath === '/admin') {
       return null;
     }
+
     const path = localPath.split('/');
-    const resourceName = path[2];
+    const resourceName = path[3];
     const resourceType = path[path.length - 1] as ResourceTypes;
 
     try {

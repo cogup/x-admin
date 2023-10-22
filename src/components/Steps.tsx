@@ -79,8 +79,6 @@ const StepsMaker: React.FC<StepsMakerProps> = ({
 
   const CurrentStep = steps[current].content;
 
-  console.log('onNextActive', nextActive);
-
   return (
     <div
       style={{

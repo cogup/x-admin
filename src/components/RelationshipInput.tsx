@@ -12,7 +12,7 @@ interface RelationshipInputProps {
   resource: Resource;
   onChange: (value: any) => void;
   controller: Controller;
-  defaultValue?: string;
+  initialValues?: string;
   disabled?: boolean;
 }
 
@@ -20,7 +20,7 @@ export default function RelationshipInput({
   resource,
   onChange,
   controller,
-  defaultValue,
+  initialValues,
   disabled
 }: RelationshipInputProps): React.ReactElement {
   const [options, setOptions] = useState([]);
@@ -30,15 +30,15 @@ export default function RelationshipInput({
     ResourceTypes.READ
   );
   const url =
-    defaultValue !== undefined && defaultValue !== null
+    initialValues !== undefined && initialValues !== null
       ? resourceView?.getLocalPath({
-          params: { id: defaultValue }
+          params: { id: initialValues }
         })
       : resourceView?.getLocalPath();
 
   useEffect((): void => {
-    if (defaultValue !== undefined && defaultValue !== null) {
-      fetchFirstData(defaultValue).catch((error) => {
+    if (initialValues !== undefined && initialValues !== null) {
+      fetchFirstData(initialValues).catch((error) => {
         notification.error({
           message: `Error fetching related data: ${error}`
         });
@@ -134,7 +134,7 @@ export default function RelationshipInput({
   if (valueFormatted === undefined) {
     return (
       <Input
-        defaultValue={defaultValue}
+        defaultValue={initialValues}
         onChange={(e): void => {
           onChange(e.target.value);
         }}
@@ -159,7 +159,7 @@ export default function RelationshipInput({
         options={options}
         disabled={disabled}
       />
-      {defaultValue && (
+      {initialValues && (
         <Link
           to={url}
           style={{

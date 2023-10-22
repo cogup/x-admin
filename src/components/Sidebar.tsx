@@ -86,7 +86,7 @@ const Sidebar: React.FC<SidebarProps> = ({
               return null;
             }
 
-            const localPath = resource.getLocalPath();
+            const localPath = `/admin${resource.getLocalPath()}`;
 
             return getItem(
               capitalizeFirstLetter(

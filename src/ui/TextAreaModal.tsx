@@ -19,19 +19,19 @@ interface TextAreaWithQuillModalProps {
 }
 
 interface TextAreaStyledProps {
-  colorEditor: string;
-  colorToolbar: string;
-  colorPrimaryBg: string;
-  colorPrimaryText: string;
+  $colorEditor: string;
+  $colorToolbar: string;
+  $colorPrimaryBg: string;
+  $colorPrimaryText: string;
 }
 
 const TextAreaStyled = styled.div<TextAreaStyledProps>`
   .ql-editor {
-    background-color: ${({ colorEditor }) => colorEditor} !important;
+    background-color: ${({ $colorEditor }) => $colorEditor} !important;
   }
 
   .ql-toolbar {
-    background-color: ${({ colorToolbar }) => colorToolbar} !important;
+    background-color: ${({ $colorToolbar }) => $colorToolbar} !important;
   }
 
   .ql-fullscreen,
@@ -41,8 +41,8 @@ const TextAreaStyled = styled.div<TextAreaStyledProps>`
   .ql-fullscreen:visited {
     cursor: pointer !important;
     float: right !important;
-    color: ${({ colorPrimaryText }) => colorPrimaryText} !important;
-    background: ${({ colorPrimaryBg }) => colorPrimaryBg} !important;
+    color: ${({ $colorPrimaryText }) => $colorPrimaryText} !important;
+    background: ${({ $colorPrimaryBg }) => $colorPrimaryBg} !important;
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
@@ -208,10 +208,10 @@ const TextAreaWithQuillModal: React.FC<TextAreaWithQuillModalProps> = ({
 
   return (
     <TextAreaStyled
-      colorPrimaryBg={token.colorPrimary}
-      colorEditor={token.colorBgContainer}
-      colorToolbar={token.colorBgElevated}
-      colorPrimaryText={token.colorText}
+      $colorPrimaryBg={token.colorPrimary}
+      $colorEditor={token.colorBgContainer}
+      $colorToolbar={token.colorBgElevated}
+      $colorPrimaryText={token.colorText}
     >
       <Editor
         ref={editorRef}

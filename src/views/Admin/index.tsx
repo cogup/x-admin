@@ -43,8 +43,6 @@ const Admin = (): React.ReactElement => {
   const isMobile = useIsMobile();
   const contentRef = React.useRef<HTMLDivElement>(null);
 
-  console.log(data);
-
   const { token } = theme.useToken();
 
   useEffect(() => {
@@ -170,9 +168,9 @@ const Admin = (): React.ReactElement => {
   const itemsNav = [
     {
       label: 'Docs',
-      key: '/docs',
+      key: '/admin/docs',
       onClick: () => {
-        navigate('/docs');
+        navigate('/admin/docs');
       }
     }
   ];

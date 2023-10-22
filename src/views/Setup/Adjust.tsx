@@ -7,7 +7,8 @@ import {
   List,
   Select,
   Space,
-  Typography
+  Typography,
+  notification
 } from 'antd';
 import { StepProps } from '../../components/Steps';
 import { OpenAPI, Operation, PathItem } from '../../controller/openapi';
@@ -172,13 +173,22 @@ const Adjust = (props: StepProps): React.ReactElement => {
   }, []);
 
   useEffect(() => {
+    const servers = serversUrl.map((url) => ({ url }));
+    setSpecification({ ...specification, servers: servers });
+  }, [serversUrl]);
+
+  useEffect(() => {
     if (xAdminData !== undefined) {
-      updateData(DataType.SPECIFICATION, {
+      setSpecification({
         ...specification,
         ...xAdminData
       });
     }
   }, [xAdminData]);
+
+  useEffect(() => {
+    updateData(DataType.SPECIFICATION, specification);
+  }, [specification]);
 
   // save on xAdminData
   const onChangeItem = (
@@ -239,11 +249,20 @@ const Adjust = (props: StepProps): React.ReactElement => {
     e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>
   ) => {
     e.preventDefault();
-    setServersUrl([...serversUrl, newUrl]);
-    setNewUrl('');
-    setTimeout(() => {
-      inputRef.current?.focus();
-    }, 0);
+
+    try {
+      const validUrl = new URL(newUrl);
+      setServersUrl([...serversUrl, validUrl.href]);
+      setNewUrl('');
+      setTimeout(() => {
+        inputRef.current?.focus();
+      }, 0);
+    } catch {
+      notification.error({
+        message: 'Error',
+        description: 'Invalid URL'
+      });
+    }
   };
 
   const onChangeNewUrl = (event: React.ChangeEvent<HTMLInputElement>) => {
