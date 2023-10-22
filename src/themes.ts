@@ -19,7 +19,7 @@ interface CustomThemeNoFix {
   algorithm: any;
 }
 
-interface CustomTheme extends CustomThemeNoFix {
+export interface CustomTheme extends CustomThemeNoFix {
   components: {
     Layout: {
       siderBg: string;
@@ -32,7 +32,7 @@ interface CustomTheme extends CustomThemeNoFix {
   };
 }
 
-interface Themes {
+export interface Themes {
   light: CustomTheme;
   dark: CustomTheme;
 }
@@ -65,16 +65,6 @@ const getThemes = (data: DataSyncContextData): Themes => {
     algorithm: theme.defaultAlgorithm
   };
 
-  const darker = {
-    token: {
-      colorBgLayout: defineColorBgLayoutDark(data),
-      colorBgContainer: 'rgba(255, 255, 255, 0.9)',
-      colorTextBase: '#fff',
-      colorPrimary: data.primaryColor || token.colorPrimary
-    },
-    algorithm: theme.defaultAlgorithm
-  };
-
   const dark = {
     token: {
       colorBgLayout: defineColorBgLayoutDark(data),
@@ -85,25 +75,9 @@ const getThemes = (data: DataSyncContextData): Themes => {
     algorithm: theme.darkAlgorithm
   };
 
-  const lighting = {
-    token: {
-      colorBgLayout: defineColorBgLayoutDark(data),
-      colorBgContainer: 'rgba(22, 22, 22, 0.95)',
-      colorTextBase: token.colorTextBase,
-      colorPrimary: data.primaryColor || token.colorPrimary
-    },
-    algorithm: theme.defaultAlgorithm
-  };
-
   return {
     dark: fixTheme(dark),
-    light: fixTheme(
-      data.theme === Theme.DARKER
-        ? darker
-        : data.theme === Theme.LIGHTING
-        ? lighting
-        : light
-    )
+    light: fixTheme(light)
   };
 };
 

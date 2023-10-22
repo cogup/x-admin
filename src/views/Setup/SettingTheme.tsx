@@ -3,6 +3,7 @@ import { Form, Input, Space, theme, Typography, ColorPicker } from 'antd';
 import { StepProps } from '../../components/Steps';
 import { Color } from 'antd/es/color-picker';
 import { useDataSync } from '../../utils/sync';
+import { DataType } from '../../utils/sync';
 
 const { Title } = Typography;
 
@@ -21,11 +22,8 @@ const SettingTheme = (props: StepProps): React.ReactElement => {
   props.nextBottom(true);
 
   useEffect(() => {
-    updateData({
-      ...data,
-      primaryColor: primaryColor,
-      backgroundImage: backgroundImage
-    });
+    updateData(DataType.PRIMARY_COLOR, primaryColor);
+    updateData(DataType.BACKGROUND_IMAGE, backgroundImage);
 
     props.setData({
       primaryColor,

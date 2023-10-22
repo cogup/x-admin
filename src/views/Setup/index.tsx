@@ -4,12 +4,10 @@ import styled from 'styled-components';
 import StepsMaker from '../../components/Steps';
 import ImportSpec from './ImportSpec';
 import GlobalHeader from '../../components/GlobalHeader';
-import { useDataSync } from '../../utils/sync';
+import { DataType, useDataSync } from '../../utils/sync';
 import SettingTheme from './SettingTheme';
 import { OpenAPI } from '../../controller/openapi';
 import Adjust from './Adjust';
-
-const { Content, Footer } = Layout;
 
 const Root = styled.div`
   display: flex;
@@ -60,14 +58,10 @@ const Setup = (): React.ReactElement => {
   const onDone = (newData: SetupData) => {
     setDone(true);
 
-    updateData({
-      ...data,
-      backgroundImage: newData.theme?.backgroundImage,
-      backgroundGradient: newData.theme?.activeGradient,
-      primaryColor: newData.theme?.primaryColor,
-      specification: newData.adjust,
-      backgroundColor: false
-    });
+    updateData(DataType.SPECIFICATION, newData.adjust);
+    updateData(DataType.BACKGROUND_IMAGE, newData.theme?.backgroundImage);
+    updateData(DataType.PRIMARY_COLOR, newData.theme?.primaryColor);
+    updateData(DataType.BACKGROUND_GRADIENT, newData.theme?.activeGradient);
   };
 
   return (
@@ -117,7 +111,7 @@ const Setup = (): React.ReactElement => {
               ]}
             />
           </Layout.Content>
-          <Footer
+          <Layout.Footer
             style={{
               textAlign: 'center'
             }}
@@ -135,7 +129,7 @@ const Setup = (): React.ReactElement => {
               community contributors
             </a>
             .
-          </Footer>
+          </Layout.Footer>
         </div>
       </Layout>
     </Root>

@@ -17,6 +17,7 @@ import Swagger from './Content/Swagger';
 import { useIsMobile } from '../../use';
 import GlobalHeader from '../../components/GlobalHeader';
 import { useDataSync } from '../../utils/sync';
+import Theming from '../../components/Theming';
 
 const LoadingPage = styled.div`
   display: flex;
@@ -41,6 +42,8 @@ const Admin = (): React.ReactElement => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const contentRef = React.useRef<HTMLDivElement>(null);
+
+  console.log(data);
 
   const { token } = theme.useToken();
 
@@ -234,17 +237,19 @@ const Admin = (): React.ReactElement => {
       >
         <MenuGroups controller={controller} />
       </div>
-      <Layout
-        ref={contentRef}
-        style={{
-          padding: '0 2rem',
-          paddingTop: 65,
-          overflow: 'auto'
-        }}
-      >
-        <Breadcrumb breadcrumb={breadcrumb} controller={controller} />
-        <Routes>{renderRoutes()}</Routes>
-      </Layout>
+      <Theming internal={true}>
+        <Layout
+          ref={contentRef}
+          style={{
+            padding: '0 2rem',
+            paddingTop: 65,
+            overflow: 'auto'
+          }}
+        >
+          <Breadcrumb breadcrumb={breadcrumb} controller={controller} />
+          <Routes>{renderRoutes()}</Routes>
+        </Layout>
+      </Theming>
     </Layout>
   );
 };

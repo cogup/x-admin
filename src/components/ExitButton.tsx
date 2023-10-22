@@ -1,10 +1,10 @@
 import React from 'react';
 import { LogoutOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, theme } from 'antd';
-import { useDataSync } from '../utils/sync';
+import { DataType, useDataSync } from '../utils/sync';
 
 const ExitButton = () => {
-  const { data, updateData } = useDataSync();
+  const { updateData } = useDataSync();
 
   return (
     <Popconfirm
@@ -12,9 +12,7 @@ const ExitButton = () => {
       title={'Exit'}
       description={'Are you sure you want to exit?'}
       onConfirm={() => {
-        updateData({
-          darkMode: data.darkMode
-        });
+        updateData(DataType.THEME, theme);
       }}
       okText="Yes"
       cancelText="No"

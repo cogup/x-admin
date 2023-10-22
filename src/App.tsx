@@ -6,6 +6,7 @@ import { DataSyncContextData, useDataSync } from './utils/sync';
 import styled from 'styled-components';
 import Glass from './ui/Glass';
 import getThemes from './themes';
+import Theming from './components/Theming';
 
 interface RootProps {
   colorBase?: string;
@@ -92,11 +93,6 @@ const App = (): React.ReactElement => {
 
   const themes = getThemes(data);
 
-  console.log({
-    theme: data.theme,
-    themes
-  });
-
   const [customTheme, setCustomTheme] = React.useState(
     data.darkMode ? themes.dark : themes.light
   );
@@ -119,9 +115,9 @@ const App = (): React.ReactElement => {
         backgroundUrl={data.backgroundImage !== undefined}
         theme={data.theme}
       >
-        <ConfigProvider theme={customTheme}>
+        <Theming internal={false}>
           {data.specification === undefined ? <Setup /> : <Admin />}
-        </ConfigProvider>
+        </Theming>
       </Glass>
     </Root>
   );

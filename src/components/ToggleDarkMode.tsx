@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Switch, theme } from 'antd';
-import { useDataSync } from '../utils/sync';
+import { DataType, useDataSync } from '../utils/sync';
 
 const ToggleDarkMode = (): React.ReactElement => {
   const {
@@ -10,10 +10,7 @@ const ToggleDarkMode = (): React.ReactElement => {
   const [checked, setChecked] = useState<boolean>(data.darkMode);
 
   useEffect(() => {
-    updateData({
-      ...data,
-      darkMode: checked
-    });
+    updateData(DataType.DARK_MODE, checked);
   }, [checked]);
 
   return (

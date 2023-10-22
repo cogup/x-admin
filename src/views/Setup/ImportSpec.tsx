@@ -8,7 +8,6 @@ import SubmitButton from '../../components/SubmitButton';
 
 const { Title } = Typography;
 
-// Verifica se o objeto é uma especificação OpenAPI válida, com versão maior ou igual a 3.0.0
 const validateOpenAPI = (specification: any) => {
   if (
     specification === undefined ||
