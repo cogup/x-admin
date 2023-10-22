@@ -7,7 +7,8 @@ import {
   Spin,
   notification,
   Button,
-  Popconfirm
+  Popconfirm,
+  List
 } from 'antd';
 import {
   ResourceTypes,
@@ -89,25 +90,6 @@ const ItemView: React.FC<ItemViewProps> = ({
       </Row>
     );
   }
-
-  const renderItems = (): React.ReactElement[] | null => {
-    if (data === null) return null;
-
-    return Object.entries(data).map(([key, value], index) => {
-      const label = (
-        <>
-          <DynamicIcon iconName={getIconSuggestion(key) as IconType} />
-          {' ' + key.charAt(0).toUpperCase() + key.slice(1)}
-        </>
-      );
-
-      return (
-        <Descriptions.Item key={index} label={label}>
-          {renderLink(value)}
-        </Descriptions.Item>
-      );
-    });
-  };
 
   const renderLink = (value: any): any => {
     if (typeof value === 'string') {
@@ -204,7 +186,24 @@ const ItemView: React.FC<ItemViewProps> = ({
           width: '100%'
         }}
       >
-        <Descriptions bordered>{renderItems()}</Descriptions>
+        <List
+          itemLayout="horizontal"
+          dataSource={data ? Object.entries(data) : []}
+          renderItem={([key, value], index) => {
+            const label = (
+              <>
+                <DynamicIcon iconName={getIconSuggestion(key) as IconType} />
+                {' ' + key.charAt(0).toUpperCase() + key.slice(1)}
+              </>
+            );
+
+            return (
+              <List.Item key={index}>
+                <List.Item.Meta title={label} description={renderLink(value)} />
+              </List.Item>
+            );
+          }}
+        />
       </Card>
 
       {isMobile && (
