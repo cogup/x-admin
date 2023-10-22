@@ -5,6 +5,14 @@ const defaultValue: DataSyncContextData = {
   darkMode: false
 };
 
+// add themes, light, lightdarke, darklight and dark
+export enum Theme {
+  LIGHT = 'light',
+  LIGHTDARK = 'lightdark',
+  DARKLIGHT = 'darklight',
+  DARK = 'dark'
+}
+
 export interface DataSyncContextData {
   darkMode: boolean;
   specification?: OpenAPI;
@@ -12,6 +20,7 @@ export interface DataSyncContextData {
   backgroundGradient?: boolean;
   backgroundColor?: boolean;
   primaryColor?: string;
+  theme?: Theme;
 }
 
 interface DataSyncContextType {

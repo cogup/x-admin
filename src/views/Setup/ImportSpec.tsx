@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Form, Input, Space, message, theme, Divider, Typography } from 'antd';
 import { StepProps } from '../../components/Steps';
 import axios from 'axios';
@@ -19,10 +19,13 @@ const validateOpenAPI = (specification: any) => {
 };
 
 const ImportSpec = (props: StepProps): React.ReactElement => {
-  const [loading, setLoading] = React.useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [form] = Form.useForm();
-  const [urlSuccess, setUrlSuccess] = React.useState<boolean>(false);
-  const [fileSuccess, setFileSuccess] = React.useState<boolean>(false);
+  const [urlSuccess, setUrlSuccess] = useState<boolean>(false);
+  const [fileSuccess, setFileSuccess] = useState<boolean>(false);
+  const [defaultUrl, setDefaultUrl] = useState<string | undefined>(
+    props.currentData?.specification?.url
+  );
   const {
     token: { colorSuccessText, colorSuccessBg, colorSuccessBorder }
   } = theme.useToken();
@@ -42,8 +45,9 @@ const ImportSpec = (props: StepProps): React.ReactElement => {
 
       validateOpenAPI(specification);
 
-      props.setData({ ...specification });
+      props.setData({ specification, url });
       props.nextBottom(true);
+      setDefaultUrl(url);
       setUrlSuccess(true);
       setFileSuccess(false);
     } catch (e: any) {
@@ -64,7 +68,7 @@ const ImportSpec = (props: StepProps): React.ReactElement => {
 
       validateOpenAPI(specification);
 
-      props.setData({ ...specification });
+      props.setData({ specification });
       props.nextBottom(true);
       setFileSuccess(true);
       setUrlSuccess(false);
@@ -110,6 +114,7 @@ const ImportSpec = (props: StepProps): React.ReactElement => {
         <Space.Compact style={{ width: '100%' }}>
           <Input
             placeholder="ex: https://x-admin.github.com/openapi-demo.json"
+            defaultValue={defaultUrl}
             style={
               urlSuccess
                 ? {

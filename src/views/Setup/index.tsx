@@ -2,13 +2,12 @@ import React from 'react';
 import { Layout } from 'antd';
 import styled from 'styled-components';
 import StepsMaker from '../../components/Steps';
-import AdjustTemplates from './AdjustTemplates';
 import ImportSpec from './ImportSpec';
 import GlobalHeader from '../../components/GlobalHeader';
 import { useDataSync } from '../../utils/sync';
 import SettingTheme from './SettingTheme';
 import { OpenAPI } from '../../controller/openapi';
-import { AdminData } from '../../controller/xadmin';
+import Adjust from './Adjust';
 
 const { Content, Footer } = Layout;
 
@@ -107,8 +106,8 @@ const Setup = (): React.ReactElement => {
                 },
                 {
                   key: 'adjust',
-                  title: 'Adjust templates',
-                  content: AdjustTemplates
+                  title: 'Adjust settings',
+                  content: Adjust
                 },
                 {
                   key: 'theme',

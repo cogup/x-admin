@@ -1,15 +1,6 @@
-import React, { useEffect } from 'react';
-import {
-  Form,
-  Input,
-  Space,
-  theme,
-  Typography,
-  ColorPicker
-  // Switch
-} from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Form, Input, Space, theme, Typography, ColorPicker } from 'antd';
 import { StepProps } from '../../components/Steps';
-// import SubmitButton from '../../components/SubmitButton';
 import { Color } from 'antd/es/color-picker';
 import { useDataSync } from '../../utils/sync';
 
@@ -19,13 +10,12 @@ const SettingTheme = (props: StepProps): React.ReactElement => {
   const { data, updateData } = useDataSync();
 
   const [form] = Form.useForm();
-  const [backgroundImage, setBackgroundImage] = React.useState<
-    string | undefined
-  >(undefined);
-  const [primaryColor, setPrimaryColor] = React.useState<string | undefined>(
-    undefined
+  const [backgroundImage, setBackgroundImage] = useState<string | undefined>(
+    data.backgroundImage
   );
-  // const [activeGradient, setActiveGradient] = React.useState<boolean>(false);
+  const [primaryColor, setPrimaryColor] = useState<string | undefined>(
+    data.primaryColor
+  );
   const { token } = theme.useToken();
 
   props.nextBottom(true);
@@ -79,19 +69,6 @@ const SettingTheme = (props: StepProps): React.ReactElement => {
           />
         </Space>
       </Space>
-
-      {/* <Space direction="vertical">
-        <Title level={4} style={{ marginTop: '1rem' }}>
-          Would you like to use a gradient without a background?
-        </Title>
-        <Switch
-          onChange={onChangeGradient}
-          size="default"
-          defaultChecked={false}
-          checkedChildren="Yes!"
-          unCheckedChildren="No, thanks"
-        />
-      </Space> */}
 
       <Space direction="vertical">
         <Title level={4} style={{ marginTop: '1rem' }}>

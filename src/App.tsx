@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react';
-import { ConfigProvider, theme } from 'antd';
+import { ConfigProvider, GlobalToken, theme } from 'antd';
 import Setup from './views/Setup';
 import Admin from './views/Admin';
 import { DataSyncContextData, useDataSync } from './utils/sync';
 import styled from 'styled-components';
 import Glass from './ui/Glass';
-import isImageDark from './utils/isImageDarkOrLight';
 
 interface RootProps {
   colorBase?: string;
@@ -106,7 +105,7 @@ const App = (): React.ReactElement => {
 
   const { token } = theme.useToken();
 
-  const customThemeLight = {
+  const customThemeLightDefault = {
     token: {
       colorBgLayout: 'transparent',
       colorBgContainer: 'rgba(255, 255, 255, 0.9)',
@@ -165,27 +164,14 @@ const App = (): React.ReactElement => {
     algorithm: darkAlgorithm
   };
 
-  const [lightTheme, setLightTheme] = React.useState<any>(customThemeLight);
-
-  const bgIsDark = async () => {
-    if (data.backgroundImage !== undefined) {
-      const isDark = await isImageDark(data.backgroundImage);
-      if (isDark) {
-        setLightTheme(customThemeLightDarker);
-      }
-    }
-  };
-
-  // useEffect(() => {
-  //   bgIsDark();
-  // }, [data]);
+  const customThemeLight = customThemeLightDarker;
 
   const [customTheme, setCustomTheme] = React.useState(
-    data.darkMode ? customThemeDark : lightTheme
+    data.darkMode ? customThemeDark : customThemeLight
   );
 
   useEffect(() => {
-    setCustomTheme(data.darkMode ? customThemeDark : lightTheme);
+    setCustomTheme(data.darkMode ? customThemeDark : customThemeLight);
   }, [data]);
 
   return (
