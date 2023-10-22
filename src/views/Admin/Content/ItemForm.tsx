@@ -410,7 +410,7 @@ const ItemForm: React.FC<ItemFormProps> = (
 
   return (
     <div>
-      <div style={{ width: '100%' }}>
+      <div>
         <Header
           title={resourceAction.summary ?? resourceAction.resourceName}
           subtitle={resourceAction.getApiPath(null, false)}
@@ -419,26 +419,22 @@ const ItemForm: React.FC<ItemFormProps> = (
           resourceName={resourceAction.resourceName}
           typeName={resourceAction.type}
         />
-        <div>
-          <div style={{ width: '100%' }}>
-            <Form
-              onFinish={(_) => {
-                handleSubmit().catch((error) => {
-                  notification.error({
-                    message: `Error submitting form: ${error}`
-                  });
-                });
-              }}
-              labelCol={{ span: 4 }}
-              wrapperCol={{ span: 14 }}
-              layout="horizontal"
-              style={{ width: '100%' }}
-              ref={formRef}
-            >
-              {renderInputs()}
-            </Form>
-          </div>
-        </div>
+        <Form
+          onFinish={(_) => {
+            handleSubmit().catch((error) => {
+              notification.error({
+                message: `Error submitting form: ${error}`
+              });
+            });
+          }}
+          labelCol={{ span: 4 }}
+          wrapperCol={{ span: 14 }}
+          layout="vertical"
+          style={{ width: '100%' }}
+          ref={formRef}
+        >
+          {renderInputs()}
+        </Form>
         {renderMobileButtons()}
       </div>
     </div>

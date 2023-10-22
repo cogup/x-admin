@@ -19,11 +19,21 @@ interface TextAreaWithQuillModalProps {
 }
 
 interface TextAreaStyledProps {
-  colorWhite: string;
-  colorPrimary: string;
+  colorEditor: string;
+  colorToolbar: string;
+  colorPrimaryBg: string;
+  colorPrimaryText: string;
 }
 
 const TextAreaStyled = styled.div<TextAreaStyledProps>`
+  .ql-editor {
+    background-color: ${({ colorEditor }) => colorEditor} !important;
+  }
+
+  .ql-toolbar {
+    background-color: ${({ colorToolbar }) => colorToolbar} !important;
+  }
+
   .ql-fullscreen,
   .ql-fullscreen:active,
   .ql-fullscreen:focus,
@@ -31,8 +41,8 @@ const TextAreaStyled = styled.div<TextAreaStyledProps>`
   .ql-fullscreen:visited {
     cursor: pointer !important;
     float: right !important;
-    color: ${({ colorWhite }) => colorWhite} !important;
-    background: ${({ colorPrimary }) => colorPrimary} !important;
+    color: ${({ colorPrimaryText }) => colorPrimaryText} !important;
+    background: ${({ colorPrimaryBg }) => colorPrimaryBg} !important;
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
@@ -139,14 +149,7 @@ const TextAreaWithQuillModal: React.FC<TextAreaWithQuillModalProps> = ({
   onChange,
   disabled
 }) => {
-  const {
-    token: {
-      colorBgContainerDisabled,
-      colorTextDisabled,
-      colorPrimary,
-      colorWhite
-    }
-  } = theme.useToken();
+  const { token } = theme.useToken();
   const editorRef = useRef<ReactQuill | null>(null);
   const [quillValue, setQuillValue] = useState<string>(
     markdownToHtml(defaultValue)
@@ -204,15 +207,20 @@ const TextAreaWithQuillModal: React.FC<TextAreaWithQuillModalProps> = ({
   };
 
   return (
-    <TextAreaStyled colorPrimary={colorPrimary} colorWhite={colorWhite}>
+    <TextAreaStyled
+      colorPrimaryBg={token.colorPrimary}
+      colorEditor={token.colorBgContainer}
+      colorToolbar={token.colorBgElevated}
+      colorPrimaryText={token.colorText}
+    >
       <Editor
         ref={editorRef}
         value={quillValue}
         onChange={onChangeLocal}
         modules={quillModules}
         readOnly={disabled}
-        colorTextDisabled={colorTextDisabled}
-        colorBgContainerDisabled={colorBgContainerDisabled}
+        colorTextDisabled={token.colorTextDisabled}
+        colorBgContainerDisabled={token.colorBgContainerDisabled}
       />
       <Modal
         title={getLabel()}
@@ -220,7 +228,9 @@ const TextAreaWithQuillModal: React.FC<TextAreaWithQuillModalProps> = ({
         onCancel={handleCancel}
         width="80vw"
         footer={null}
-        bodyStyle={{ width: '100%', height: '70vh' }}
+        styles={{
+          body: { width: '100%', height: '70vh' }
+        }}
       >
         <Editor
           value={quillValue}
@@ -228,8 +238,8 @@ const TextAreaWithQuillModal: React.FC<TextAreaWithQuillModalProps> = ({
           style={{ width: '100%', height: 'auto' }}
           modules={quillModules}
           readOnly={disabled}
-          colorTextDisabled={colorTextDisabled}
-          colorBgContainerDisabled={colorBgContainerDisabled}
+          colorTextDisabled={token.colorTextDisabled}
+          colorBgContainerDisabled={token.colorBgContainerDisabled}
         />
       </Modal>
     </TextAreaStyled>

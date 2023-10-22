@@ -99,7 +99,7 @@ const Header: React.FC<HeaderProps> = ({
             margin: -24,
             padding: '12px 24px',
             borderRadius: token.borderRadiusLG,
-            backgroundColor: '#fff'
+            backgroundColor: token.colorBgElevated
           }}
         >
           <Col>

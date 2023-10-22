@@ -258,7 +258,7 @@ const Admin = (): React.ReactElement => {
       >
         <MenuGroups controller={controller} />
       </div>
-      <Layout style={{ height: '100%' }}>
+      <Layout>
         <WrapperContent
           color={token.colorBgContainer}
           ref={contentRef}
