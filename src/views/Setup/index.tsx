@@ -51,13 +51,10 @@ interface SetupData {
 }
 
 const Setup = (): React.ReactElement => {
-  const { data, updateData } = useDataSync();
-  const [done, setDone] = React.useState<boolean>(false);
+  const { updateData } = useDataSync();
   const contentRef = React.useRef<HTMLDivElement>(null);
 
   const onDone = (newData: SetupData) => {
-    setDone(true);
-
     updateData(DataType.SPECIFICATION, newData.adjust);
     updateData(DataType.BACKGROUND_IMAGE, newData.theme?.backgroundImage);
     updateData(DataType.PRIMARY_COLOR, newData.theme?.primaryColor);

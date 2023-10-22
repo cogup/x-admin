@@ -1,13 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import {
-  AutoComplete,
   Button,
   Divider,
   Input,
   InputRef,
-  Layout,
   List,
-  Row,
   Select,
   Space,
   Switch,
@@ -20,13 +17,10 @@ import { OpenAPI, Operation, PathItem } from '../../controller/openapi';
 import { Methods, ResourceTypes } from '../../controller';
 import { AdminData } from '../../controller/xadmin';
 import { PlusOutlined } from '@ant-design/icons';
+import { DataType, useDataSync } from '../../utils/sync';
+import AdjustListItem from './components/AdjustListItem';
 
 const { Text, Title } = Typography;
-
-const SwitchCustom = styled(Switch)`
-  margin: 0.5em;
-  width: 90px;
-`;
 
 export interface Item {
   key: string;
@@ -162,8 +156,9 @@ const loadServersUrl = (specification: OpenAPI): string[] => {
 };
 
 const Adjust = (props: StepProps): React.ReactElement => {
+  const { updateData } = useDataSync();
   const [xAdminData, setXAdminData] = React.useState<AdminData>();
-  const [list, setList] = React.useState<Item[]>([]);
+  const [resources, setResources] = React.useState<Item[]>([]);
   const [specification, setSpecification] = React.useState<OpenAPI>(
     props.currentData.specification.specification
   );
@@ -171,24 +166,24 @@ const Adjust = (props: StepProps): React.ReactElement => {
     loadServersUrl(props.currentData.specification.specification)
   );
   const [newUrl, setNewUrl] = React.useState<string>('');
+  const { token } = theme.useToken();
 
   const defaultUrl = getDefaultServerUrl(
     props.currentData.specification.specification
   );
-  const {
-    token: { colorInfoBg, colorInfoText }
-  } = theme.useToken();
-
   props.nextBottom(true);
 
   useEffect(() => {
-    setList(getList(specification));
+    setResources(getList(specification));
     setXAdminData(specification['x-admin']);
   }, []);
 
   useEffect(() => {
     if (xAdminData !== undefined) {
-      props.setData({ ...specification, 'x-admin': xAdminData });
+      updateData(DataType.SPECIFICATION, {
+        ...specification,
+        ...xAdminData
+      });
     }
   }, [xAdminData]);
 
@@ -245,120 +240,6 @@ const Adjust = (props: StepProps): React.ReactElement => {
     });
   };
 
-  const renderList = (item: Item) => (
-    <List.Item
-      key={item.key}
-      style={{
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}
-    >
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column'
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            alignItems: 'flex-start',
-            width: '100%'
-          }}
-        >
-          <Title level={5}>{item.summary}</Title>
-          <div>
-            <Text code>{item.method.toUpperCase()}</Text>{' '}
-            <Text>{item.path}</Text>
-          </div>
-          <Text
-            type="secondary"
-            style={{
-              padding: '0.5rem',
-              backgroundColor: colorInfoBg,
-              color: colorInfoText,
-              margin: '0.5rem 0 0 0',
-              width: '100%',
-              textAlign: 'justify',
-              borderRadius: '0.5rem',
-              display: 'block',
-              maxWidth: 624
-            }}
-          >
-            {item.description}
-          </Text>
-        </div>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginTop: '1rem'
-          }}
-        >
-          <SwitchCustom
-            size="default"
-            defaultChecked={item.create}
-            checkedChildren="Create"
-            unCheckedChildren="No create"
-            onChange={(checked) =>
-              onChangeItem(ItemType.CREATE, item.path, item.method, checked)
-            }
-          />
-          <SwitchCustom
-            size="default"
-            defaultChecked={item.read}
-            checkedChildren="Read"
-            unCheckedChildren="No read"
-            onChange={(checked) =>
-              onChangeItem(ItemType.READ, item.path, item.method, checked)
-            }
-          />
-          <SwitchCustom
-            size="default"
-            defaultChecked={item.update}
-            checkedChildren="Update"
-            unCheckedChildren="No update"
-            onChange={(checked) =>
-              onChangeItem(ItemType.UPDATE, item.path, item.method, checked)
-            }
-          />
-          <SwitchCustom
-            size="default"
-            defaultChecked={item.delete}
-            checkedChildren="Delete"
-            unCheckedChildren="No delete"
-            onChange={(checked) =>
-              onChangeItem(ItemType.delete, item.path, item.method, checked)
-            }
-          />
-          <SwitchCustom
-            size="default"
-            defaultChecked={item.list}
-            checkedChildren="List"
-            unCheckedChildren="No list"
-            onChange={(checked) =>
-              onChangeItem(ItemType.LIST, item.path, item.method, checked)
-            }
-          />
-          <SwitchCustom
-            size="default"
-            defaultChecked={item.search}
-            checkedChildren="Search"
-            unCheckedChildren="No search"
-            onChange={(checked) =>
-              onChangeItem(ItemType.SEARCH, item.path, item.method, checked)
-            }
-          />
-        </div>
-      </div>
-    </List.Item>
-  );
-
   const inputRef = useRef<InputRef>(null);
 
   const addItem = (
@@ -375,6 +256,10 @@ const Adjust = (props: StepProps): React.ReactElement => {
   const onChangeNewUrl = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNewUrl(event.target.value);
   };
+
+  const renderList = (item: Item): React.ReactElement => (
+    <AdjustListItem item={item} onChangeItem={onChangeItem} />
+  );
 
   return (
     <>
@@ -417,7 +302,7 @@ const Adjust = (props: StepProps): React.ReactElement => {
       <List
         className="demo-loadmore-list"
         itemLayout="horizontal"
-        dataSource={list}
+        dataSource={resources}
         renderItem={renderList}
       />
     </>
