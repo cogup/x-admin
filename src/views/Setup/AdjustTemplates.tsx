@@ -129,7 +129,7 @@ const AdjustTemplates = (props: StepProps): React.ReactElement => {
   const [list, setList] = React.useState<Item[]>([]);
 
   const {
-    token: { colorText, colorBgBase, colorInfoBg, colorInfoText }
+    token: { colorInfoBg, colorInfoText }
   } = theme.useToken();
 
   const specification = props.currentData.specification as OpenAPI;

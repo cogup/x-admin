@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
-import { ConfigProvider, GlobalToken, theme } from 'antd';
+import { ConfigProvider, theme } from 'antd';
 import Setup from './views/Setup';
 import Admin from './views/Admin';
 import { DataSyncContextData, useDataSync } from './utils/sync';
 import styled from 'styled-components';
 import Glass from './ui/Glass';
+import isImageDark from './utils/isImageDarkOrLight';
 
 interface RootProps {
   colorBase?: string;
@@ -88,10 +89,7 @@ const Root = styled.div<RootProps>`
 
 const { defaultAlgorithm, darkAlgorithm } = theme;
 
-const defineColorBgLayoutDark = (
-  data: DataSyncContextData,
-  token: GlobalToken
-) => {
+const defineColorBgLayoutDark = (data: DataSyncContextData) => {
   if (data.backgroundImage) {
     return 'transparent';
   }
@@ -113,7 +111,27 @@ const App = (): React.ReactElement => {
       colorBgLayout: 'transparent',
       colorBgContainer: 'rgba(255, 255, 255, 0.9)',
       colorTextBase: '#222',
-      colorPrimary: token.colorPrimary
+      colorPrimary: data.primaryColor || token.colorPrimary
+    },
+    components: {
+      Layout: {
+        siderBg: 'transparent',
+        headerBg: 'transparent'
+      },
+      Menu: {
+        subMenuItemBg: 'transparent',
+        itemBg: 'transparent'
+      }
+    },
+    algorithm: defaultAlgorithm
+  };
+
+  const customThemeLightDarker = {
+    token: {
+      colorBgLayout: 'transparent',
+      colorBgContainer: 'rgba(255, 255, 255, 0.9)',
+      colorTextBase: '#fff',
+      colorPrimary: data.primaryColor || token.colorPrimary
     },
     components: {
       Layout: {
@@ -130,9 +148,9 @@ const App = (): React.ReactElement => {
 
   const customThemeDark = {
     token: {
-      colorBgLayout: defineColorBgLayoutDark(data, token),
+      colorBgLayout: defineColorBgLayoutDark(data),
       colorBgContainer: 'rgba(22, 22, 22, 0.95)',
-      colorPrimary: token.colorPrimary
+      colorPrimary: data.primaryColor || token.colorPrimary
     },
     components: {
       Layout: {
@@ -147,12 +165,27 @@ const App = (): React.ReactElement => {
     algorithm: darkAlgorithm
   };
 
+  const [lightTheme, setLightTheme] = React.useState<any>(customThemeLight);
+
+  const bgIsDark = async () => {
+    if (data.backgroundImage !== undefined) {
+      const isDark = await isImageDark(data.backgroundImage);
+      if (isDark) {
+        setLightTheme(customThemeLightDarker);
+      }
+    }
+  };
+
+  // useEffect(() => {
+  //   bgIsDark();
+  // }, [data]);
+
   const [customTheme, setCustomTheme] = React.useState(
-    data.darkMode ? customThemeDark : customThemeLight
+    data.darkMode ? customThemeDark : lightTheme
   );
 
   useEffect(() => {
-    setCustomTheme(data.darkMode ? customThemeDark : customThemeLight);
+    setCustomTheme(data.darkMode ? customThemeDark : lightTheme);
   }, [data]);
 
   return (
@@ -163,21 +196,15 @@ const App = (): React.ReactElement => {
       backgroundGradient={data.backgroundGradient}
       backgroundColor={data.backgroundColor}
     >
-      {data.backgroundImage || data.backgroundGradient ? (
-        <Glass
-          darkMode={data.darkMode}
-          backgroundGradient={data.backgroundGradient}
-          backgroundUrl={data.backgroundImage !== undefined}
-        >
-          <ConfigProvider theme={customTheme}>
-            {data.specification === undefined ? <Setup /> : <Admin />}
-          </ConfigProvider>
-        </Glass>
-      ) : (
+      <Glass
+        darkMode={data.darkMode}
+        backgroundGradient={data.backgroundGradient}
+        backgroundUrl={data.backgroundImage !== undefined}
+      >
         <ConfigProvider theme={customTheme}>
           {data.specification === undefined ? <Setup /> : <Admin />}
         </ConfigProvider>
-      )}
+      </Glass>
     </Root>
   );
 };

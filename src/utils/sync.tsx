@@ -2,9 +2,7 @@ import React, { createContext, useContext, useState } from 'react';
 import { OpenAPI } from '../controller/openapi';
 
 const defaultValue: DataSyncContextData = {
-  darkMode: false,
-  backgroundColor: false,
-  backgroundGradient: true
+  darkMode: false
 };
 
 export interface DataSyncContextData {
@@ -13,6 +11,7 @@ export interface DataSyncContextData {
   backgroundImage?: string;
   backgroundGradient?: boolean;
   backgroundColor?: boolean;
+  primaryColor?: string;
 }
 
 interface DataSyncContextType {

@@ -1,76 +1,12 @@
 import React from 'react';
-import {
-  Form,
-  Input,
-  Space,
-  Button,
-  message,
-  theme,
-  Divider,
-  Typography
-} from 'antd';
-import type { FormInstance } from 'antd';
+import { Form, Input, Space, message, theme, Divider, Typography } from 'antd';
 import { StepProps } from '../../components/Steps';
 import axios from 'axios';
 import { OpenAPI } from '../../controller/openapi';
-import { LoadingOutlined } from '@ant-design/icons';
 import UploadSpec from './UploadSpec';
+import SubmitButton from '../../components/SubmitButton';
 
 const { Title } = Typography;
-
-const SubmitButton = ({
-  form,
-  loading,
-  success = false
-}: {
-  form: FormInstance;
-  loading: boolean;
-  success?: boolean;
-}) => {
-  const [submittable, setSubmittable] = React.useState(false);
-
-  const {
-    token: { colorSuccessText, colorSuccessBg, colorSuccessBorder }
-  } = theme.useToken();
-
-  // Watch all values
-  const values = Form.useWatch([], form);
-
-  React.useEffect(() => {
-    form
-      .validateFields({
-        validateOnly: true
-      })
-      .then(
-        () => {
-          setSubmittable(true);
-        },
-        () => {
-          setSubmittable(false);
-        }
-      );
-  }, [values]);
-
-  return (
-    <Button
-      type="primary"
-      style={
-        success
-          ? {
-              background: colorSuccessBg,
-              color: colorSuccessText,
-              borderColor: colorSuccessBorder,
-              boxShadow: 'none'
-            }
-          : undefined
-      }
-      htmlType="submit"
-      disabled={!submittable}
-    >
-      {loading && <LoadingOutlined />} Get!
-    </Button>
-  );
-};
 
 // Verifica se o objeto é uma especificação OpenAPI válida, com versão maior ou igual a 3.0.0
 const validateOpenAPI = (specification: any) => {

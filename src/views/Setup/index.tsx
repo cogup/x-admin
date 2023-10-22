@@ -6,6 +6,9 @@ import AdjustTemplates from './AdjustTemplates';
 import ImportSpec from './ImportSpec';
 import GlobalHeader from '../../components/GlobalHeader';
 import { useDataSync } from '../../utils/sync';
+import SettingTheme from './SettingTheme';
+import { OpenAPI } from '../../controller/openapi';
+import { AdminData } from '../../controller/xadmin';
 
 const { Content, Footer } = Layout;
 
@@ -38,17 +41,33 @@ const Root = styled.div`
   }
 `;
 
+interface SettingThemeData {
+  backgroundImage?: string;
+  primaryColor?: string;
+  activeGradient?: boolean;
+}
+
+interface SetupData {
+  specification?: OpenAPI;
+  adjust?: OpenAPI;
+  theme?: SettingThemeData;
+}
+
 const Setup = (): React.ReactElement => {
   const { data, updateData } = useDataSync();
   const [done, setDone] = React.useState<boolean>(false);
   const contentRef = React.useRef<HTMLDivElement>(null);
 
-  const onDone = (newData: any) => {
+  const onDone = (newData: SetupData) => {
     setDone(true);
 
     updateData({
       ...data,
-      specification: newData.xAdmin
+      backgroundImage: newData.theme?.backgroundImage,
+      backgroundGradient: newData.theme?.activeGradient,
+      primaryColor: newData.theme?.primaryColor,
+      specification: newData.adjust,
+      backgroundColor: false
     });
   };
 
@@ -83,13 +102,18 @@ const Setup = (): React.ReactElement => {
               steps={[
                 {
                   key: 'specification',
-                  title: 'Import OpenAPI Specification',
+                  title: 'Import OpenAPI',
                   content: ImportSpec
                 },
                 {
-                  key: 'xAdmin',
+                  key: 'adjust',
                   title: 'Adjust templates',
                   content: AdjustTemplates
+                },
+                {
+                  key: 'theme',
+                  title: 'Custom theme',
+                  content: SettingTheme
                 }
               ]}
             />

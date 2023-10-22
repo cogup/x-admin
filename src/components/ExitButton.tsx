@@ -13,8 +13,7 @@ const ExitButton = () => {
       description={'Are you sure you want to exit?'}
       onConfirm={() => {
         updateData({
-          ...data,
-          specification: undefined
+          darkMode: data.darkMode
         });
       }}
       okText="Yes"
