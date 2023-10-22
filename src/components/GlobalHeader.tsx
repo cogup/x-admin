@@ -85,17 +85,13 @@ const GlobalHeader = ({
   }, [menuActived]);
 
   useEffect(() => {
-    console.log(contentRef);
-  }, [contentRef]);
-
-  useEffect(() => {
     if (contentRef === undefined || contentRef.current === null) {
       return;
     }
 
     const handleScroll = () => {
       const scrollTop = contentRef.current?.scrollTop || 0;
-      console.log(scrollTop);
+
       if (scrollTop > 25) {
         setOverlapClass('overlap');
       } else {
