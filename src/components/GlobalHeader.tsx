@@ -7,15 +7,17 @@ import { MenuOutlined } from '@ant-design/icons';
 import ToggleDarkMode from './ToggleDarkMode';
 import ExitButton from './ExitButton';
 import Logo from '../assets/Logo';
+import GradientBlur from './GradientBlur';
 
 const CustomHeader = styled(Layout.Header)`
-  transition:
-    backdrop-filter 0.6s,
-    box-shadow 0.6s;
+  display: flex;
+  justify-content: space-between;
+  padding-inline: 2em;
+  align-items: center;
+  transition: all 1s ease-in-out;
 
-  &.overlap {
-    backdrop-filter: blur(5px) opacity(100%);
-    box-shadow: 0 0px 10px 0 rgba(0, 0, 0, 0.1);
+  &.overlay {
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
   }
 `;
 
@@ -70,7 +72,7 @@ const GlobalHeader = ({
   const location = useLocation();
   const isMobile = useIsMobile();
   const [menuActived, setMenuActived] = useState<boolean>(false);
-  const [overlapClass, setOverlapClass] = useState<string>('');
+  const [overlay, setOverlay] = useState<boolean>(false);
 
   const { token } = theme.useToken();
 
@@ -94,9 +96,9 @@ const GlobalHeader = ({
       const scrollTop = contentRef.current?.scrollTop || 0;
 
       if (scrollTop > 25) {
-        setOverlapClass('overlap');
+        setOverlay(true);
       } else {
-        setOverlapClass('');
+        setOverlay(false);
       }
     };
 
@@ -145,7 +147,7 @@ const GlobalHeader = ({
 
   return (
     <CustomHeader
-      className={overlapClass}
+      className={overlay ? 'overlay' : ''}
       style={{
         position: 'fixed',
         top: 0,
@@ -157,76 +159,78 @@ const GlobalHeader = ({
         height: 63
       }}
     >
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          width: '100vw',
-          padding: '0 1em'
-        }}
-      >
-        <LogoWrapper
-          style={{
-            maxWidth: '200px',
-            paddingLeft: '1em'
-          }}
-        >
-          <Link
-            to={'/admin'}
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'flex-start',
-              alignItems: 'center'
-            }}
-          >
-            <Logo
-              color={token.colorTextBase}
-              style={{
-                width: '20px',
-                height: '20px',
-                // marginRight: '7px'
-                // marginTop: '-5px'
-                marginBottom: 5,
-                marginTop: 15
-              }}
-            />
-            <Typography.Title
-              level={1}
-              style={{
-                color: token.colorTextBase,
-                fontSize: '1rem',
-                fontFamily: 'monospace',
-                verticalAlign: 'middle'
-              }}
-            >
-              {title}
-            </Typography.Title>
-          </Link>
-        </LogoWrapper>
+      <GradientBlur overlay={overlay}>
         <div
           style={{
-            flex: 2
+            display: 'flex',
+            alignItems: 'center',
+            width: '100vw',
+            padding: '0 1em'
           }}
         >
-          {children}
+          <LogoWrapper
+            style={{
+              maxWidth: '200px',
+              paddingLeft: '1em'
+            }}
+          >
+            <Link
+              to={'/admin'}
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'flex-start',
+                alignItems: 'center'
+              }}
+            >
+              <Logo
+                color={token.colorTextBase}
+                style={{
+                  width: '20px',
+                  height: '20px',
+                  // marginRight: '7px'
+                  // marginTop: '-5px'
+                  marginBottom: 5,
+                  marginTop: 15
+                }}
+              />
+              <Typography.Title
+                level={1}
+                style={{
+                  color: token.colorTextBase,
+                  fontSize: '1rem',
+                  fontFamily: 'monospace',
+                  verticalAlign: 'middle'
+                }}
+              >
+                {title}
+              </Typography.Title>
+            </Link>
+          </LogoWrapper>
+          <div
+            style={{
+              flex: 2
+            }}
+          >
+            {children}
+          </div>
+          <Menu
+            mode="horizontal"
+            items={itemsNav}
+            selectedKeys={[currentPathname]}
+            style={{
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'flex-end'
+            }}
+          />
+          <Bookmarks>
+            <ExitButton />
+            <ToggleDarkMode />
+          </Bookmarks>
         </div>
-        <Menu
-          mode="horizontal"
-          items={itemsNav}
-          selectedKeys={[currentPathname]}
-          style={{
-            flex: 1,
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'flex-end'
-          }}
-        />
-        <Bookmarks>
-          <ExitButton />
-          <ToggleDarkMode />
-        </Bookmarks>
-      </div>
+      </GradientBlur>
     </CustomHeader>
   );
 };
