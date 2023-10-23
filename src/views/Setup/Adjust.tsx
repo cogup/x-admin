@@ -154,11 +154,15 @@ const loadServersUrl = (specification: OpenAPI): string[] => {
 };
 
 const Adjust = (props: StepProps): React.ReactElement => {
-  const { updateData } = useDataSync();
+  const { data, updateData } = useDataSync();
   const [xAdminData, setXAdminData] = useState<AdminData>();
   const [resources, setResources] = useState<Item[]>([]);
+
+  const currentSpec =
+    data.specification || props.currentData.specification.specification;
+
   const [specification, setSpecification] = useState<OpenAPI>({
-    ...props.currentData.specification.specification
+    ...currentSpec
   });
   const [serversUrl, setServersUrl] = useState<string[]>(
     loadServersUrl(specification)
@@ -232,24 +236,29 @@ const Adjust = (props: StepProps): React.ReactElement => {
     setXAdminData({ ...xAdminData });
   };
 
-  const onChangeApiURL = (url: string) => {
+  const onChangeApiURL = (newUrl: string) => {
+    const servers: { url: string }[] = [];
+
+    serversUrl.forEach((url) => {
+      if (url !== newUrl) {
+        servers.push({ url });
+      }
+    });
+
     setSpecification({
       ...specification,
       servers: [
         {
-          url
-        }
+          url: newUrl
+        },
+        ...servers
       ]
     });
   };
 
   const inputRef = useRef<InputRef>(null);
 
-  const addItem = (
-    e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>
-  ) => {
-    e.preventDefault();
-
+  const addServer = () => {
     try {
       const validUrl = new URL(newUrl);
       setServersUrl([...serversUrl, validUrl.href]);
@@ -265,6 +274,13 @@ const Adjust = (props: StepProps): React.ReactElement => {
     }
   };
 
+  const onClick = (
+    e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>
+  ) => {
+    e.preventDefault();
+    addServer();
+  };
+
   const onChangeNewUrl = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNewUrl(event.target.value);
   };
@@ -272,6 +288,16 @@ const Adjust = (props: StepProps): React.ReactElement => {
   const renderList = (item: Item): React.ReactElement => (
     <AdjustListItem item={item} onChangeItem={onChangeItem} />
   );
+
+  const pressEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    e.stopPropagation();
+
+    if (e.key === 'Enter') {
+      addServer();
+    }
+
+    return;
+  };
 
   return (
     <>
@@ -298,9 +324,9 @@ const Adjust = (props: StepProps): React.ReactElement => {
                   ref={inputRef}
                   value={newUrl}
                   onChange={onChangeNewUrl}
-                  onKeyDown={(e) => e.stopPropagation()}
+                  onKeyDown={pressEnter}
                 />
-                <Button type="text" icon={<PlusOutlined />} onClick={addItem}>
+                <Button type="text" icon={<PlusOutlined />} onClick={onClick}>
                   Add item
                 </Button>
               </Space>
