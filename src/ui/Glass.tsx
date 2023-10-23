@@ -16,23 +16,14 @@ const Glass = styled.div<GlassProps>`
   height: 100%;
 
   ${({ $darkMode, $token, $theme, $backgroundImage }) => {
-    if ($darkMode || $theme === Theme.DARK) {
-      if ($backgroundImage) {
-        return `
-        background: linear-gradient(135deg, rgba(0,0,0, 1) 0%, rgba(0,0,0, 0.2) 100%);
-      `;
-      }
-      return '';
-    }
-
-    if ($theme === Theme.LIGHT) {
-      if ($backgroundImage) {
-        return `
-        background: linear-gradient(135deg, rgba(255,255,255, 1) 0%, rgba(255,255,255, 0.2) 100%);
-      `;
-      }
-      return '';
-    }
+    // if ($theme === Theme.LIGHT) {
+    //   if ($backgroundImage) {
+    //     return `
+    //     background: linear-gradient(135deg, rgba(255,255,255, 1) 0%, rgba(255,255,255, 0.2) 100%);
+    //   `;
+    //   }
+    //   return '';
+    // }
     const colorPrimary = color($token.colorPrimary)
       .rgb()
       .string()
@@ -44,16 +35,23 @@ const Glass = styled.div<GlassProps>`
       .replace('rgb(', '')
       .replace(')', '');
 
-    if ($theme === Theme.DARKER || $theme === Theme.LIGHTING) {
+    if ($darkMode || $theme === Theme.DARK) {
       if ($backgroundImage) {
         return `
-        background: linear-gradient(135deg, rgba(${colorBgBase}, 1) 0%, rgba(${colorPrimary}, 0.2) 100%);
+        background: linear-gradient(135deg, rgba(0,0,0, 1) 0%, rgba(${colorPrimary}, 0.2) 100%);
       `;
       }
+      return '';
+    }
+
+    if ($backgroundImage) {
       return `
-        background: linear-gradient(135deg, rgba(${colorBgBase}, 1) 0%, rgba(${colorPrimary}, 1.0) 100%);
+        background: linear-gradient(135deg, rgba(${colorBgBase}, 1) 0%, rgba(${colorPrimary}, 0.2) 100%);
       `;
     }
+    return `
+        background: linear-gradient(135deg, rgba(${colorBgBase}, 1) 0%, rgba(${colorPrimary}, 1.0) 100%);
+      `;
   }}
 `;
 

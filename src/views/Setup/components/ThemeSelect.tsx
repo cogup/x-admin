@@ -50,8 +50,9 @@ const ThemeSelectWrapper = styled.div<ThemeSelectWrapperProps>`
     margin: 0 10px;
 
     &.light {
-      background-color: ${(props) =>
-        props.$customColors.light.colorBgContainer};
+      background: ${(props) => {
+        return `linear-gradient(135deg, ${props.$customColors.light.colorBgContainer} 50%, ${props.$token.colorPrimary} 50%)`;
+      }};
       ${(props) => {
         if (props.$selected === Theme.LIGHT) {
           return `
@@ -61,12 +62,12 @@ const ThemeSelectWrapper = styled.div<ThemeSelectWrapperProps>`
       }}
     }
 
-    &.darker {
+    &.lighting {
       background: ${(props) => {
         return `linear-gradient(135deg, ${props.$customColors.dark.colorBgContainer} 50%, ${props.$token.colorPrimary} 50%)`;
       }};
       ${(props) => {
-        if (props.$selected === Theme.DARKER) {
+        if (props.$selected === Theme.LIGHTING) {
           return `
             box-shadow: 0 0 0 2px ${props.$token.colorPrimary};
           `;
@@ -85,12 +86,12 @@ const ThemeSelectWrapper = styled.div<ThemeSelectWrapperProps>`
       }}
     }
 
-    &.lighting {
+    &.darker {
       background: ${(props) => {
-        return `linear-gradient(135deg, ${props.$customColors.light.colorBgContainer} 50%, ${props.$token.colorPrimary} 50%)`;
+        return `linear-gradient(135deg, ${props.$customColors.light.colorBgContainer} 50%, ${props.$customColors.dark.colorBgContainer} 50%)`;
       }};
       ${(props) => {
-        if (props.$selected === Theme.LIGHTING) {
+        if (props.$selected === Theme.DARKER) {
           return `
             box-shadow: 0 0 0 2px ${props.$token.colorPrimary};
           `;
@@ -111,21 +112,19 @@ const ThemeSelect = (props: ThemeSelectProps): React.ReactElement => {
       $customColors={customColors}
       $selected={data.theme ?? Theme.LIGHT}
     >
-      <div onClick={() => props.onSelect(Theme.LIGHT)} className="light">
-        <Logo color={themes[Theme.LIGHT].token.colorTextBase} />
-      </div>
+      <div onClick={() => props.onSelect(Theme.LIGHT)} className="light"></div>
 
-      <div onClick={() => props.onSelect(Theme.LIGHTING)} className="lighting">
-        <Logo color={themes[Theme.LIGHT].token.colorTextBase} />
-      </div>
+      <div
+        onClick={() => props.onSelect(Theme.LIGHTING)}
+        className="lighting"
+      ></div>
 
-      <div onClick={() => props.onSelect(Theme.DARKER)} className="darker">
-        <Logo color={themes[Theme.DARK].token.colorTextBase} />
-      </div>
+      <div onClick={() => props.onSelect(Theme.DARK)} className="dark"></div>
 
-      <div onClick={() => props.onSelect(Theme.DARK)} className="dark">
-        <Logo color={themes[Theme.DARK].token.colorTextBase} />
-      </div>
+      <div
+        onClick={() => props.onSelect(Theme.DARKER)}
+        className="darker"
+      ></div>
     </ThemeSelectWrapper>
   );
 };
