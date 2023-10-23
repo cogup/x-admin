@@ -6,6 +6,7 @@ import { useIsMobile } from '../use';
 import { MenuOutlined } from '@ant-design/icons';
 import ToggleDarkMode from './ToggleDarkMode';
 import ExitButton from './ExitButton';
+import Logo from '../assets/Logo';
 
 const CustomHeader = styled(Layout.Header)`
   transition:
@@ -25,7 +26,7 @@ const CustomHeaderMobile = styled(Layout.Header)`
   align-items: center;
 `;
 
-const Logo = styled.div`
+const LogoWrapper = styled.div`
   float: left;
   display: flex;
   justify-content: center;
@@ -130,13 +131,13 @@ const GlobalHeader = ({
 
     return (
       <CustomHeaderMobile>
-        <Logo>
+        <LogoWrapper>
           <Link to={'/'}>
             <Typography.Title level={1} style={{ color: token.colorTextBase }}>
               {title}
             </Typography.Title>
           </Link>
-        </Logo>
+        </LogoWrapper>
         {renderButtonMenu()}
       </CustomHeaderMobile>
     );
@@ -164,17 +165,45 @@ const GlobalHeader = ({
           padding: '0 1em'
         }}
       >
-        <Logo
+        <LogoWrapper
           style={{
-            width: '200px'
+            maxWidth: '200px',
+            paddingLeft: '1em'
           }}
         >
-          <Link to={'/'}>
-            <Typography.Title level={1} style={{ color: token.colorTextBase }}>
+          <Link
+            to={'/admin'}
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'flex-start',
+              alignItems: 'center'
+            }}
+          >
+            <Logo
+              color={token.colorTextBase}
+              style={{
+                width: '20px',
+                height: '20px',
+                // marginRight: '7px'
+                // marginTop: '-5px'
+                marginBottom: 5,
+                marginTop: 15
+              }}
+            />
+            <Typography.Title
+              level={1}
+              style={{
+                color: token.colorTextBase,
+                fontSize: '1rem',
+                fontFamily: 'monospace',
+                verticalAlign: 'middle'
+              }}
+            >
               {title}
             </Typography.Title>
           </Link>
-        </Logo>
+        </LogoWrapper>
         <div
           style={{
             flex: 2

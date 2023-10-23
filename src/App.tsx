@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import Glass from './ui/Glass';
 import Theming from './components/Theming';
 import {
+  Navigate,
   Route,
   Routes,
   redirect,
@@ -123,8 +124,14 @@ const Inner = (): React.ReactElement => {
         $backgroundImage={data.backgroundImage !== undefined}
       >
         <Routes>
-          <Route path="/admin" element={<Admin />} />
-          <Route path="/admin/*" element={<Admin />} />
+          {data.specification !== undefined ? (
+            [
+              <Route key={0} path="/admin" element={<Admin />} />,
+              <Route key={1} path="/admin/*" element={<Admin />} />
+            ]
+          ) : (
+            <Route path="/admin" element={<Navigate to="/setup" />} />
+          )}
           <Route path="/setup" element={<Setup />} />
         </Routes>
       </Glass>
