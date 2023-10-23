@@ -47,7 +47,7 @@ const Breadcrumb = ({
   const gotToBreadcrumb = (path: string): any => {
     return (e: any): void => {
       e.preventDefault();
-      navigate(path);
+      navigate(`/admin${path}`);
     };
   };
 

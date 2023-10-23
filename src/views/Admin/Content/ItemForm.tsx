@@ -230,7 +230,7 @@ const ItemForm: React.FC<ItemFormProps> = (
       }
 
       if (path !== undefined) {
-        navigate(path);
+        navigate(`/admin${path}`);
       }
     } catch (error) {
       notification.error({
@@ -243,7 +243,7 @@ const ItemForm: React.FC<ItemFormProps> = (
     const path = resourceList?.getLocalPath();
 
     if (path !== undefined) {
-      navigate(path);
+      navigate(`/admin${path}`);
     }
   };
 

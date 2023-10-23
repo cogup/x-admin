@@ -288,7 +288,7 @@ const ListItems: React.FC<ListItemsProps> = ({
       return;
     }
 
-    navigate(to);
+    navigate(`/admin${to}`);
   };
 
   const defineColumns = (): React.ReactElement[] => {
@@ -371,7 +371,7 @@ const ListItems: React.FC<ListItemsProps> = ({
       return;
     }
 
-    navigate(to);
+    navigate(`/admin${to}`);
   };
 
   const onClickRead = (id: number): void => {
@@ -381,7 +381,7 @@ const ListItems: React.FC<ListItemsProps> = ({
       return;
     }
 
-    navigate(to);
+    navigate(`/admin${to}`);
   };
 
   const defineAction = (): any => {

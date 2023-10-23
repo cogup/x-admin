@@ -130,15 +130,11 @@ const Search: React.FC<SearchProps> = ({ controller }): React.ReactElement => {
         });
         const moreCount = data.data.meta.totalItems - data.data.meta.length;
         const more = moreCount > 0 ? moreCount : undefined;
-
+        const moreTo = resource.getLocalPath({
+          query: { search: value }
+        });
         return {
-          label: renderTitle(
-            resource.label,
-            resource.getLocalPath({
-              query: { search: value }
-            }),
-            more
-          ),
+          label: renderTitle(resource.label, `/admin${moreTo}`, more),
           options: data.data.data.map(
             (item: Record<string, string | number>) => {
               const resourceInner = searchResourceInner[resource.resourceName];
@@ -173,12 +169,13 @@ const Search: React.FC<SearchProps> = ({ controller }): React.ReactElement => {
       currentResource !== null &&
       currentResource.type === ResourceTypes.LIST
     ) {
-      navigate(currentResource.getLocalPath({ query: { search: value } }));
+      const to = currentResource.getLocalPath({ query: { search: value } });
+      navigate(`/admin${to}`);
     }
   };
 
   const handleSelect = (value: string, option: any): void => {
-    navigate(option.key);
+    navigate(`/admin${option.key}`);
     setInputValue('');
     setResult([]);
   };

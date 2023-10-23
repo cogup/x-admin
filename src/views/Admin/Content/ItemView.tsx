@@ -138,13 +138,12 @@ const ItemView: React.FC<ItemViewProps> = ({
             icon={<EditFilled />}
             type="primary"
             size={isMobile ? 'large' : 'middle'}
-            onClick={() =>
-              navigate(
-                resourceUpdate.getLocalPath({
-                  params: { id: itemId }
-                })
-              )
-            }
+            onClick={() => {
+              const to = resourceUpdate.getLocalPath({
+                params: { id: itemId }
+              });
+              navigate(`/admin${to}`);
+            }}
             style={{ marginRight: '0.5rem' }}
           />
         )}

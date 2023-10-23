@@ -219,7 +219,9 @@ const Admin = (): React.ReactElement => {
                 }}
               >
                 <Breadcrumb breadcrumb={breadcrumb} controller={controller} />
-                <Routes>{renderRoutes()}</Routes>
+                <Theming internal={true}>
+                  <Routes>{renderRoutes()}</Routes>
+                </Theming>
               </Layout>
             )}
           </Layout>
@@ -252,8 +254,8 @@ const Admin = (): React.ReactElement => {
           overflow: 'auto'
         }}
       >
+        <Breadcrumb breadcrumb={breadcrumb} controller={controller} />
         <Theming internal={true}>
-          <Breadcrumb breadcrumb={breadcrumb} controller={controller} />
           <Routes>{renderRoutes()}</Routes>
         </Theming>
         <Footer />
