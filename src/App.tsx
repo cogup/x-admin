@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { theme } from 'antd';
 import Setup from './views/Setup';
 import Admin from './views/Admin';
-import { useDataSync } from './utils/sync';
+import { Theme, useDataSync } from './utils/sync';
 import styled from 'styled-components';
 import Glass from './ui/Glass';
 import Theming from './components/Theming';
@@ -118,9 +118,9 @@ const Inner = (): React.ReactElement => {
     >
       <Glass
         $darkMode={data.darkMode}
-        $backgroundGradient={data.backgroundGradient}
-        $backgroundUrl={data.backgroundImage !== undefined}
-        $theme={data.theme}
+        $token={token}
+        $theme={data.theme ?? Theme.LIGHT}
+        $backgroundImage={data.backgroundImage !== undefined}
       >
         <Routes>
           <Route path="/admin" element={<Admin />} />

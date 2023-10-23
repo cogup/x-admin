@@ -1,11 +1,13 @@
 import styled from 'styled-components';
 import { Theme } from '../utils/sync';
+import { GlobalToken } from 'antd';
+import color from 'color';
 
 interface GlassProps {
   $darkMode: boolean;
-  $backgroundGradient?: boolean;
-  $backgroundUrl?: boolean;
-  $theme?: Theme;
+  $token: GlobalToken;
+  $theme: Theme;
+  $backgroundImage: boolean;
 }
 
 const Glass = styled.div<GlassProps>`
@@ -13,20 +15,43 @@ const Glass = styled.div<GlassProps>`
   width: 100%;
   height: 100%;
 
-  ${({ $darkMode, $backgroundGradient, $backgroundUrl, $theme }) => {
-    if (
-      $backgroundGradient ||
-      ($backgroundUrl && $darkMode) ||
-      $theme === Theme.DARKER ||
-      $theme === Theme.DARK
-    ) {
-      const color =
-        $darkMode || $theme === Theme.DARKER || $theme === Theme.DARK
-          ? '0, 0, 0'
-          : '255, 255, 255';
+  ${({ $darkMode, $token, $theme, $backgroundImage }) => {
+    if ($darkMode || $theme === Theme.DARK) {
+      if ($backgroundImage) {
+        return `
+        background: linear-gradient(135deg, rgba(0,0,0, 1) 0%, rgba(0,0,0, 0.2) 100%);
+      `;
+      }
+      return '';
+    }
 
+    if ($theme === Theme.LIGHT) {
+      if ($backgroundImage) {
+        return `
+        background: linear-gradient(135deg, rgba(255,255,255, 1) 0%, rgba(255,255,255, 0.2) 100%);
+      `;
+      }
+      return '';
+    }
+    const colorPrimary = color($token.colorPrimary)
+      .rgb()
+      .string()
+      .replace('rgb(', '')
+      .replace(')', '');
+    const colorBgBase = color($token.colorBgBase)
+      .rgb()
+      .string()
+      .replace('rgb(', '')
+      .replace(')', '');
+
+    if ($theme === Theme.DARKER || $theme === Theme.LIGHTING) {
+      if ($backgroundImage) {
+        return `
+        background: linear-gradient(135deg, rgba(${colorBgBase}, 1) 0%, rgba(${colorPrimary}, 0.2) 100%);
+      `;
+      }
       return `
-        background: linear-gradient(135deg, rgba(${color}, 1) 0%, rgba(${color}, 0.2) 100%);
+        background: linear-gradient(135deg, rgba(${colorBgBase}, 1) 0%, rgba(${colorPrimary}, 1.0) 100%);
       `;
     }
   }}

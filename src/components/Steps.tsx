@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Button, Steps, theme } from 'antd';
+import Theming from './Theming';
 
 export interface Step {
   key: string;
@@ -12,6 +13,7 @@ interface StepsMakerProps {
   onNext?: (data: any) => void;
   onDone?: (data: any) => void;
   confirmToNext?: boolean;
+  wrapperContent?: Wrapper;
 }
 
 export interface StepProps {
@@ -22,12 +24,36 @@ export interface StepProps {
   nextBottomActive: (active: boolean) => void;
 }
 
+export type Wrapper = (props: {
+  children: React.ReactNode;
+}) => React.ReactElement;
 export type StepNode = (props: StepProps) => React.ReactElement;
+
+interface StepContentProps {
+  children: React.ReactNode;
+}
+
+const StepContent = (props: StepContentProps): React.ReactElement => {
+  const { token } = theme.useToken();
+
+  const contentStyle: React.CSSProperties = {
+    textAlign: 'center',
+    color: token.colorTextTertiary,
+    backgroundColor: token.colorBgBase,
+    borderRadius: token.borderRadiusLG,
+    marginTop: 16,
+    padding: '2rem',
+    width: '100%'
+  };
+
+  return <div style={contentStyle}>{props.children}</div>;
+};
 
 const StepsMaker: React.FC<StepsMakerProps> = ({
   steps,
   onDone,
-  onNext
+  onNext,
+  wrapperContent
 }): React.ReactElement => {
   const { token } = theme.useToken();
   const [current, setCurrent] = useState(0);
@@ -67,16 +93,6 @@ const StepsMaker: React.FC<StepsMakerProps> = ({
     title: item.title
   }));
 
-  const contentStyle: React.CSSProperties = {
-    textAlign: 'center',
-    color: token.colorTextTertiary,
-    backgroundColor: token.colorBgBase,
-    borderRadius: token.borderRadiusLG,
-    marginTop: 16,
-    padding: '2rem',
-    width: '100%'
-  };
-
   const CurrentStep = steps[current].content;
 
   return (
@@ -88,15 +104,19 @@ const StepsMaker: React.FC<StepsMakerProps> = ({
       }}
     >
       <Steps current={current} items={stepProps} />
-      <div style={contentStyle}>
-        <CurrentStep
-          setData={setData}
-          currentData={stepData}
-          next={next}
-          prev={prev}
-          nextBottomActive={onNextActive}
-        />
-      </div>
+
+      <Theming internal={true}>
+        <StepContent>
+          <CurrentStep
+            setData={setData}
+            currentData={stepData}
+            next={next}
+            prev={prev}
+            nextBottomActive={onNextActive}
+          />
+        </StepContent>
+      </Theming>
+
       <div
         style={{
           marginTop: 24,

@@ -59,6 +59,25 @@ const Setup = (): React.ReactElement => {
     navigate('/admin');
   };
 
+  const wrapperContent = ({
+    children
+  }: {
+    children: React.ReactNode;
+  }): React.ReactElement => {
+    return (
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          padding: '2rem'
+        }}
+      >
+        {children}
+      </div>
+    );
+  };
+
   return (
     <Root>
       <Layout
@@ -84,29 +103,28 @@ const Setup = (): React.ReactElement => {
               padding: '2rem'
             }}
           >
-            <Theming internal={true}>
-              <StepsMaker
-                confirmToNext={true}
-                onDone={onDone}
-                steps={[
-                  {
-                    key: 'specification',
-                    title: 'Import OpenAPI',
-                    content: ImportSpec
-                  },
-                  {
-                    key: 'adjust',
-                    title: 'Adjust settings',
-                    content: Adjust
-                  },
-                  {
-                    key: 'theme',
-                    title: 'Custom theme',
-                    content: SettingTheme
-                  }
-                ]}
-              />
-            </Theming>
+            <StepsMaker
+              wrapperContent={wrapperContent}
+              confirmToNext={true}
+              onDone={onDone}
+              steps={[
+                {
+                  key: 'specification',
+                  title: 'Import OpenAPI',
+                  content: ImportSpec
+                },
+                {
+                  key: 'adjust',
+                  title: 'Adjust settings',
+                  content: Adjust
+                },
+                {
+                  key: 'theme',
+                  title: 'Custom theme',
+                  content: SettingTheme
+                }
+              ]}
+            />
           </Layout.Content>
           <Layout.Footer
             style={{

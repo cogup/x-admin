@@ -57,16 +57,48 @@ const fixTheme = (theme: CustomThemeNoFix): CustomTheme => {
 
 const defaultPrimaryColor = '#8F00D3';
 
+export interface CustomColors {
+  light: {
+    colorWhite: string;
+    colorWhiteDark: string;
+    colorTextBase: string;
+    colorBgContainer: string;
+  };
+  dark: {
+    colorWhite: string;
+    colorWhiteDark: string;
+    colorTextBase: string;
+    colorBgContainer: string;
+  };
+}
+
+export const customColors: CustomColors = {
+  light: {
+    colorWhite: '#fff',
+    colorWhiteDark: '#555',
+    colorTextBase: '#161616',
+    colorBgContainer: '#fff'
+  },
+  dark: {
+    colorWhite: '#161616',
+    colorWhiteDark: '#fff',
+    colorTextBase: '#fff',
+    colorBgContainer: '#161616'
+  }
+};
+
 const getThemes = (data: DataSyncContextData): Themes => {
   const colorPrimary = data.primaryColor || defaultPrimaryColor;
 
   const colorL = color(colorPrimary);
   const light = {
     token: {
-      colorWhite: colorL.isDark() ? '#fff' : '#555',
+      colorWhite: colorL.isDark()
+        ? customColors.light.colorWhite
+        : customColors.light.colorWhiteDark,
       colorBgLayout: 'transparent',
       colorBgContainer: 'rgba(255, 255, 255, 0.9)',
-      colorTextBase: '#222',
+      colorTextBase: customColors.light.colorTextBase,
       colorPrimary: data.primaryColor || colorPrimary,
       colorLink: data.primaryColor || colorPrimary,
       colorInfo: data.primaryColor || colorL.lighten(0.6).hex()
@@ -80,7 +112,8 @@ const getThemes = (data: DataSyncContextData): Themes => {
     token: {
       colorBgLayout: defineColorBgLayoutDark(data),
       colorBgContainer: 'rgba(22, 22, 22, 0.95)',
-      colorTextBase: '#fff',
+      colorTextBase: customColors.dark.colorTextBase,
+      colorWhite: customColors.dark.colorWhite,
       colorPrimary: data.primaryColor || colorD.hex(),
       colorLink: data.primaryColor || colorD.darken(0.6).hex()
     },

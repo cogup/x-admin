@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Form, Input, Space, theme, Typography, ColorPicker } from 'antd';
 import { StepProps } from '../../components/Steps';
 import { Color } from 'antd/es/color-picker';
-import { useDataSync } from '../../utils/sync';
+import { Theme, useDataSync } from '../../utils/sync';
 import { DataType } from '../../utils/sync';
+import ThemeSelect from './components/ThemeSelect';
+import Theming from '../../components/Theming';
 
 const { Title } = Typography;
 
@@ -17,6 +19,9 @@ const SettingTheme = (props: StepProps): React.ReactElement => {
   const [primaryColor, setPrimaryColor] = useState<string | undefined>(
     data.primaryColor
   );
+  const [themeSelected, setThemeSelected] = useState<Theme>(
+    data.theme ?? Theme.LIGHT
+  );
   const { token } = theme.useToken();
 
   useEffect(() => {
@@ -26,12 +31,14 @@ const SettingTheme = (props: StepProps): React.ReactElement => {
   useEffect(() => {
     updateData(DataType.PRIMARY_COLOR, primaryColor);
     updateData(DataType.BACKGROUND_IMAGE, backgroundImage);
+    updateData(DataType.THEME, themeSelected);
 
     props.setData({
       primaryColor,
-      backgroundImage
+      backgroundImage,
+      theme: themeSelected
     });
-  }, [backgroundImage, primaryColor]);
+  }, [backgroundImage, primaryColor, themeSelected]);
 
   const submitUrl = async () => {
     const url = form.getFieldValue('url');
@@ -44,6 +51,10 @@ const SettingTheme = (props: StepProps): React.ReactElement => {
 
   const onBackgrounImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setBackgroundImage(e.target.value);
+  };
+
+  const onThemeSelect = (theme: Theme) => {
+    setThemeSelected(theme);
   };
 
   return (
@@ -70,21 +81,18 @@ const SettingTheme = (props: StepProps): React.ReactElement => {
         </Space>
       </Space>
 
-      <Space direction="vertical">
+      <Space
+        direction="vertical"
+        style={{
+          marginTop: '2rem'
+        }}
+      >
         <Title level={4}>Chose a theme</Title>
-        <Space direction="vertical">
-          <ColorPicker
-            showText
-            defaultValue={token.colorPrimary}
-            onChangeComplete={onChangeColor}
-          />
-        </Space>
+        <ThemeSelect onSelect={onThemeSelect} />
       </Space>
 
-      <Space direction="vertical">
-        <Title level={4} style={{ marginTop: '1rem' }}>
-          Would you like to use an image as a background?
-        </Title>
+      <Space direction="vertical" style={{ marginTop: '2rem' }}>
+        <Title level={4}>Would you like to use an image as a background?</Title>
         <Input
           onChange={onBackgrounImageChange}
           placeholder="ex: https://unsplash.com/en/fotogra..."
