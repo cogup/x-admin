@@ -95,7 +95,7 @@ const StepsMaker: React.FC<StepsMakerProps> = ({
   const renderContent = () => {
     if (theming === true) {
       return (
-        <Theming>
+        <Theming internal={true}>
           <StepContent>
             <CurrentStep
               setData={setData}

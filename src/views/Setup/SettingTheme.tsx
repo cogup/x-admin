@@ -76,6 +76,7 @@ const SettingTheme = (props: StepProps): React.ReactElement => {
             showText
             defaultValue={token.colorPrimary}
             onChangeComplete={onChangeColor}
+            disabledAlpha={true}
           />
         </Space>
       </Space>

@@ -10,7 +10,6 @@ import {
   Navigate,
   Route,
   Routes,
-  redirect,
   useLocation,
   useNavigate
 } from 'react-router-dom';

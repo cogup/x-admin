@@ -24,6 +24,7 @@ import { useIsMobile } from '../../use';
 import GlobalHeader from '../../components/GlobalHeader';
 import { useDataSync } from '../../utils/sync';
 import Theming from '../../components/Theming';
+import Footer from '../../components/Footer';
 
 const LoadingPage = styled.div`
   display: flex;
@@ -67,6 +68,8 @@ const Admin = (): React.ReactElement => {
     const controller = control.builder();
 
     setController(controller);
+
+    document.title = controller.apiAdmin.info.title;
   }, []);
 
   useEffect(() => {
@@ -241,19 +244,20 @@ const Admin = (): React.ReactElement => {
       >
         <MenuGroups controller={controller} />
       </div>
-      <Theming internal={true}>
-        <Layout
-          ref={contentRef}
-          style={{
-            padding: '0 2rem',
-            paddingTop: 65,
-            overflow: 'auto'
-          }}
-        >
+      <Layout
+        ref={contentRef}
+        style={{
+          padding: '0 2rem',
+          paddingTop: 65,
+          overflow: 'auto'
+        }}
+      >
+        <Theming internal={true}>
           <Breadcrumb breadcrumb={breadcrumb} controller={controller} />
           <Routes>{renderRoutes()}</Routes>
-        </Layout>
-      </Theming>
+        </Theming>
+        <Footer />
+      </Layout>
     </Layout>
   );
 };

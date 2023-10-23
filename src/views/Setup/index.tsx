@@ -8,6 +8,7 @@ import SettingTheme from './SettingTheme';
 import { OpenAPI } from '../../controller/openapi';
 import Adjust from './Adjust';
 import { useNavigate } from 'react-router-dom';
+import Footer from '../../components/Footer';
 
 const Root = styled.div`
   display: flex;
@@ -106,25 +107,7 @@ const Setup = (): React.ReactElement => {
               ]}
             />
           </Layout.Content>
-          <Layout.Footer
-            style={{
-              textAlign: 'center'
-            }}
-          >
-            X-Admin ©2023 Created by{' '}
-            <a href="http://cogup.ai" target="_blank" rel="noreferrer">
-              Cogup
-            </a>{' '}
-            and{' '}
-            <a
-              href="http://github/cogup/x-admin"
-              target="_blank"
-              rel="noreferrer"
-            >
-              community contributors
-            </a>
-            .
-          </Layout.Footer>
+          <Footer />
         </div>
       </Layout>
     </Root>

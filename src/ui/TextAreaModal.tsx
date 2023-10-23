@@ -6,6 +6,7 @@ import hljs from 'highlight.js';
 import { FullscreenOutlined } from '@ant-design/icons';
 import TurndownService from 'turndown';
 import { marked } from 'marked';
+import color from 'color';
 
 import 'react-quill/dist/quill.snow.css';
 import 'highlight.js/styles/idea.css';
@@ -21,8 +22,8 @@ interface TextAreaWithQuillModalProps {
 interface TextAreaStyledProps {
   $colorEditor: string;
   $colorToolbar: string;
-  $colorPrimaryBg: string;
-  $colorPrimaryText: string;
+  $fullscreenColor: string;
+  $fullscreenTextColor: string;
 }
 
 const TextAreaStyled = styled.div<TextAreaStyledProps>`
@@ -41,13 +42,15 @@ const TextAreaStyled = styled.div<TextAreaStyledProps>`
   .ql-fullscreen:visited {
     cursor: pointer !important;
     float: right !important;
-    color: ${({ $colorPrimaryText }) => $colorPrimaryText} !important;
-    background: ${({ $colorPrimaryBg }) => $colorPrimaryBg} !important;
+    background: ${({ $fullscreenColor }) => $fullscreenColor} !important;
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
     border-radius: 6px !important;
     font-size: 16px !important;
+    svg {
+      color: ${({ $fullscreenTextColor }) => $fullscreenTextColor} !important;
+    }
   }
 `;
 
@@ -206,12 +209,16 @@ const TextAreaWithQuillModal: React.FC<TextAreaWithQuillModalProps> = ({
     return 'Editor';
   };
 
+  const fullscreenTextColor = color(token.colorPrimary).isDark()
+    ? token.colorWhite
+    : token.colorText;
+
   return (
     <TextAreaStyled
-      $colorPrimaryBg={token.colorPrimary}
+      $fullscreenColor={token.colorPrimary}
+      $fullscreenTextColor={fullscreenTextColor}
       $colorEditor={token.colorBgContainer}
       $colorToolbar={token.colorBgElevated}
-      $colorPrimaryText={token.colorText}
     >
       <Editor
         ref={editorRef}

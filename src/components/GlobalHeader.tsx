@@ -13,6 +13,10 @@ const CustomHeader = styled(Layout.Header)`
     backdrop-filter 0.6s,
     box-shadow 0.6s;
 
+  background: linear-gradient(to top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
+  backdrop-filter: blur(5px);
+  box-shadow: 0 0px 10px 0 rgba(0, 0, 0, 0.1);
+
   &.overlap {
     backdrop-filter: blur(5px) opacity(100%);
     box-shadow: 0 0px 10px 0 rgba(0, 0, 0, 0.1);
