@@ -8,7 +8,6 @@ import SettingTheme from './SettingTheme';
 import { OpenAPI } from '../../controller/openapi';
 import Adjust from './Adjust';
 import { useNavigate } from 'react-router-dom';
-import Theming from '../../components/Theming';
 
 const Root = styled.div`
   display: flex;
@@ -59,25 +58,6 @@ const Setup = (): React.ReactElement => {
     navigate('/admin');
   };
 
-  const wrapperContent = ({
-    children
-  }: {
-    children: React.ReactNode;
-  }): React.ReactElement => {
-    return (
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          padding: '2rem'
-        }}
-      >
-        {children}
-      </div>
-    );
-  };
-
   return (
     <Root>
       <Layout
@@ -104,7 +84,7 @@ const Setup = (): React.ReactElement => {
             }}
           >
             <StepsMaker
-              wrapperContent={wrapperContent}
+              theming={true}
               confirmToNext={true}
               onDone={onDone}
               steps={[

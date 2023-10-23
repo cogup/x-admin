@@ -5,7 +5,6 @@ import { Color } from 'antd/es/color-picker';
 import { Theme, useDataSync } from '../../utils/sync';
 import { DataType } from '../../utils/sync';
 import ThemeSelect from './components/ThemeSelect';
-import Theming from '../../components/Theming';
 
 const { Title } = Typography;
 

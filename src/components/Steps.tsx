@@ -13,7 +13,7 @@ interface StepsMakerProps {
   onNext?: (data: any) => void;
   onDone?: (data: any) => void;
   confirmToNext?: boolean;
-  wrapperContent?: Wrapper;
+  theming?: boolean;
 }
 
 export interface StepProps {
@@ -24,9 +24,6 @@ export interface StepProps {
   nextBottomActive: (active: boolean) => void;
 }
 
-export type Wrapper = (props: {
-  children: React.ReactNode;
-}) => React.ReactElement;
 export type StepNode = (props: StepProps) => React.ReactElement;
 
 interface StepContentProps {
@@ -53,7 +50,7 @@ const StepsMaker: React.FC<StepsMakerProps> = ({
   steps,
   onDone,
   onNext,
-  wrapperContent
+  theming
 }): React.ReactElement => {
   const { token } = theme.useToken();
   const [current, setCurrent] = useState(0);
@@ -95,6 +92,36 @@ const StepsMaker: React.FC<StepsMakerProps> = ({
 
   const CurrentStep = steps[current].content;
 
+  const renderContent = () => {
+    if (theming === true) {
+      return (
+        <Theming>
+          <StepContent>
+            <CurrentStep
+              setData={setData}
+              currentData={stepData}
+              next={next}
+              prev={prev}
+              nextBottomActive={onNextActive}
+            />
+          </StepContent>
+        </Theming>
+      );
+    }
+
+    return (
+      <StepContent>
+        <CurrentStep
+          setData={setData}
+          currentData={stepData}
+          next={next}
+          prev={prev}
+          nextBottomActive={onNextActive}
+        />
+      </StepContent>
+    );
+  };
+
   return (
     <div
       style={{
@@ -104,18 +131,7 @@ const StepsMaker: React.FC<StepsMakerProps> = ({
       }}
     >
       <Steps current={current} items={stepProps} />
-
-      <Theming internal={true}>
-        <StepContent>
-          <CurrentStep
-            setData={setData}
-            currentData={stepData}
-            next={next}
-            prev={prev}
-            nextBottomActive={onNextActive}
-          />
-        </StepContent>
-      </Theming>
+      {renderContent()}
 
       <div
         style={{

@@ -12,6 +12,7 @@ export interface ThemeSelectProps {
 interface ThemeSelectWrapperProps {
   $token: GlobalToken;
   $customColors: CustomColors;
+  $selected?: Theme;
 }
 
 const ThemeSelectWrapper = styled.div<ThemeSelectWrapperProps>`
@@ -38,7 +39,7 @@ const ThemeSelectWrapper = styled.div<ThemeSelectWrapperProps>`
 
     &:hover {
       cursor: pointer;
-      box-shadow: 0 0 0 2px ${(props) => props.$token.colorBorder};
+      box-shadow: 0 0 0 2px ${(props) => props.$token.colorPrimary};
     }
 
     svg {
@@ -51,22 +52,50 @@ const ThemeSelectWrapper = styled.div<ThemeSelectWrapperProps>`
     &.light {
       background-color: ${(props) =>
         props.$customColors.light.colorBgContainer};
+      ${(props) => {
+        if (props.$selected === Theme.LIGHT) {
+          return `
+            box-shadow: 0 0 0 2px ${props.$token.colorPrimary};
+          `;
+        }
+      }}
     }
 
     &.darker {
       background: ${(props) => {
         return `linear-gradient(135deg, ${props.$customColors.dark.colorBgContainer} 50%, ${props.$token.colorPrimary} 50%)`;
       }};
+      ${(props) => {
+        if (props.$selected === Theme.DARKER) {
+          return `
+            box-shadow: 0 0 0 2px ${props.$token.colorPrimary};
+          `;
+        }
+      }}
     }
 
     &.dark {
       background-color: ${(props) => props.$customColors.dark.colorBgContainer};
+      ${(props) => {
+        if (props.$selected === Theme.DARK) {
+          return `
+            box-shadow: 0 0 0 2px ${props.$token.colorPrimary};
+          `;
+        }
+      }}
     }
 
     &.lighting {
       background: ${(props) => {
         return `linear-gradient(135deg, ${props.$customColors.light.colorBgContainer} 50%, ${props.$token.colorPrimary} 50%)`;
       }};
+      ${(props) => {
+        if (props.$selected === Theme.LIGHTING) {
+          return `
+            box-shadow: 0 0 0 2px ${props.$token.colorPrimary};
+          `;
+        }
+      }}
     }
   }
 `;
@@ -77,8 +106,16 @@ const ThemeSelect = (props: ThemeSelectProps): React.ReactElement => {
   const { token } = theme.useToken();
 
   return (
-    <ThemeSelectWrapper $token={token} $customColors={customColors}>
+    <ThemeSelectWrapper
+      $token={token}
+      $customColors={customColors}
+      $selected={data.theme ?? Theme.LIGHT}
+    >
       <div onClick={() => props.onSelect(Theme.LIGHT)} className="light">
+        <Logo color={themes[Theme.LIGHT].token.colorTextBase} />
+      </div>
+
+      <div onClick={() => props.onSelect(Theme.LIGHTING)} className="lighting">
         <Logo color={themes[Theme.LIGHT].token.colorTextBase} />
       </div>
 
@@ -88,10 +125,6 @@ const ThemeSelect = (props: ThemeSelectProps): React.ReactElement => {
 
       <div onClick={() => props.onSelect(Theme.DARK)} className="dark">
         <Logo color={themes[Theme.DARK].token.colorTextBase} />
-      </div>
-
-      <div onClick={() => props.onSelect(Theme.LIGHTING)} className="lighting">
-        <Logo color={themes[Theme.LIGHT].token.colorTextBase} />
       </div>
     </ThemeSelectWrapper>
   );
