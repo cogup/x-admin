@@ -3,6 +3,7 @@ import { Breadcrumb as BreadcrumbUI } from 'antd';
 import { Controller, ResourceTypes } from '../controller';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { rp } from '../utils';
 
 const Empty = styled.div`
   display: flex;
@@ -47,7 +48,7 @@ const Breadcrumb = ({
   const gotToBreadcrumb = (path: string): any => {
     return (e: any): void => {
       e.preventDefault();
-      navigate(`/admin${path}`);
+      navigate(rp(`/admin${path}`));
     };
   };
 

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Row, Col, Card, theme } from 'antd';
 import { DynamicIcon } from '../../../ui';
-import { getIconSuggestion, capitalizeFirstLetter } from '../../../utils';
+import { getIconSuggestion, capitalizeFirstLetter, rp } from '../../../utils';
 import {
   ResourceTypes,
   type Controller,
@@ -25,7 +25,7 @@ const Mosaico: React.FC<MosaicoProps> = ({
   const { token } = theme.useToken();
 
   const handleClick = (resource: Resource): void => {
-    const localPath = `/admin${resource.getLocalPath()}`;
+    const localPath = rp(`/admin${resource.getLocalPath()}`);
     navigate(localPath);
   };
 

@@ -31,3 +31,19 @@ export function toPlural(str: string): string {
 export function listAllAlternativeWords(str: string): string[] {
   return [toSingluar(str), toPlural(str)];
 }
+
+export interface GlobarVars extends Window {
+  rootPath?: string;
+}
+
+export function resolvePath(path: string): string {
+  const rootPath = (window as GlobarVars).rootPath ?? '';
+
+  if (path.startsWith('/')) {
+    return `${rootPath}${path}`;
+  }
+
+  return `${rootPath}/${path}`;
+}
+
+export const rp = resolvePath;

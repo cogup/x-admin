@@ -9,6 +9,7 @@ import { OpenAPI } from '../../controller/openapi';
 import Adjust from './Adjust';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../../components/Footer';
+import { rp } from '../../utils';
 
 const Root = styled.div`
   display: flex;
@@ -56,7 +57,7 @@ const Setup = (): React.ReactElement => {
   const navigate = useNavigate();
 
   const onDone = (_: SetupData) => {
-    navigate('/admin');
+    navigate(rp('/admin'));
   };
 
   return (

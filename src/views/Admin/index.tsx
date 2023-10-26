@@ -25,6 +25,7 @@ import GlobalHeader from '../../components/GlobalHeader';
 import { useDataSync } from '../../utils/sync';
 import Theming from '../../components/Theming';
 import Footer from '../../components/Footer';
+import { rp } from '../../utils';
 
 const LoadingPage = styled.div`
   display: flex;
@@ -177,9 +178,9 @@ const Admin = (): React.ReactElement => {
   const itemsNav = [
     {
       label: 'Docs',
-      key: '/admin/docs',
+      key: 0,
       onClick: () => {
-        navigate('/admin/docs');
+        navigate(rp('/admin/docs'));
       }
     }
   ];

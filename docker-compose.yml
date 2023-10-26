@@ -1,8 +1,8 @@
 version: '3'
 services:
   react-app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: x-admin
     ports:
       - "8080:80"
+    environment:
+      - SPECIFICATION_URL=http://compose.infra:3001/openapi.json

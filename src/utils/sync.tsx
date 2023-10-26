@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useState } from 'react';
 import { OpenAPI } from '../controller/openapi';
 
+export interface GlobarVars extends Window, DataSyncContextData {}
+
 // add themes, light, darker, lighting and dark
 export enum Theme {
   LIGHT = 'light',
@@ -11,26 +13,27 @@ export enum Theme {
 
 export enum DataType {
   SPECIFICATION = 'specification',
+  SPECIFICATION_URL = 'specificationUrl',
   BACKGROUND_IMAGE = 'backgroundImage',
-  BACKGROUND_GRADIENT = 'backgroundGradient',
-  BACKGROUND_COLOR = 'backgroundColor',
   PRIMARY_COLOR = 'primaryColor',
   THEME = 'theme',
   DARK_MODE = 'darkMode'
 }
 
 const defaultData: DataSyncContextData = {
-  darkMode: false,
-  theme: Theme.DARK,
-  primaryColor: '#8F00D3'
+  darkMode: (window as GlobarVars).darkMode ?? false,
+  theme: (window as GlobarVars).theme ?? Theme.DARK,
+  primaryColor: (window as GlobarVars).primaryColor ?? '#0065c4',
+  specification: (window as GlobarVars).specification,
+  specificationUrl: (window as GlobarVars).specificationUrl,
+  backgroundImage: (window as GlobarVars).backgroundImage
 };
 
 export interface DataSyncContextData {
-  darkMode: boolean;
+  darkMode?: boolean;
   specification?: OpenAPI;
+  specificationUrl?: string;
   backgroundImage?: string;
-  backgroundGradient?: boolean;
-  backgroundColor?: boolean;
   primaryColor?: string;
   theme?: Theme;
 }
@@ -79,18 +82,16 @@ const getAllData = (): DataSyncContextData => {
   const theme = getLocalData<Theme>('theme');
   const darkMode = getLocalData<boolean>('darkMode') || false;
   const specification = getLocalData<OpenAPI>('specification');
+  const specificationUrl = getLocalData<string>('specificationUrl');
   const backgroundImage = getLocalData<string>('backgroundImage');
-  const backgroundGradient = getLocalData<boolean>('backgroundGradient');
-  const backgroundColor = getLocalData<boolean>('backgroundColor');
   const primaryColor = getLocalData<string>('primaryColor');
 
   return {
     theme,
     darkMode,
     specification,
+    specificationUrl,
     backgroundImage,
-    backgroundGradient,
-    backgroundColor,
     primaryColor
   };
 };

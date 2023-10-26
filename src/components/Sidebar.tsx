@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Menu, Layout } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import { capitalizeFirstLetter, getIconSuggestion } from '../utils';
+import { capitalizeFirstLetter, getIconSuggestion, rp } from '../utils';
 import type { MenuProps } from 'antd';
 import { ResourceTypes, type Controller, Resource } from '../controller';
 import { DynamicIcon } from '../ui';
@@ -86,7 +86,7 @@ const Sidebar: React.FC<SidebarProps> = ({
               return null;
             }
 
-            const localPath = `/admin${resource.getLocalPath()}`;
+            const localPath = rp(`/admin${resource.getLocalPath()}`);
 
             return getItem(
               capitalizeFirstLetter(

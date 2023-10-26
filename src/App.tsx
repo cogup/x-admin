@@ -13,6 +13,7 @@ import {
   useLocation,
   useNavigate
 } from 'react-router-dom';
+import { rp } from './utils';
 
 interface RootProps {
   $colorBase?: string;
@@ -102,9 +103,9 @@ const Inner = (): React.ReactElement => {
 
   useEffect(() => {
     if (location.pathname === '/' && data.specification !== undefined) {
-      navigate('/admin');
+      navigate(rp('/admin'));
     } else if (location.pathname === '/' && data.specification === undefined) {
-      navigate('/setup');
+      navigate(rp('/setup'));
     }
   }, []);
 
@@ -113,25 +114,26 @@ const Inner = (): React.ReactElement => {
       $colorBase={token.colorBgContainer}
       $colorPrimary={token.colorPrimary}
       $backgroundImage={data.backgroundImage}
-      $backgroundGradient={data.backgroundGradient}
-      $backgroundColor={data.backgroundColor}
     >
       <Glass
-        $darkMode={data.darkMode}
+        $darkMode={data.darkMode ?? false}
         $token={token}
-        $theme={data.theme ?? Theme.LIGHT}
+        $theme={data.theme ?? Theme.DARK}
         $backgroundImage={data.backgroundImage !== undefined}
       >
         <Routes>
           {data.specification !== undefined ? (
             [
-              <Route key={0} path="/admin" element={<Admin />} />,
-              <Route key={1} path="/admin/*" element={<Admin />} />
+              <Route key={0} path={rp('/admin')} element={<Admin />} />,
+              <Route key={1} path={rp('/admin/*')} element={<Admin />} />
             ]
           ) : (
-            <Route path="/admin" element={<Navigate to="/setup" />} />
+            <Route
+              path={rp('/admin')}
+              element={<Navigate to={rp('/setup')} />}
+            />
           )}
-          <Route path="/setup" element={<Setup />} />
+          <Route path={rp('/setup')} element={<Setup />} />
         </Routes>
       </Glass>
     </Root>

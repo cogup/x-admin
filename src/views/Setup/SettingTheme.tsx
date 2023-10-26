@@ -19,7 +19,7 @@ const SettingTheme = (props: StepProps): React.ReactElement => {
     data.primaryColor
   );
   const [themeSelected, setThemeSelected] = useState<Theme>(
-    data.theme ?? Theme.LIGHT
+    data.theme ?? Theme.DARK
   );
   const { token } = theme.useToken();
 

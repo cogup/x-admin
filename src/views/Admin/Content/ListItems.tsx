@@ -23,6 +23,7 @@ import {
   type Controller,
   ResourceTypes
 } from '../../../controller';
+import { rp } from '../../../utils';
 
 const WrapperTable = styled(Row)`
   .ant-table-cell {
@@ -288,7 +289,7 @@ const ListItems: React.FC<ListItemsProps> = ({
       return;
     }
 
-    navigate(`/admin${to}`);
+    navigate(rp(`/admin${to}`));
   };
 
   const defineColumns = (): React.ReactElement[] => {
@@ -371,7 +372,7 @@ const ListItems: React.FC<ListItemsProps> = ({
       return;
     }
 
-    navigate(`/admin${to}`);
+    navigate(rp(`/admin${to}`));
   };
 
   const onClickRead = (id: number): void => {
@@ -381,7 +382,7 @@ const ListItems: React.FC<ListItemsProps> = ({
       return;
     }
 
-    navigate(`/admin${to}`);
+    navigate(rp(`/admin${to}`));
   };
 
   const defineAction = (): any => {

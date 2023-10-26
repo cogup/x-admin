@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ConfigProvider, theme } from 'antd';
+import { ConfigProvider } from 'antd';
 import getThemes, { CustomTheme } from '../themes';
 import { Theme, useDataSync } from '../utils/sync';
 
@@ -21,7 +21,7 @@ const Theming = ({ children, internal }: ContentProps): React.ReactElement => {
       return internal ? Theme.LIGHT : Theme.DARK;
     }
 
-    return data.theme === undefined ? Theme.LIGHT : data.theme;
+    return data.theme === undefined ? Theme.DARK : data.theme;
   };
 
   const principalTheme = definePrincipalTheme();

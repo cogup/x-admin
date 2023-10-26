@@ -5,6 +5,7 @@ import axios from 'axios';
 import { OpenAPI } from '../../controller/openapi';
 import UploadSpec from './UploadSpec';
 import SubmitButton from '../../components/SubmitButton';
+import { DataType, useDataSync } from '../../utils/sync';
 
 const { Title } = Typography;
 
@@ -20,31 +21,34 @@ const validateOpenAPI = (specification: any) => {
 const ImportSpec = (props: StepProps): React.ReactElement => {
   const [loading, setLoading] = useState<boolean>(false);
   const [form] = Form.useForm();
-  const [urlSuccess, setUrlSuccess] = useState<boolean>(false);
+  const { data, updateData } = useDataSync();
+  const [urlSuccess, setUrlSuccess] = useState<boolean>(
+    data.specificationUrl !== undefined
+  );
   const [fileSuccess, setFileSuccess] = useState<boolean>(false);
   const [defaultUrl, setDefaultUrl] = useState<string | undefined>(
-    props.currentData?.specification?.url
+    data.specificationUrl
   );
   const {
     token: { colorSuccessText, colorSuccessBg, colorSuccessBorder }
   } = theme.useToken();
-
   const [messageApi, contextHolder] = message.useMessage();
 
   const submitUrl = async () => {
     setLoading(true);
-    const url = form.getFieldValue('url');
+    const specificationUrl = form.getFieldValue('url');
     setUrlSuccess(false);
 
     try {
-      const response = await axios.get(url as string);
+      const response = await axios.get(specificationUrl as string);
       const specification = response.data as OpenAPI;
 
       validateOpenAPI(specification);
 
-      props.setData({ specification, url });
+      props.setData({ specification, specificationUrl });
+      updateData(DataType.SPECIFICATION_URL, specificationUrl);
 
-      setDefaultUrl(url);
+      setDefaultUrl(specificationUrl);
       setUrlSuccess(true);
       setFileSuccess(false);
     } catch (e: any) {
@@ -65,7 +69,10 @@ const ImportSpec = (props: StepProps): React.ReactElement => {
 
       validateOpenAPI(specification);
 
+      updateData(DataType.SPECIFICATION, specification);
+
       props.setData({ specification });
+
       setFileSuccess(true);
       setUrlSuccess(false);
     } catch (e: any) {

@@ -8,6 +8,7 @@ import ToggleDarkMode from './ToggleDarkMode';
 import ExitButton from './ExitButton';
 import Logo from '../assets/Logo';
 import GradientBlur from './GradientBlur';
+import { rp } from '../utils';
 
 const CustomHeader = styled(Layout.Header)`
   display: flex;
@@ -175,7 +176,7 @@ const GlobalHeader = ({
             }}
           >
             <Link
-              to={'/admin'}
+              to={rp('/admin')}
               style={{
                 display: 'flex',
                 flexDirection: 'column',

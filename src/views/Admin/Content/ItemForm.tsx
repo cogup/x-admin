@@ -11,7 +11,7 @@ import {
 } from 'antd';
 import RelationshipInput from '../../../components/RelationshipInput';
 import { Header, DynamicInput } from '../../../ui';
-import { formatName, listAllAlternativeWords } from '../../../utils';
+import { formatName, listAllAlternativeWords, rp } from '../../../utils';
 import {
   type Controller,
   type Resource,
@@ -230,7 +230,7 @@ const ItemForm: React.FC<ItemFormProps> = (
       }
 
       if (path !== undefined) {
-        navigate(`/admin${path}`);
+        navigate(rp(`/admin${path}`));
       }
     } catch (error) {
       notification.error({
@@ -243,7 +243,7 @@ const ItemForm: React.FC<ItemFormProps> = (
     const path = resourceList?.getLocalPath();
 
     if (path !== undefined) {
-      navigate(`/admin${path}`);
+      navigate(rp(`/admin${path}`));
     }
   };
 

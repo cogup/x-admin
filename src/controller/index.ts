@@ -6,6 +6,7 @@ export type { Resource } from './resources';
 export { ApiAdmin, Methods } from './xadmin';
 export type { Schema, ApiParams, Params } from './xadmin';
 import * as OpenApiSpec from './openapi';
+import { rp } from '../utils';
 
 enum OriginalSchemaTypes {
   OPENAPI = 'openapi',
@@ -128,7 +129,7 @@ export class Controller {
   }
 
   findResourceByLocalPathComplex(localPath: string): Resource | null {
-    if (localPath === '/' || localPath === '/admin') {
+    if (localPath === rp('/') || localPath === rp('/admin')) {
       return null;
     }
 

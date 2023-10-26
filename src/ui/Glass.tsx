@@ -16,14 +16,6 @@ const Glass = styled.div<GlassProps>`
   height: 100%;
 
   ${({ $darkMode, $token, $theme, $backgroundImage }) => {
-    // if ($theme === Theme.LIGHT) {
-    //   if ($backgroundImage) {
-    //     return `
-    //     background: linear-gradient(135deg, rgba(255,255,255, 1) 0%, rgba(255,255,255, 0.2) 100%);
-    //   `;
-    //   }
-    //   return '';
-    // }
     const colorPrimary = color($token.colorPrimary)
       .rgb()
       .string()

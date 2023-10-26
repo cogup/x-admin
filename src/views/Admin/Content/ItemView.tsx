@@ -21,7 +21,7 @@ import {
   EditFilled,
   QuestionCircleOutlined
 } from '@ant-design/icons';
-import { getIconSuggestion } from '../../../utils';
+import { getIconSuggestion, rp } from '../../../utils';
 import { IconType } from '../../../ui/iconTypes';
 import { useIsMobile } from '../../../use';
 import styled from 'styled-components';
@@ -142,7 +142,7 @@ const ItemView: React.FC<ItemViewProps> = ({
               const to = resourceUpdate.getLocalPath({
                 params: { id: itemId }
               });
-              navigate(`/admin${to}`);
+              navigate(rp(`/admin${to}`));
             }}
             style={{ marginRight: '0.5rem' }}
           />

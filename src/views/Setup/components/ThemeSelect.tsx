@@ -110,7 +110,7 @@ const ThemeSelect = (props: ThemeSelectProps): React.ReactElement => {
     <ThemeSelectWrapper
       $token={token}
       $customColors={customColors}
-      $selected={data.theme ?? Theme.LIGHT}
+      $selected={data.theme ?? Theme.DARK}
     >
       <div onClick={() => props.onSelect(Theme.LIGHT)} className="light"></div>
 

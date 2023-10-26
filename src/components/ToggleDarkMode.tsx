@@ -7,7 +7,7 @@ const ToggleDarkMode = (): React.ReactElement => {
     token: { colorBgBase }
   } = theme.useToken();
   const { data, updateData } = useDataSync();
-  const [checked, setChecked] = useState<boolean>(data.darkMode);
+  const [checked, setChecked] = useState<boolean>(data.darkMode ?? false);
 
   useEffect(() => {
     updateData(DataType.DARK_MODE, checked);

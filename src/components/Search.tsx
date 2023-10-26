@@ -9,7 +9,7 @@ import {
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useQuerystring } from '../use';
 import { AdminResourceReferencesType } from '../controller/xadmin';
-import { toPlural } from '../utils';
+import { rp, toPlural } from '../utils';
 
 interface SearchProps {
   controller: Controller;
@@ -134,7 +134,7 @@ const Search: React.FC<SearchProps> = ({ controller }): React.ReactElement => {
           query: { search: value }
         });
         return {
-          label: renderTitle(resource.label, `/admin${moreTo}`, more),
+          label: renderTitle(resource.label, rp(`/admin${moreTo}`), more),
           options: data.data.data.map(
             (item: Record<string, string | number>) => {
               const resourceInner = searchResourceInner[resource.resourceName];
@@ -170,12 +170,12 @@ const Search: React.FC<SearchProps> = ({ controller }): React.ReactElement => {
       currentResource.type === ResourceTypes.LIST
     ) {
       const to = currentResource.getLocalPath({ query: { search: value } });
-      navigate(`/admin${to}`);
+      navigate(rp(`/admin${to}`));
     }
   };
 
   const handleSelect = (value: string, option: any): void => {
-    navigate(`/admin${option.key}`);
+    navigate(rp(`/admin${option.key}`));
     setInputValue('');
     setResult([]);
   };

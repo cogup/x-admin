@@ -1,4 +1,4 @@
-# Use a imagem oficial do Node.js como base
+# Use uma imagem oficial do Node.js como base para a primeira etapa de construção
 FROM node:18 as build
 
 # Defina o diretório de trabalho no contêiner
@@ -31,5 +31,11 @@ COPY nginx.conf /etc/nginx/nginx.conf
 # Expõe a porta 80 para o tráfego HTTP
 EXPOSE 80
 
-# Comando para iniciar o servidor Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Copie um script de inicialização para o contêiner
+COPY entrypoint.sh /entrypoint.sh
+
+# Dê permissão de execução ao script de inicialização
+RUN chmod +x /entrypoint.sh
+
+# Defina o comando de entrada para executar o script de inicialização quando o contêiner for iniciado
+ENTRYPOINT ["/entrypoint.sh"]
