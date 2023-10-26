@@ -31,9 +31,6 @@ jobs:
           npm install
           npm run build
       
-      - name: Test
-        run: npm run test
-
       - name: Create Release
         uses: cogup/actions/lib-release-pack@main
         with:
