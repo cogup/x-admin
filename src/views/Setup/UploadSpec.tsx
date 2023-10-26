@@ -1,6 +1,7 @@
 import React from 'react';
 import { InboxOutlined, LoadingOutlined } from '@ant-design/icons';
 import { message, Upload, theme } from 'antd';
+import { RcFile } from 'antd/es/upload/interface';
 
 const loadFileOnBrowser = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
@@ -27,7 +28,7 @@ const UploadSpec = (props: UploadSpecProps): React.ReactElement => {
     token: { colorSuccessText, colorSuccessBg, colorFillSecondary }
   } = theme.useToken();
 
-  const loadFile = async (file: File, FileList: any) => {
+  const loadFile = async (file: File, _fileList: RcFile[]) => {
     setLoading(true);
     const data = await loadFileOnBrowser(file);
     setLoading(false);
