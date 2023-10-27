@@ -32,7 +32,7 @@ jobs:
           npm run build
       
       - name: Create Release
-        uses: cogup/actions/lib-release-pack@main
+        uses: cogup/actions/create-release@main
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           add: build/*
