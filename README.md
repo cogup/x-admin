@@ -1,12 +1,12 @@
-# X-Admin: Documentation and Usage Guide
+# Oh Dash: Documentation and Usage Guide
 
-Welcome to the documentation for X-Admin, a React-based interface that simplifies the process of creating admin panels for APIs that have OpenAPI 3 documentation available. With X-Admin, you can effortlessly generate admin interfaces for your APIs by including a simple configuration parameter in your OpenAPI documentation.
+Welcome to the documentation for Oh Dash, a React-based interface that simplifies the process of creating admin panels for APIs that have OpenAPI 3 documentation available. With Oh Dash, you can effortlessly generate admin interfaces for your APIs by including a simple configuration parameter in your OpenAPI documentation.
 
 ## Getting Started
 
 ### Prerequisites
 
-To use X-Admin, you'll need the following:
+To use Oh Dash, you'll need the following:
 
 - A React application where you want to integrate the admin interface.
 - An API with OpenAPI 3 documentation available.
@@ -14,9 +14,9 @@ To use X-Admin, you'll need the following:
 
 ## Configuration
 
-### 1. Add the `x-admin` Parameter to OpenAPI Documentation
+### 1. Add the `ohdash` Parameter to OpenAPI Documentation
 
-To enable X-Admin for your API, simply add the `x-admin` parameter to your OpenAPI 3 documentation. This parameter will hold the configuration for your admin interface. Here's an example of how to use it:
+To enable Oh Dash for your API, simply add the `ohdash` parameter to your OpenAPI 3 documentation. This parameter will hold the configuration for your admin interface. Here's an example of how to use it:
 
 ```json
 {
@@ -24,7 +24,7 @@ To enable X-Admin for your API, simply add the `x-admin` parameter to your OpenA
   "info": {
     "title": "My API"
   },
-  "x-admin": {
+  "ohdash": {
     "resources": {
       "/api/comments": {
         "get": {
@@ -45,7 +45,7 @@ To enable X-Admin for your API, simply add the `x-admin` parameter to your OpenA
 
 ## 2. Admin Configuration Parameters
 
-The `x-admin` parameter accepts the following configuration parameters:
+The `ohdash` parameter accepts the following configuration parameters:
 
 - Resource Paths and Methods: Within the `resources` object, you define each resource path and its associated HTTP methods. For each method, you define the `types`, `resourceName`, and other relevant information.
 
@@ -53,7 +53,7 @@ The `x-admin` parameter accepts the following configuration parameters:
 
 - `resourceName`: A string representing the name of the resource.
 
-Here's an example of how you might use the `x-admin` parameter with correct formatting:
+Here's an example of how you might use the `ohdash` parameter with correct formatting:
 
 ```json
 {
@@ -61,7 +61,7 @@ Here's an example of how you might use the `x-admin` parameter with correct form
   "info": {
     "title": "My API"
   },
-  "x-admin": {
+  "ohdash": {
     "resources": {
       "/api/comments": {
         "get": {
@@ -82,7 +82,7 @@ Here's an example of how you might use the `x-admin` parameter with correct form
 
 ## Usage
 
-After configuring your API's OpenAPI documentation, you can integrate X-Admin into your React application using the provided package.
+After configuring your API's OpenAPI documentation, you can integrate Oh Dash into your React application using the provided package.
 
 ### 1. Install Dependencies
 
@@ -92,20 +92,20 @@ Make sure you have the necessary dependencies installed in your project by runni
 npm install
 ```
 
-### 2. Import and Use X-Admin Components
+### 2. Import and Use Oh Dash Components
 
-1. Import the necessary components from `x-admin`.
+1. Import the necessary components from `ohdash`.
 
 2. Use the imported components to generate the admin interfaces based on the provided configuration.
 
 ```jsx
 import React from 'react';
-import { AdminPanel, AdminResourceList, AdminResourceEdit } from 'x-admin';
+import { AdminPanel, AdminResourceList, AdminResourceEdit } from 'ohdash';
 
 function App() {
   return (
     <div>
-      <h1>X-Admin Example</h1>
+      <h1>Oh Dash Example</h1>
       <AdminPanel>
         <AdminResourceList resource="/api/comments" />
         <AdminResourceEdit resource="/api/comments" />
@@ -119,12 +119,12 @@ export default App;
 
 ## License
 
-X-Admin is available under either the Apache License 2.0, as stated in the [LICENSE](https://raw.githubusercontent.com/cogup/x-admin/main/LICENSE) file.
+Oh Dash is available under either the Apache License 2.0, as stated in the [LICENSE](https://raw.githubusercontent.com/cogup/ohdash/main/LICENSE) file.
 
 ## Conclusion
 
-Congratulations! You now have a powerful tool at your disposal to quickly create admin interfaces for APIs with OpenAPI 3 documentation. With X-Admin, you can focus on building your application's functionality while letting the admin panel practically build itself. If you encounter any issues or need further assistance, feel free to consult the official documentation or seek help from the community.
+Congratulations! You now have a powerful tool at your disposal to quickly create admin interfaces for APIs with OpenAPI 3 documentation. With Oh Dash, you can focus on building your application's functionality while letting the admin panel practically build itself. If you encounter any issues or need further assistance, feel free to consult the official documentation or seek help from the community.
 
-For more information and advanced usage, please refer to the [X-Admin documentation](https://github.com/cogup/x-admin).
+For more information and advanced usage, please refer to the [Oh Dash documentation](https://github.com/cogup/ohdash).
 
 Happy coding!

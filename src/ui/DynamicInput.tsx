@@ -115,7 +115,7 @@ const DynamicInput: React.FC<DynamicInputProps> = ({
 
   const renderStringInput = (): React.ReactElement => {
     const { format } = schemaItem;
-    const AdminType = schemaItem['x-admin-type'];
+    const AdminType = schemaItem['ohdash-type'];
 
     if (format === 'color') {
       return renderColorInput();

@@ -8,12 +8,12 @@ const Footer = (): React.ReactElement => {
         textAlign: 'center'
       }}
     >
-      X-Admin ©2023 Created by{' '}
+      Oh Dash ©2023 Created by{' '}
       <a href="http://cogup.ai" target="_blank" rel="noreferrer">
         Cogup
       </a>{' '}
       and{' '}
-      <a href="http://github/cogup/x-admin" target="_blank" rel="noreferrer">
+      <a href="http://github/cogup/ohdash" target="_blank" rel="noreferrer">
         community contributors
       </a>
       .
