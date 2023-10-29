@@ -74,7 +74,7 @@ export interface Schema {
   externalDocs?: OpenApiSpec.ExternalDocumentation;
   deprecated?: boolean;
   xml?: OpenApiSpec.XML;
-  'ohdash-type'?: string;
+  'x-admin-type'?: string;
 }
 
 export enum Methods {

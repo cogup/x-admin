@@ -88,7 +88,7 @@ export function openapi(spec: OpenApiSpec.OpenAPI): ApiAdmin {
     baseURL: server
   });
   const paths = Object.keys(spec.paths);
-  const groupsPath = listAllGroupsByPath(spec['ohdash']);
+  const groupsPath = listAllGroupsByPath(spec['x-admin']);
 
   for (let i = 0; i < paths.length; i++) {
     const path = paths[i];
@@ -117,7 +117,7 @@ export function openapi(spec: OpenApiSpec.OpenAPI): ApiAdmin {
         continue;
       }
 
-      const adminResourceData = getAdminInfo(path, method, spec['ohdash']);
+      const adminResourceData = getAdminInfo(path, method, spec['x-admin']);
 
       if (adminResourceData === undefined) {
         continue;

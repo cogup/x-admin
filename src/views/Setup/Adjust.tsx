@@ -76,11 +76,11 @@ const resourceIs = (
   path: string
 ): boolean => {
   if (
-    spec['ohdash'] !== undefined &&
-    spec['ohdash']?.resources !== undefined &&
-    spec['ohdash']?.resources[path] !== undefined &&
-    spec['ohdash']?.resources[path][method] !== undefined &&
-    spec['ohdash']?.resources[path][method].types?.indexOf(resourceType) !== -1
+    spec['x-admin'] !== undefined &&
+    spec['x-admin']?.resources !== undefined &&
+    spec['x-admin']?.resources[path] !== undefined &&
+    spec['x-admin']?.resources[path][method] !== undefined &&
+    spec['x-admin']?.resources[path][method].types?.indexOf(resourceType) !== -1
   ) {
     return true;
   }
@@ -173,7 +173,7 @@ const Adjust = (props: StepProps): React.ReactElement => {
   useEffect(() => {
     props.nextBottomActive(true);
     setResources(getList(specification));
-    setXAdminData(specification['ohdash']);
+    setXAdminData(specification['x-admin']);
   }, []);
 
   useEffect(() => {

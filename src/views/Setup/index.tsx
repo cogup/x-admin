@@ -68,7 +68,7 @@ const Setup = (): React.ReactElement => {
           minHeight: '100vh'
         }}
       >
-        <GlobalHeader title="Dash" contentRef={contentRef} />
+        <GlobalHeader title="Admin" contentRef={contentRef} />
         <div
           ref={contentRef}
           style={{

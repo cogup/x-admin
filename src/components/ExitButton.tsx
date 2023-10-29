@@ -1,7 +1,7 @@
 import React from 'react';
 import { LogoutOutlined } from '@ant-design/icons';
 import { Button, Popconfirm } from 'antd';
-import { DataType, useDataSync } from '../utils/sync';
+import { DataType, GlobarVars, useDataSync } from '../utils/sync';
 import { useNavigate } from 'react-router-dom';
 import { rp } from '../utils';
 
@@ -9,7 +9,7 @@ const ExitButton = () => {
   const { removeData } = useDataSync();
   const navigate = useNavigate();
 
-  return (
+  return (window as GlobarVars).specification === undefined ? (
     <Popconfirm
       placement="bottomRight"
       title={'Exit'}
@@ -30,7 +30,7 @@ const ExitButton = () => {
         }}
       />
     </Popconfirm>
-  );
+  ) : null;
 };
 
 export default ExitButton;

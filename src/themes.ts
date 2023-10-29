@@ -55,7 +55,7 @@ const fixTheme = (theme: CustomThemeNoFix): CustomTheme => {
   };
 };
 
-const defaultPrimaryColor = '#8F00D3';
+export const defaultPrimaryColor = '#1890ff';
 
 export interface CustomColors {
   light: {

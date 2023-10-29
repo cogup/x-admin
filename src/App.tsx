@@ -118,14 +118,14 @@ const Inner = (): React.ReactElement => {
       <Glass
         $darkMode={data.darkMode ?? false}
         $token={token}
-        $theme={data.theme ?? Theme.DARK}
+        $theme={data.theme ?? Theme.LIGHT}
         $backgroundImage={data.backgroundImage !== undefined}
       >
         <Routes>
           {data.specification !== undefined ? (
             [
-              <Route key={0} path={rp('/admin')} element={<Admin />} />,
-              <Route key={1} path={rp('/admin/*')} element={<Admin />} />
+              <Route key={0} path={rp('/admin/*')} element={<Admin />} />,
+              <Route key={1} path={rp('/setup')} element={<Setup />} />
             ]
           ) : (
             <Route
@@ -133,7 +133,7 @@ const Inner = (): React.ReactElement => {
               element={<Navigate to={rp('/setup')} />}
             />
           )}
-          <Route path={rp('/setup')} element={<Setup />} />
+          <Route path={rp('/')} element={<Navigate to={rp('/admin')} />} />
         </Routes>
       </Glass>
     </Root>

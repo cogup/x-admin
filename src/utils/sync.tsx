@@ -1,7 +1,20 @@
 import React, { createContext, useContext, useState } from 'react';
 import { OpenAPI } from '../controller/openapi';
+import { defaultPrimaryColor } from '../themes';
 
 export interface GlobarVars extends Window, DataSyncContextData {}
+
+function getLocalData<T>(key: string): T | undefined {
+  const data = localStorage.getItem(key);
+
+  try {
+    if (data) {
+      return JSON.parse(data) as T;
+    }
+  } catch {}
+
+  return undefined;
+}
 
 // add themes, light, darker, lighting and dark
 export enum Theme {
@@ -20,15 +33,6 @@ export enum DataType {
   DARK_MODE = 'darkMode'
 }
 
-const defaultData: DataSyncContextData = {
-  darkMode: (window as GlobarVars).darkMode ?? false,
-  theme: (window as GlobarVars).theme ?? Theme.DARK,
-  primaryColor: (window as GlobarVars).primaryColor ?? '#0065c4',
-  specification: (window as GlobarVars).specification,
-  specificationUrl: (window as GlobarVars).specificationUrl,
-  backgroundImage: (window as GlobarVars).backgroundImage
-};
-
 export interface DataSyncContextData {
   darkMode?: boolean;
   specification?: OpenAPI;
@@ -46,7 +50,7 @@ interface DataSyncContextType {
 }
 
 const DataSyncContext = createContext<DataSyncContextType>({
-  data: defaultData,
+  data: {},
   updateData: (_: string, __: any): void => {
     console.warn('updateData not implemented');
   },
@@ -58,18 +62,6 @@ const DataSyncContext = createContext<DataSyncContextType>({
   }
 });
 
-function getLocalData<T>(key: string): T | undefined {
-  const data = localStorage.getItem(key);
-
-  try {
-    if (data) {
-      return JSON.parse(data) as T;
-    }
-  } catch {}
-
-  return undefined;
-}
-
 interface DataSyncProviderProps {
   children: React.ReactNode;
 }
@@ -79,12 +71,23 @@ const saveLocalData = (key: string, data: any) => {
 };
 
 const getAllData = (): DataSyncContextData => {
-  const theme = getLocalData<Theme>('theme');
-  const darkMode = getLocalData<boolean>('darkMode') || false;
-  const specification = getLocalData<OpenAPI>('specification');
-  const specificationUrl = getLocalData<string>('specificationUrl');
-  const backgroundImage = getLocalData<string>('backgroundImage');
-  const primaryColor = getLocalData<string>('primaryColor');
+  const theme = (window as GlobarVars).theme ?? getLocalData<Theme>('theme');
+  const darkMode =
+    (window as GlobarVars).darkMode ??
+    (getLocalData<boolean>('darkMode') || false);
+  const specification =
+    (window as GlobarVars).specification ??
+    getLocalData<OpenAPI>('specification');
+  const specificationUrl =
+    (window as GlobarVars).specificationUrl ??
+    getLocalData<string>('specificationUrl');
+  const backgroundImage =
+    (window as GlobarVars).backgroundImage ??
+    getLocalData<string>('backgroundImage');
+  const primaryColor =
+    (window as GlobarVars).primaryColor ??
+    getLocalData<string>('primaryColor') ??
+    defaultPrimaryColor;
 
   return {
     theme,

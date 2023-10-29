@@ -284,7 +284,7 @@ export interface OpenAPI {
   security?: SecurityRequirement[];
   tags?: Tag[];
   externalDocs?: ExternalDocumentation;
-  ohdash?: AdminData;
+  'x-admin'?: AdminData;
 }
 
 export function isReference(

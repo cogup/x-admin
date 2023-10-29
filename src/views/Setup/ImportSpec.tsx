@@ -119,7 +119,7 @@ const ImportSpec = (props: StepProps): React.ReactElement => {
       >
         <Space.Compact style={{ width: '100%' }}>
           <Input
-            placeholder="ex: https://ohdash.github.com/openapi-demo.json"
+            placeholder="ex: https://x-admin.github.com/openapi-demo.json"
             defaultValue={defaultUrl}
             style={
               urlSuccess

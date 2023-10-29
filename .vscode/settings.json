@@ -1,8 +1,9 @@
 {
     "cSpell.words": [
-        "ohdash",
+        "x-admin",
         "Queryparam",
-        "Queryparams"
+        "Queryparams",
+        "sider"
     ],
     "editor.codeActionsOnSave": {
         "source.fixAll.eslint": true
