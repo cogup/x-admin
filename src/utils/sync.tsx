@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState } from 'react';
 import { OpenAPI } from '../controller/openapi';
 import { defaultPrimaryColor } from '../themes';
 
-export interface GlobarVars extends Window, DataSyncContextData {}
+export interface GlobalVars extends Window, DataSyncContextData {}
 
 function getLocalData<T>(key: string): T | undefined {
   const data = localStorage.getItem(key);
@@ -71,21 +71,21 @@ const saveLocalData = (key: string, data: any) => {
 };
 
 const getAllData = (): DataSyncContextData => {
-  const theme = (window as GlobarVars).theme ?? getLocalData<Theme>('theme');
+  const theme = (window as GlobalVars).theme ?? getLocalData<Theme>('theme');
   const darkMode =
-    (window as GlobarVars).darkMode ??
+    (window as GlobalVars).darkMode ??
     (getLocalData<boolean>('darkMode') || false);
   const specification =
-    (window as GlobarVars).specification ??
+    (window as GlobalVars).specification ??
     getLocalData<OpenAPI>('specification');
   const specificationUrl =
-    (window as GlobarVars).specificationUrl ??
+    (window as GlobalVars).specificationUrl ??
     getLocalData<string>('specificationUrl');
   const backgroundImage =
-    (window as GlobarVars).backgroundImage ??
+    (window as GlobalVars).backgroundImage ??
     getLocalData<string>('backgroundImage');
   const primaryColor =
-    (window as GlobarVars).primaryColor ??
+    (window as GlobalVars).primaryColor ??
     getLocalData<string>('primaryColor') ??
     defaultPrimaryColor;
 

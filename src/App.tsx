@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { theme } from 'antd';
 import Setup from './views/Setup';
 import Admin from './views/Admin';
-import { Theme, useDataSync } from './utils/sync';
+import { GlobalVars, Theme, useDataSync } from './utils/sync';
 import styled from 'styled-components';
 import Glass from './ui/Glass';
 import Theming from './components/Theming';
@@ -109,6 +109,9 @@ const Inner = (): React.ReactElement => {
     }
   }, []);
 
+  const serverSpecification =
+    (window as GlobalVars).specification !== undefined ? true : false;
+
   return (
     <Root
       $colorBase={token.colorBgContainer}
@@ -122,18 +125,26 @@ const Inner = (): React.ReactElement => {
         $backgroundImage={data.backgroundImage !== undefined}
       >
         <Routes>
-          {data.specification !== undefined ? (
-            [
-              <Route key={0} path={rp('/admin/*')} element={<Admin />} />,
-              <Route key={1} path={rp('/setup')} element={<Setup />} />
-            ]
-          ) : (
-            <Route
-              path={rp('/admin')}
-              element={<Navigate to={rp('/setup')} />}
-            />
-          )}
-          <Route path={rp('/')} element={<Navigate to={rp('/admin')} />} />
+          {data.specification === undefined
+            ? [
+                <Route
+                  key={0}
+                  path={rp('/*')}
+                  element={<Navigate to={rp('/setup')} />}
+                />,
+                <Route key={1} path={rp('/setup')} element={<Setup />} />
+              ]
+            : [
+                <Route key={0} path={rp('/admin/*')} element={<Admin />} />,
+                <Route
+                  key={1}
+                  path={rp('/')}
+                  element={<Navigate to={rp('/admin')} />}
+                />,
+                !serverSpecification && (
+                  <Route key={2} path={rp('/setup')} element={<Setup />} />
+                )
+              ]}
         </Routes>
       </Glass>
     </Root>

@@ -8,7 +8,7 @@ export function formatName(str: string): string {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-export function toSingluar(str: string): string {
+export function toSingular(str: string): string {
   if (str.endsWith('ies')) {
     return str.replace(/ies$/, 'y');
   }
@@ -29,15 +29,15 @@ export function toPlural(str: string): string {
 }
 
 export function listAllAlternativeWords(str: string): string[] {
-  return [toSingluar(str), toPlural(str)];
+  return [toSingular(str), toPlural(str)];
 }
 
-export interface GlobarVars extends Window {
+export interface GlobalVars extends Window {
   rootPath?: string;
 }
 
 export function resolvePath(path: string): string {
-  const rootPath = (window as GlobarVars).rootPath ?? '';
+  const rootPath = (window as GlobalVars).rootPath ?? '';
 
   if (path.startsWith('/')) {
     return `${rootPath}${path}`;

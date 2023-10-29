@@ -12,10 +12,6 @@ const Footer = (): React.ReactElement => {
       <a href="http://cogup.ai" target="_blank" rel="noreferrer">
         Cogup
       </a>{' '}
-      and{' '}
-      <a href="http://github/cogup/x-admin" target="_blank" rel="noreferrer">
-        community contributors
-      </a>
       .
     </Layout.Footer>
   );
