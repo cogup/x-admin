@@ -40,6 +40,10 @@ const WrapperButtonsMobile = styled(Row)`
   padding: 1rem 0;
 `;
 
+const WrapperButtonTable = styled(Col)`
+  margin: 0.4rem;
+`;
+
 interface ListItem {
   id: number;
   [key: string]: any;
@@ -391,13 +395,14 @@ const ListItems: React.FC<ListItemsProps> = ({
       key: 'action',
       fixed: 'right',
       render: (_: string, record: ListItem): React.ReactElement => (
-        <Row justify={'start'}>
+        <Row
+          justify={'start'}
+          style={{
+            margin: '-0.4rem'
+          }}
+        >
           {resourceRead != null && (
-            <Col
-              style={{
-                marginRight: '0.4rem'
-              }}
-            >
+            <WrapperButtonTable>
               <Button
                 type="default"
                 icon={<ReadOutlined style={{ fontSize: '1.0rem' }} />}
@@ -405,15 +410,10 @@ const ListItems: React.FC<ListItemsProps> = ({
                   onClickRead(record[resource.metadata?.id || 'id']);
                 }}
               />
-            </Col>
+            </WrapperButtonTable>
           )}
           {resourceUpdate != null && (
-            <Col
-              style={{
-                marginLeft: '0.4rem',
-                marginRight: '0.4rem'
-              }}
-            >
+            <WrapperButtonTable>
               <Button
                 type="dashed"
                 icon={<EditOutlined style={{ fontSize: '1.0rem' }} />}
@@ -421,14 +421,10 @@ const ListItems: React.FC<ListItemsProps> = ({
                   onClickEdit(record[resource.metadata?.id || 'id']);
                 }}
               />
-            </Col>
+            </WrapperButtonTable>
           )}
           {resourceDelete != null && (
-            <Col
-              style={{
-                marginLeft: '0.4rem'
-              }}
-            >
+            <WrapperButtonTable>
               <Popconfirm
                 placement="left"
                 title="Delete the task"
@@ -450,7 +446,7 @@ const ListItems: React.FC<ListItemsProps> = ({
                   icon={<DeleteOutlined style={{ fontSize: '1.0rem' }} />}
                 />
               </Popconfirm>
-            </Col>
+            </WrapperButtonTable>
           )}
         </Row>
       )

@@ -1,9 +1,10 @@
 {
     "cSpell.words": [
-        "x-admin",
+        "openapi",
         "Queryparam",
         "Queryparams",
-        "sider"
+        "sider",
+        "x-admin"
     ],
     "editor.codeActionsOnSave": {
         "source.fixAll.eslint": true

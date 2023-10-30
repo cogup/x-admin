@@ -68,14 +68,10 @@ export const defaultTheme = Theme.LIGHT;
 
 export interface CustomColors {
   light: {
-    colorWhite: string;
-    colorWhiteDark: string;
     colorTextBase: string;
     colorBgContainer: string;
   };
   dark: {
-    colorWhite: string;
-    colorWhiteDark: string;
     colorTextBase: string;
     colorBgContainer: string;
   };
@@ -83,14 +79,10 @@ export interface CustomColors {
 
 export const customColors: CustomColors = {
   light: {
-    colorWhite: '#fff',
-    colorWhiteDark: '#555',
     colorTextBase: '#161616',
-    colorBgContainer: '#fff'
+    colorBgContainer: 'rgba(255, 255, 255, 0.9)'
   },
   dark: {
-    colorWhite: '#161616',
-    colorWhiteDark: '#fff',
     colorTextBase: '#fff',
     colorBgContainer: '#161616'
   }
@@ -102,11 +94,9 @@ const getThemes = (data: DataSyncContextData): Themes => {
   const colorL = color(colorPrimary);
   const light = {
     token: {
-      colorWhite: colorL.isDark()
-        ? customColors.light.colorWhite
-        : customColors.light.colorWhiteDark,
+      colorWhite: colorL.isDark() ? '#fff' : '#555',
       colorBgLayout: defineColorBgLayout(data, '#fafafa'),
-      colorBgContainer: 'rgba(255, 255, 255, 0.9)',
+      colorBgContainer: customColors.light.colorBgContainer,
       colorTextBase: customColors.light.colorTextBase,
       colorPrimary: data.primaryColor || colorPrimary,
       colorLink: data.primaryColor || colorPrimary,
@@ -119,11 +109,9 @@ const getThemes = (data: DataSyncContextData): Themes => {
 
   const dark = {
     token: {
-      colorWhite: colorL.isDark()
-        ? customColors.light.colorWhite
-        : customColors.light.colorWhiteDark,
+      colorWhite: colorL.isDark() ? '#fff' : '#555',
       colorBgLayout: defineColorBgLayout(data, '#161616'),
-      colorBgContainer: 'rgba(22, 22, 22, 0.95)',
+      colorBgContainer: customColors.dark.colorBgContainer,
       colorTextBase: customColors.dark.colorTextBase,
       colorPrimary: data.primaryColor || colorD.hex(),
       colorLink: data.primaryColor || colorD.lighten(0.1).hex()

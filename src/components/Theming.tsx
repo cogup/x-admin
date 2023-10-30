@@ -1,47 +1,41 @@
 import React, { useEffect, useState } from 'react';
 import { ConfigProvider } from 'antd';
 import getThemes, { CustomTheme, Theme, defaultTheme } from '../themes';
-import { useDataSync } from '../utils/sync';
+import { DataSyncContextData, useDataSync } from '../utils/sync';
 
 interface ContentProps {
   children: React.ReactNode;
   internal?: boolean;
 }
 
-const Theming = ({ children, internal }: ContentProps): React.ReactElement => {
-  const { data } = useDataSync();
+export const resolveTheme = (
+  data: DataSyncContextData,
+  internal?: boolean
+): CustomTheme => {
   const themes = getThemes(data);
 
-  const definePrincipalTheme = (): Theme => {
-    if (data.theme === Theme.LIGHTING) {
-      return internal ? Theme.DARK : Theme.LIGHT;
-    }
+  if (data.darkMode === true || data.theme === Theme.DARK) {
+    return themes.dark;
+  }
 
-    if (data.theme === Theme.DARKER) {
-      return internal ? Theme.LIGHT : Theme.DARK;
-    }
+  if (data.theme === Theme.LIGHTING) {
+    return internal ? themes.dark : themes.light;
+  }
 
-    return data.theme === undefined ? defaultTheme : data.theme;
-  };
+  if (data.theme === Theme.DARKER) {
+    return internal ? themes.light : themes.dark;
+  }
 
-  const principalTheme = definePrincipalTheme();
+  return themes.light;
+};
 
-  const returnTheme = (): CustomTheme => {
-    if (data.darkMode) {
-      return themes.dark;
-    }
+const Theming = ({ children, internal }: ContentProps): React.ReactElement => {
+  const { data } = useDataSync();
 
-    if (principalTheme === Theme.DARK) {
-      return themes.dark;
-    }
-
-    return themes.light;
-  };
-
-  const [customTheme, setCustomTheme] = useState(returnTheme());
+  const [customTheme, setCustomTheme] = useState(resolveTheme(data, internal));
 
   useEffect(() => {
-    setCustomTheme(returnTheme());
+    setCustomTheme(resolveTheme(data, internal));
   }, [data]);
 
   return <ConfigProvider theme={customTheme}>{children}</ConfigProvider>;

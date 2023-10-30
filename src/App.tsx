@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { theme } from 'antd';
+import { GlobalToken, theme } from 'antd';
 import Setup from './views/Setup';
 import Admin from './views/Admin';
 import { GlobalVars, useDataSync } from './utils/sync';
@@ -17,11 +17,9 @@ import { rp } from './utils';
 import { defaultTheme } from './themes';
 
 interface RootProps {
-  $colorBase?: string;
-  $colorPrimary: string;
+  $token: GlobalToken;
   $backgroundImage?: string;
   $backgroundGradient?: boolean;
-  $backgroundColor?: boolean;
 }
 
 const Root = styled.div<RootProps>`
@@ -49,12 +47,7 @@ const Root = styled.div<RootProps>`
     }
   }
 
-  ${({
-    $colorPrimary,
-    $backgroundImage,
-    $backgroundGradient,
-    $backgroundColor
-  }) => {
+  ${({ $backgroundImage }) => {
     if ($backgroundImage) {
       return `
       background: url(${$backgroundImage});
@@ -63,12 +56,6 @@ const Root = styled.div<RootProps>`
       background-size: cover;
       background-attachment: fixed;
       `;
-    }
-
-    if ($backgroundGradient || $backgroundColor) {
-      return `
-      background: ${$colorPrimary};
-    `;
     }
   }}
 
@@ -79,7 +66,8 @@ const Root = styled.div<RootProps>`
   overflow: hidden;
 
   *::-webkit-scrollbar {
-    width: 0.5rem;
+    width: 0.3rem;
+    height: 0.3rem;
   }
 
   *::-webkit-scrollbar-track {
@@ -87,12 +75,12 @@ const Root = styled.div<RootProps>`
   }
 
   *::-webkit-scrollbar-thumb {
-    background: ${({ $colorBase }) => $colorBase};
+    background: ${({ $token }) => $token.colorPrimary};
     border-radius: 0.5rem;
   }
 
   *::-webkit-scrollbar-thumb:hover {
-    background: ${({ $colorBase }) => $colorBase};
+    background: ${({ $token }) => $token.colorPrimaryTextHover};
   }
 `;
 
@@ -114,11 +102,7 @@ const Inner = (): React.ReactElement => {
     (window as GlobalVars).specification !== undefined ? true : false;
 
   return (
-    <Root
-      $colorBase={token.colorBgContainer}
-      $colorPrimary={token.colorPrimary}
-      $backgroundImage={data.backgroundImage}
-    >
+    <Root $token={token} $backgroundImage={data.backgroundImage}>
       <Glass
         $darkMode={data.darkMode ?? false}
         $token={token}

@@ -189,8 +189,6 @@ const GlobalHeader = ({
                 style={{
                   width: '20px',
                   height: '20px',
-                  // marginRight: '7px'
-                  // marginTop: '-5px'
                   marginBottom: 5,
                   marginTop: 15
                 }}

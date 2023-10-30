@@ -102,7 +102,6 @@ const ThemeSelectWrapper = styled.div<ThemeSelectWrapperProps>`
 
 const ThemeSelect = (props: ThemeSelectProps): React.ReactElement => {
   const { data } = useDataSync();
-  const themes = getThemes(data);
   const { token } = theme.useToken();
 
   return (
