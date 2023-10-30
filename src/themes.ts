@@ -1,13 +1,21 @@
 import { theme } from 'antd';
-import { DataSyncContextData, Theme } from './utils/sync';
+import { DataSyncContextData } from './utils/sync';
 import color from 'color';
 
-const defineColorBgLayoutDark = (data: DataSyncContextData) => {
+// add themes, light, darker, lighting and dark
+export enum Theme {
+  LIGHT = 'light',
+  LIGHTING = 'lighting',
+  DARKER = 'darker',
+  DARK = 'dark'
+}
+
+const defineColorBgLayout = (data: DataSyncContextData, color: string) => {
   if (data.backgroundImage) {
     return 'transparent';
   }
 
-  return '#0f0f0f';
+  return color;
 };
 
 interface CustomThemeNoFix {
@@ -56,6 +64,7 @@ const fixTheme = (theme: CustomThemeNoFix): CustomTheme => {
 };
 
 export const defaultPrimaryColor = '#1890ff';
+export const defaultTheme = Theme.LIGHT;
 
 export interface CustomColors {
   light: {
@@ -96,7 +105,7 @@ const getThemes = (data: DataSyncContextData): Themes => {
       colorWhite: colorL.isDark()
         ? customColors.light.colorWhite
         : customColors.light.colorWhiteDark,
-      colorBgLayout: 'transparent',
+      colorBgLayout: defineColorBgLayout(data, '#fafafa'),
       colorBgContainer: 'rgba(255, 255, 255, 0.9)',
       colorTextBase: customColors.light.colorTextBase,
       colorPrimary: data.primaryColor || colorPrimary,
@@ -113,7 +122,7 @@ const getThemes = (data: DataSyncContextData): Themes => {
       colorWhite: colorL.isDark()
         ? customColors.light.colorWhite
         : customColors.light.colorWhiteDark,
-      colorBgLayout: defineColorBgLayoutDark(data),
+      colorBgLayout: defineColorBgLayout(data, '#161616'),
       colorBgContainer: 'rgba(22, 22, 22, 0.95)',
       colorTextBase: customColors.dark.colorTextBase,
       colorPrimary: data.primaryColor || colorD.hex(),

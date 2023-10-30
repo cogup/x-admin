@@ -1,8 +1,7 @@
 import React from 'react';
-import { Theme, useDataSync } from '../../../utils/sync';
+import { useDataSync } from '../../../utils/sync';
 import styled from 'styled-components';
-import Logo from '../../../assets/Logo';
-import getThemes, { CustomColors, customColors } from '../../../themes';
+import getThemes, { CustomColors, Theme, customColors } from '../../../themes';
 import { GlobalToken, theme } from 'antd';
 
 export interface ThemeSelectProps {
@@ -51,7 +50,7 @@ const ThemeSelectWrapper = styled.div<ThemeSelectWrapperProps>`
 
     &.light {
       background: ${(props) => {
-        return `linear-gradient(135deg, ${props.$customColors.light.colorBgContainer} 50%, ${props.$token.colorPrimary} 50%)`;
+        return `${props.$customColors.light.colorBgContainer}`;
       }};
       ${(props) => {
         if (props.$selected === Theme.LIGHT) {
@@ -64,7 +63,7 @@ const ThemeSelectWrapper = styled.div<ThemeSelectWrapperProps>`
 
     &.lighting {
       background: ${(props) => {
-        return `linear-gradient(135deg, ${props.$customColors.dark.colorBgContainer} 50%, ${props.$token.colorPrimary} 50%)`;
+        return `linear-gradient(135deg, ${props.$customColors.light.colorBgContainer} 50%, ${props.$customColors.dark.colorBgContainer} 50%)`;
       }};
       ${(props) => {
         if (props.$selected === Theme.LIGHTING) {
@@ -88,7 +87,7 @@ const ThemeSelectWrapper = styled.div<ThemeSelectWrapperProps>`
 
     &.darker {
       background: ${(props) => {
-        return `linear-gradient(135deg, ${props.$customColors.light.colorBgContainer} 50%, ${props.$customColors.dark.colorBgContainer} 50%)`;
+        return `linear-gradient(135deg, ${props.$customColors.dark.colorBgContainer} 50%, ${props.$customColors.light.colorBgContainer} 50%)`;
       }};
       ${(props) => {
         if (props.$selected === Theme.DARKER) {

@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
 import { OpenAPI } from '../controller/openapi';
-import { defaultPrimaryColor } from '../themes';
+import { Theme, defaultPrimaryColor } from '../themes';
 
 export interface GlobalVars extends Window, DataSyncContextData {}
 
@@ -14,14 +14,6 @@ function getLocalData<T>(key: string): T | undefined {
   } catch {}
 
   return undefined;
-}
-
-// add themes, light, darker, lighting and dark
-export enum Theme {
-  LIGHT = 'light',
-  LIGHTING = 'lighting',
-  DARKER = 'darker',
-  DARK = 'dark'
 }
 
 export enum DataType {

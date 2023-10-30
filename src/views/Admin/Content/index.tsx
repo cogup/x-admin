@@ -1,5 +1,6 @@
 import React from 'react';
 import { Layout, theme } from 'antd';
+import Container from '../../../ui/Container';
 
 interface ContentProps {
   background?: boolean;
@@ -7,20 +8,16 @@ interface ContentProps {
 }
 
 const Content = ({ children }: ContentProps): React.ReactElement => {
-  const { token } = theme.useToken();
-
   return (
-    <Layout.Content
+    <Container
       style={{
         padding: 24,
         minHeight: 'auto',
-        marginBottom: 24,
-        borderRadius: token.borderRadiusLG,
-        backgroundColor: token.colorBgContainer
+        marginBottom: 24
       }}
     >
       {children}
-    </Layout.Content>
+    </Container>
   );
 };
 

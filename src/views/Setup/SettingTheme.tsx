@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Form, Input, Space, theme, Typography, ColorPicker } from 'antd';
 import { StepProps } from '../../components/Steps';
 import { Color } from 'antd/es/color-picker';
-import { Theme, useDataSync } from '../../utils/sync';
+import { useDataSync } from '../../utils/sync';
 import { DataType } from '../../utils/sync';
 import ThemeSelect from './components/ThemeSelect';
+import { Theme } from '../../themes';
 
 const { Title } = Typography;
 

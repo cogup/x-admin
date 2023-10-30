@@ -8,9 +8,6 @@ import { QuestionCircleOutlined } from '@ant-design/icons';
 import { Tooltip } from 'antd';
 
 const HeaderStyled = styled(Row)`
-  margin-bottom: 2.5rem;
-  width: 100%;
-
   .title {
     display: flex;
     align-items: center;
@@ -90,7 +87,12 @@ const Header: React.FC<HeaderProps> = ({
       : undefined;
 
   return (
-    <HeaderStyled>
+    <HeaderStyled
+      style={{
+        marginBottom: '2.5rem',
+        width: '100%'
+      }}
+    >
       <Col flex={1}>
         <Row
           justify="space-between"
@@ -98,8 +100,10 @@ const Header: React.FC<HeaderProps> = ({
             marginBottom: '1rem',
             margin: -24,
             padding: '12px 24px',
-            borderRadius: token.borderRadiusLG,
-            backgroundColor: token.colorBgElevated
+            backgroundColor: token.colorBgElevated,
+            borderTopLeftRadius: token.borderRadiusLG,
+            borderTopRightRadius: token.borderRadiusLG,
+            borderBottom: `1px solid ${token.colorBorderSecondary}`
           }}
         >
           <Col>

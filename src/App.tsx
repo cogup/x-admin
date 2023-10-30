@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { theme } from 'antd';
 import Setup from './views/Setup';
 import Admin from './views/Admin';
-import { GlobalVars, Theme, useDataSync } from './utils/sync';
+import { GlobalVars, useDataSync } from './utils/sync';
 import styled from 'styled-components';
 import Glass from './ui/Glass';
 import Theming from './components/Theming';
@@ -14,6 +14,7 @@ import {
   useNavigate
 } from 'react-router-dom';
 import { rp } from './utils';
+import { defaultTheme } from './themes';
 
 interface RootProps {
   $colorBase?: string;
@@ -121,7 +122,7 @@ const Inner = (): React.ReactElement => {
       <Glass
         $darkMode={data.darkMode ?? false}
         $token={token}
-        $theme={data.theme ?? Theme.LIGHT}
+        $theme={data.theme ?? defaultTheme}
         $backgroundImage={data.backgroundImage !== undefined}
       >
         <Routes>

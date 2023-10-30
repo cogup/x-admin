@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import { Theme } from '../utils/sync';
 import { GlobalToken } from 'antd';
 import color from 'color';
+import { Theme } from '../themes';
 
 interface GlassProps {
   $darkMode: boolean;
@@ -16,6 +16,12 @@ const Glass = styled.div<GlassProps>`
   height: 100%;
 
   ${({ $darkMode, $token, $theme, $backgroundImage }) => {
+    console.log({
+      $darkMode,
+      $token,
+      $theme,
+      $backgroundImage
+    });
     const colorPrimary = color($token.colorPrimary)
       .rgb()
       .string()
@@ -41,9 +47,6 @@ const Glass = styled.div<GlassProps>`
         background: linear-gradient(135deg, rgba(${colorBgBase}, 1) 0%, rgba(${colorPrimary}, 0.2) 100%);
       `;
     }
-    return `
-        background: linear-gradient(135deg, rgba(${colorBgBase}, 1) 0%, rgba(${colorPrimary}, 1.0) 100%);
-      `;
   }}
 `;
 

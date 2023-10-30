@@ -16,6 +16,7 @@ const ExitButton = () => {
       description={'Are you sure you want to exit?'}
       onConfirm={() => {
         removeData(DataType.SPECIFICATION);
+        removeData(DataType.SPECIFICATION_URL);
         navigate(rp('/setup'));
       }}
       okText="Yes"

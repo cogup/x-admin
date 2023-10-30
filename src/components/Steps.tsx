@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Button, Steps, theme } from 'antd';
+import { Button, Steps } from 'antd';
 import Theming from './Theming';
+import Container from '../ui/Container';
 
 export interface Step {
   key: string;
@@ -31,19 +32,14 @@ interface StepContentProps {
 }
 
 const StepContent = (props: StepContentProps): React.ReactElement => {
-  const { token } = theme.useToken();
-
   const contentStyle: React.CSSProperties = {
     textAlign: 'center',
-    color: token.colorTextTertiary,
-    backgroundColor: token.colorBgBase,
-    borderRadius: token.borderRadiusLG,
     marginTop: 16,
     padding: '2rem',
     width: '100%'
   };
 
-  return <div style={contentStyle}>{props.children}</div>;
+  return <Container style={contentStyle}>{props.children}</Container>;
 };
 
 const StepsMaker: React.FC<StepsMakerProps> = ({
@@ -52,7 +48,6 @@ const StepsMaker: React.FC<StepsMakerProps> = ({
   onNext,
   theming
 }): React.ReactElement => {
-  const { token } = theme.useToken();
   const [current, setCurrent] = useState(0);
   const [stepData, setStepData] = useState<Record<string, any>>({});
   const [nextActive, setNextActive] = useState<boolean>(false);
